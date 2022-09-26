@@ -1,0 +1,2 @@
+epoch,timestamp,train_loss,train_acc1,train_acc5,val_loss,val_acc1,val_acc5
+-1,,,,,0.01794480169309845,0.1372626582278481,0.5097903481012656

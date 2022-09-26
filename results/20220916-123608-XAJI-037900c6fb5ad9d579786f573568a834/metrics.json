@@ -1,0 +1,11 @@
+{
+    "size": 431080,
+    "size_nz": 431080,
+    "compression_ratio": 1.0,
+    "flops": 4397000,
+    "flops_nz": 4397000.0,
+    "theoretical_speedup": 1.0,
+    "loss": 0.01794480169309845,
+    "val_acc1": 0.1372626582278481,
+    "val_acc5": 0.5097903481012656
+}

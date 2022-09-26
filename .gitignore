@@ -4,3 +4,8 @@ train
 train_orig
 test
 test_orig
+netzip_datasets/CIFAR10
+netzip_datasets/CIFAR100
+netzip_datasets/data
+netzip_datasets/MNIST
+exploration/*

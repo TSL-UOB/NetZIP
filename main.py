@@ -1,43 +1,39 @@
+# import sys
+# sys.path.append("..") # Adds parent directory to python modules path.
 
-# Step one - train a large network
-# We will take VGG16, drop the fully connected layers, and add three new fully connected layers. We will freeze the convolutional layers, and retrain only the new fully connected layers. In PyTorch, the new layers look like this:
-self.classifier = nn.Sequential(
-		nn.Dropout(),
-		nn.Linear(25088, 4096),
-		nn.ReLU(inplace=True),
-		nn.Dropout(),
-		nn.Linear(4096, 4096),
-		nn.ReLU(inplace=True),
-		nn.Linear(4096, 2))
+from shrinkbench.experiment import PruningExperiment
+
+import os
+os.environ['DATAPATH'] = 'netzip_datasets'#'shrinkbench/datasets'#'netzip_datasets/data/'#'../netzip/datasets/data/'
+
+from IPython.display import clear_output
+clear_output()
+
+for strategy in ['RandomPruning', 'GlobalMagWeight', 'LayerMagWeight']:
+	for  c in [1,2,4,8,16,32,64]:
+		exp = PruningExperiment(dataset='MNIST', 
+								model='MnistNet',
+								strategy=strategy,
+								compression=c,
+								train_kwargs={'epochs':10},
+								pretrained=False)
+		exp.run()
+		clear_output()
 
 
-# Step two - Rank the filters
-# To compute the Taylor criteria, we need to perform a Forward+Backward pass on our dataset (or on a smaller part of it if it’s too large. but since we have only 2000 images lets use that).
-# Now we need to somehow get both the gradients and the activations for convolutional layers. In PyTorch we can register a hook on the gradient computation, so a callback is called when they are ready:
-for layer, (name, module) in enumerate(self.model.features._modules.items()):
-	x = module(x)
-	if isinstance(module, torch.nn.modules.conv.Conv2d):
-		x.register_hook(self.compute_rank)
-		self.activations.append(x)
-		self.activation_to_layer[activation_index] = layer
-		activation_index += 1
+from shrinkbench.plot import df_from_results, plot_df
+df = df_from_results('results')
 
-# Now we have the activations in self.activations, and when a gradient is ready, compute_rank will be called:
-def compute_rank(self, grad):
-	activation_index = len(self.activations) - self.grad_index - 1
-	activation = self.activations[activation_index]
-	values = \
-		torch.sum((activation * grad), dim = 0).\
-			sum(dim=2).sum(dim=3)[0, :, 0, 0].data
-	
-	# Normalize the rank by the filter dimensions
-	values = \
-		values / (activation.size(0) * activation.size(2) * activation.size(3))
+plot_df("temp1.png", df, 'compression', 'pre_acc5', markers='strategy', line='--', colors='strategy', suffix=' - pre')
+plot_df("temp2.png", df, 'compression', 'post_acc5', markers='strategy', fig=False, colors='strategy')
 
-	if activation_index not in self.filter_ranks:
-		self.filter_ranks[activation_index] = \
-			torch.FloatTensor(activation.size(1)).zero_().cuda()
+plot_df("temp3.png", df, 'speedup', 'post_acc5', colors='strategy', markers='strategy')
+# plt.yscale('log')
+# plt.ylim(0.996,0.9995)
+# plt.xticks(2**np.arange(7))
+# plt.gca().set_xticklabels(map(str, 2**np.arange(7)))
+# None
 
-	self.filter_ranks[activation_index] += values
-	self.grad_index += 1
+df['compression_err'] = (df['real_compression'] - df['compression'])/df['compression']
 
+plot_df("temp3.png",df, 'compression', 'compression_err', colors='strategy', markers='strategy')
