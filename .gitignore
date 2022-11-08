@@ -1,3 +1,5 @@
 models/*
 other/*
 datasets/CIFAR10/*
+datasets/CIFAR100/*
+datasets/TinyImageNet/*
