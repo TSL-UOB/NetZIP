@@ -326,9 +326,9 @@ def main():
     train_loader, test_loader = prepare_dataloader(num_workers=8, train_batch_size=128, eval_batch_size=256)
     
     # Train model.
-    model = train_model(model=model, train_loader=train_loader, test_loader=test_loader, device=cuda_device)
+    # model = train_model(model=model, train_loader=train_loader, test_loader=test_loader, device=cuda_device)
     # Save model.
-    save_model(model=model, model_dir=model_dir, model_filename=model_filename)
+    # save_model(model=model, model_dir=model_dir, model_filename=model_filename)
     
     # Load a pretrained model.
     model = load_model(model=model, model_filepath=model_filepath, device=cuda_device)
@@ -338,8 +338,17 @@ def main():
     
    
 
-    _, fp32_eval_accuracy = evaluate_model(model=model, test_loader=test_loader, device=cpu_device, criterion=None)
+    _, fp32_eval_accuracy_train = evaluate_model(model=model, test_loader=train_loader, device=cpu_device, criterion=None)
+    print("FP32 train accuracy: {:.3f}".format(fp32_eval_accuracy_train))
+
+    fp32_cpu_inference_latency_train = measure_inference_latency(model=model, device=cpu_device, input_size=(1,3,32,32), num_samples=100)
+    fp32_gpu_inference_latency_train = measure_inference_latency(model=model, device=cuda_device, input_size=(1,3,32,32), num_samples=100)
     
+    print("FP32 CPU Inference Latency train: {:.2f} ms / sample".format(fp32_cpu_inference_latency_train * 1000))
+    print("FP32 CUDA Inference Latency train: {:.2f} ms / sample".format(fp32_gpu_inference_latency_train * 1000))
+ 
+
+    _, fp32_eval_accuracy = evaluate_model(model=model, test_loader=test_loader, device=cpu_device, criterion=None)
     print("FP32 evaluation accuracy: {:.3f}".format(fp32_eval_accuracy))
 
     fp32_cpu_inference_latency = measure_inference_latency(model=model, device=cpu_device, input_size=(1,3,32,32), num_samples=100)
