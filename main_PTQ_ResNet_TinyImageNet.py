@@ -12,6 +12,9 @@ import time
 import copy
 import numpy as np
 
+import wget
+from zipfile import ZipFile
+
 from resnet import resnet18
 
 # ======================================================================

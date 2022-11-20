@@ -12,10 +12,7 @@ import time
 import copy
 import numpy as np
 
-import wget
-from zipfile import ZipFile
-
-from resnet import resnet18
+from vgg import vgg11
 
 # ======================================================================
 # == Check GPU is connected
@@ -141,6 +138,7 @@ def prepare_dataloader(num_workers=8, train_batch_size=128, eval_batch_size=256)
 
     return train_loader, test_loader
 
+
 # =====================================================
 # == Metric (Model Accuracy Evaluation)
 # =====================================================
@@ -187,7 +185,7 @@ def train_model(model, train_loader, test_loader, device, learning_rate, num_epo
 
     model.to(device)
 
-    # It seems that SGD optimizer is better than Adam optimizer for ResNet18 training on CIFAR100.
+    # It seems that SGD optimizer is better than Adam optimizer for ResNet18 training on CIFAR10.
     optimizer = optim.SGD(model.parameters(), lr=learning_rate, momentum=0.9, weight_decay=1e-5)
     # optimizer = optim.Adam(model.parameters(), lr=learning_rate, betas=(0.9, 0.999), eps=1e-08, weight_decay=0, amsgrad=False)
 
@@ -306,7 +304,7 @@ def create_model(num_classes=10):
     # The number of channels in ResNet18 is divisible by 8.
     # This is required for fast GEMM integer matrix multiplication.
     # model = torchvision.models.resnet18(pretrained=False)
-    model = resnet18(num_classes=num_classes, pretrained=False)
+    model = vgg11(num_classes=num_classes, pretrained=False)
 
     # We would use the pretrained ResNet18 as a feature extractor.
     # for param in model.parameters():
@@ -320,12 +318,11 @@ def create_model(num_classes=10):
 
 
 # =====================================================
-# == Quantise ResNet18
+# == Quantise VGG
 # =====================================================
-
-class QuantizedResNet18(nn.Module):
+class QuantizedVGG(nn.Module):
     def __init__(self, model_fp32):
-        super(QuantizedResNet18, self).__init__()
+        super(QuantizedVGG, self).__init__()
         # QuantStub converts tensors from floating point to quantized.
         # This will only be used for inputs.
         self.quant = torch.quantization.QuantStub()
@@ -371,8 +368,8 @@ def main():
     cpu_device = torch.device("cpu:0")
 
     model_dir = "models/trained_models/TinyImageNet"
-    model_filename = "resnet18_tinyimagenet.pt"
-    quantized_model_filename = "resnet18_QAT_quantized_tinyimagenet.pt"
+    model_filename = "vgg11_tinyimagenet.pt"
+    quantized_model_filename = "vgg11_QAT_quantized_tinyimagenet.pt"
     model_filepath = os.path.join(model_dir, model_filename)
     quantized_model_filepath = os.path.join(model_dir, quantized_model_filename)
 
@@ -395,15 +392,15 @@ def main():
     # Otherwise the quantization aware training will not work correctly.
     fused_model.train()
 
-    # Fuse the model in place rather manually.
-    fused_model = torch.quantization.fuse_modules(fused_model, [["conv1", "bn1", "relu"]], inplace=True)
-    for module_name, module in fused_model.named_children():
-        if "layer" in module_name:
-            for basic_block_name, basic_block in module.named_children():
-                torch.quantization.fuse_modules(basic_block, [["conv1", "bn1", "relu1"], ["conv2", "bn2"]], inplace=True)
-                for sub_block_name, sub_block in basic_block.named_children():
-                    if sub_block_name == "downsample":
-                        torch.quantization.fuse_modules(sub_block, [["0", "1"]], inplace=True)
+    # # Fuse the model in place rather manually.
+    # fused_model = torch.quantization.fuse_modules(fused_model, [["conv1", "bn1", "relu"]], inplace=True)
+    # for module_name, module in fused_model.named_children():
+    #     if "layer" in module_name:
+    #         for basic_block_name, basic_block in module.named_children():
+    #             torch.quantization.fuse_modules(basic_block, [["conv1", "bn1", "relu1"], ["conv2", "bn2"]], inplace=True)
+    #             for sub_block_name, sub_block in basic_block.named_children():
+    #                 if sub_block_name == "downsample":
+    #                     torch.quantization.fuse_modules(sub_block, [["0", "1"]], inplace=True)
 
     # Print FP32 model.
     print(model)
@@ -417,7 +414,7 @@ def main():
 
     # Prepare the model for quantization aware training. This inserts observers in
     # the model that will observe activation tensors during calibration.
-    quantized_model = QuantizedResNet18(model_fp32=fused_model)
+    quantized_model = QuantizedVGG(model_fp32=fused_model)
     # Using un-fused model will fail.
     # Because there is no quantized layer implementation for a single batch normalization layer.
     # quantized_model = QuantizedResNet18(model_fp32=model)
