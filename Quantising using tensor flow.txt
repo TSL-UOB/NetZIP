@@ -1,0 +1,17 @@
+steps for quantising yolov5 using tensor flow.
+
+
+pip3 install -r requirements.txt coremltools onnx onnx-simplifier onnxruntime-gpu openvino-dev tensorflow  # GPU
+
+python3 export.py --weights yolov5s.pt --include tflite 
+
+python3 export.py --weights yolov5s.pt --include tflite --fp32
+
+python3 export.py --weights yolov5s.pt --include tflite --int8
+
+# Test
+=============I need to run validation on the generated models.==========
+
+python3 detect.py --weights yolov5s-fp16.tflite 
+
+python3 detect.py --weights yolov5s-int8.tflite 

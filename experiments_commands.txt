@@ -1,0 +1,65 @@
+Valuation of YOLO model: python3 val_YOLO_COCO.py --weights models/yolov5/runs/train/exp4/weights/best.pt --data COCO.yaml --img 640 --half
+
+==== Exporting other YOLO models:
+
+pytorch fp32     		                 : python3 models/yolov5/val.py --weights models/yolov5/yolov5s.pt --data COCO.yaml --img 640
+
+pytorch fp16 (only available in CUDA)           : python3 models/yolov5/val.py --weights models/yolov5/yolov5s.pt --data COCO.yaml --img 640 --half 
+
+pytorch fp32 pruning                            : python3 Pruning_YOLOv5_COCO.py --weights models/yolov5/yolov5s.pt --data COCO.yaml --img 640
+
+pytorch fp16 pruning  (only available in CUDA)  : python3 Pruning_YOLOv5_COCO.py --weights models/yolov5/yolov5s.pt --data COCO.yaml --img 640 --half
+
+Tensorflow fp32                                 : python3 models/yolov5/export.py --weights models/yolov5/yolov5s.pt --include saved_model
+
+TFlite fp16                                     : python3 models/yolov5/export.py --weights models/yolov5/yolov5s.pt --include tflite
+
+TFlite int8                                     : python3 models/yolov5/export.py --weights models/yolov5/yolov5s.pt --include tflite --int8
+
+
+==== Validating YOLO 
+
+pytorch fp32                                    : python3 val_YOLO_COCO_energy.py --weights models/yolov5/yolov5s.pt --data COCO.yaml --img 640
+
+pytorch fp16     (only available in CUDA)       : 
+
+pytorch fp32 pruning                            :
+
+pytorch fp16 pruning  (only available in CUDA)  : 
+
+Tensorflow fp32                                 : python3 val_YOLO_COCO_energy.py --weights models/yolov5/yolov5s_saved_model --data COCO.yaml --img 640
+
+TFlite fp16                                     : python3 val_YOLO_COCO_energy.py --weights models/yolov5/yolov5s-fp16.tflite --data COCO.yaml --img 640
+
+TFlite int8                                     : python3 val_YOLO_COCO_energy.py --weights models/yolov5/yolov5s-int8.tflite --data COCO.yaml --img 640
+
+
+==== Quantising YOLO (using tensorflow)
+pip3 install -r requirements.txt coremltools onnx onnx-simplifier onnxruntime-gpu openvino-dev tensorflow  # GPU
+
+python3 export.py --weights yolov5s.pt --include tflite
+
+python3 export.py --weights yolov5s.pt --include tflite --int8
+==== Pruning YOLO (using pytorch)
+Pruning and valuating YOLO: python3 Pruning_YOLOv5_COCO.py --weights models/yolov5/runs/train/exp4/weights/best.pt --data COCO.yaml --img 640 --half
+
+
+==== Validating YOLO 
+Pytorch_fp32: python3 val_YOLO_COCO_energy.py --weights models/yolov5/yolov5s_saved_model --data COCO.yaml --img 640
+
+torchscript_fp32: python3 val_YOLO_COCO_energy.py --weights models/yolov5/yolov5s.torchscript --data COCO.yaml --img 640
+
+Pytorch_fp32_Sparsity (0.3): python3 val_YOLO_COCO_energy.py --weights models/yolov5/yolov5s_fp32_pruned_sparsity0_3.pt --data COCO.yaml --img 640 
+
+Pytorch_fP16 : python3 val_YOLO_COCO_energy.py --weights models/yolov5/yolov5s_fp16.pt --data COCO.yaml --img 640 
+
+Pytorch_fp16_Sparsity (0.3): python3 val_YOLO_COCO_energy.py --weights models/yolov5/yolov5s_fp16_pruned_sparsity0_3.pt --data COCO.yaml --img 640 
+
+TF_tflite-fp16 : python3 val_YOLO_COCO_energy.py --weights models/yolov5/yolov5s-fp16.tflite --data COCO.yaml --img 640
+
+TF_tflite-int8 : python3 val_YOLO_COCO_energy.py --weights models/yolov5/yolov5s-int8.tflite --data COCO.yaml --img 640
+
+
+
+python3 val_YOLO_COCO_energy.py --weights models/yolov5/yolov5s.pt --data COCO.yaml --img 640
+
