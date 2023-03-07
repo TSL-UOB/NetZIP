@@ -72,7 +72,7 @@ num_classes = 200
 set_random_seeds(random_seed=random_seed)
 
 def get_and_prepare_coco_dataset():
-   path = "./datasets/COCO/"
+   path = "./COCO/"
 
    if not os.path.isdir(path):
         os.makedirs(path)

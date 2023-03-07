@@ -33,6 +33,7 @@ TFlite fp16                                     : python3 val_YOLO_COCO_energy.p
 
 TFlite int8                                     : python3 val_YOLO_COCO_energy.py --weights models/yolov5/yolov5s-int8.tflite --data COCO.yaml --img 640
 
+For raspberry pi -  replace val_YOLO_COCO_energy.py with val_YOLO_COCO_energy_raspberrypi4.py
 
 ==== Quantising YOLO (using tensorflow)
 pip3 install -r requirements.txt coremltools onnx onnx-simplifier onnxruntime-gpu openvino-dev tensorflow  # GPU
