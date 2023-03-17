@@ -16,21 +16,21 @@ from metrics.speed.latency import inference_latency
 SEED_NUMBER              = 0
 USE_CUDA                 = True
 
-DATASET_NAME             = "CIFAR10" # Options: "CIFAR10" "CIFAR100" "TinyImageNet"  "ImageNet"
+DATASET_NAME             = "TinyImageNet" # Options: "CIFAR10" "CIFAR100" "TinyImageNet"  "ImageNet"
 NUM_CLASSES              = 200 # Number of classes in dataset
 
 MODEL_CHOICE             = "resnet" # Option: Explore files in models to find the different options.
 MODEL_VARIANT            = "resnet18" # Option: Explore files in models to find the different options.
 
-MODEL_DIR                = "models/resnet"
+MODEL_DIR                = "../../models/resnet"
 SAVED_MODEL_FILENAME     = MODEL_CHOICE +"_"+DATASET_NAME+".pt"
-MODEL_SELECTION_FLAG     = 0 # create an untrained model = 0, start from a pytorch trained model = 1, start from a previously saved local model = 2
+MODEL_SELECTION_FLAG     = 1 # create an untrained model = 0, start from a pytorch trained model = 1, start from a previously saved local model = 2
 SAVED_MODEL_FILEPATH     = os.path.join(MODEL_DIR, SAVED_MODEL_FILENAME)
 
 TRAINED_MODEL_FILENAME   = MODEL_CHOICE +"_"+DATASET_NAME+".pt"
 
 
-NUM_EPOCHS               = 200
+NUM_EPOCHS               = 2
 LEARNING_RATE            = 1e-2
 
 # model_module_path = "../../"+MODEL_DIR+"/"+MODEL_CHOICE+".py"
@@ -64,11 +64,11 @@ def main():
     print("Progress: Model Saved.")
 
     # Evaluate model
-    eval_accuracy     = top1Accuracy(model=model, test_loader=test_loader, device=device, criterion=None)
-    inference_latency = inference_latency(model=model, device=device, input_size=(1,3,32,32), num_samples=100)
+    _,eval_accuracy     = top1Accuracy(model=model, test_loader=test_loader, device=device, criterion=None)
+    eval_speed_latency = inference_latency(model=model, device=device, input_size=(1,3,32,32), num_samples=100)
     
     print("FP32 evaluation accuracy: {:.3f}".format(eval_accuracy))
-    print("FP32 CPU Inference Latency: {:.2f} ms / sample".format(inference_latency * 1000))
+    print("FP32 CPU Inference Latency: {:.2f} ms / sample".format(eval_speed_latency * 1000))
     
 if __name__ == "__main__":
 

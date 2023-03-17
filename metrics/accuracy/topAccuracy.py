@@ -1,4 +1,4 @@
-
+import torch
 
 def top1Accuracy(model, test_loader, device, criterion=None):
 

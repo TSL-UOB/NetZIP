@@ -6,9 +6,11 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 
+from metrics.accuracy.topAccuracy import top1Accuracy
+
 
 def create_model(model_dir, model_choice, model_variant, num_classes=10):
-    model_module_path = "../../"+model_dir+"/"+model_choice+".py"
+    model_module_path = model_dir+"/"+model_choice+".py"
     model_module      = importlib.util.spec_from_file_location("",model_module_path).loader.load_module()
     model_function    = getattr(model_module, model_variant)
     model             = model_function(num_classes=num_classes, pretrained=False)
@@ -70,7 +72,7 @@ def train_model(model, train_loader, test_loader, device, learning_rate=1e-2, nu
         running_corrects = 0
 
         for inputs, labels in train_loader:
-            print("Model training..")
+            # print("Model training..")
             inputs = inputs.to(device)
             labels = labels.to(device)
 
@@ -93,7 +95,7 @@ def train_model(model, train_loader, test_loader, device, learning_rate=1e-2, nu
 
         # Evaluation
         model.eval()
-        eval_loss, eval_accuracy = evaluate_model(model=model, test_loader=test_loader, device=device, criterion=criterion)
+        eval_loss, eval_accuracy = top1Accuracy(model=model, test_loader=test_loader, device=device, criterion=criterion)
 
         print("Epoch: {:02d} Train Loss: {:.3f} Train Acc: {:.3f} Eval Loss: {:.3f} Eval Acc: {:.3f}".format(epoch, train_loss, train_accuracy, eval_loss, eval_accuracy))
 

@@ -1,4 +1,5 @@
-
+import torch
+import time
 
 def inference_latency(model,device,input_size=(1, 3, 32, 32),
                     num_samples=100, num_warmups=10):
