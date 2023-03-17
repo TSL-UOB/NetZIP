@@ -35,10 +35,6 @@ def model_selection(model_selection_flag=0, model_dir="", model_choice="", model
     elif model_selection_flag == 1:
         # Load a pretrained model from Pytorch.
         model = torch.hub.load('pytorch/vision:v0.10.0', model_variant, pretrained=True)
-        #Finetune Final few layers to adjust for tiny imagenet input
-        model.avgpool = nn.AdaptiveAvgPool2d(1)
-        num_ftrs = model.fc.in_features
-        model.fc = nn.Linear(num_ftrs, num_classes)# 200)
     
     elif model_selection_flag == 2:
         # Load a local pretrained model.
@@ -49,10 +45,6 @@ def model_selection(model_selection_flag=0, model_dir="", model_choice="", model
 
 
 def train_model(model, train_loader, test_loader, device, learning_rate=1e-2, num_epochs=200 ):
-
-    # The training configurations were not carefully selected.
-    # learning_rate = 1e-2
-    # num_epochs = 200
 
     criterion = nn.CrossEntropyLoss()
 

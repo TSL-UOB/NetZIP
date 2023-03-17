@@ -14,3 +14,4 @@ models/yolov5/yolov5s-int8.tflite
 models/yolov5/yolov5s_saved_model
 models/trained_models/*
 models/resnet/*.pt
+models/vgg/*.pt
