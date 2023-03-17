@@ -1,6 +1,5 @@
 import os
 import sys
-# import importlib
 
 sys.path.append('../../')
 
@@ -9,9 +8,6 @@ from utils.dataloader import pytorch_dataloader
 from utils.model import model_selection, train_model, save_model
 from metrics.accuracy.topAccuracy import top1Accuracy
 from metrics.speed.latency import inference_latency
-
-
-# from models.resnet.resnet import resnet18
 
 SEED_NUMBER              = 0
 USE_CUDA                 = True
@@ -29,17 +25,9 @@ SAVED_MODEL_FILEPATH     = os.path.join(MODEL_DIR, SAVED_MODEL_FILENAME)
 
 TRAINED_MODEL_FILENAME   = MODEL_CHOICE +"_"+DATASET_NAME+".pt"
 
-
 NUM_EPOCHS               = 2
 LEARNING_RATE            = 1e-2
 
-# model_module_path = "../../"+MODEL_DIR+"/"+MODEL_CHOICE+".py"
-# model_module      = importlib.util.spec_from_file_location("",model_module_path).loader.load_module()
-# model_function    = getattr(model_module, MODEL_VARIANT)#importlib.import_module(model_module0, "resnet18")
-# model             = model_function(num_classes=NUM_CLASSES, pretrained=False)
-
-# print(model)
-# input("Succesful dynami import")
 def main():
     # Fix seeds to allow for repeatable results 
     set_random_seeds(SEED_NUMBER)
