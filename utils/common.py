@@ -16,9 +16,3 @@ def set_random_seeds(random_seed=0):
     torch.backends.cudnn.benchmark = False
     np.random.seed(random_seed)
     random.seed(random_seed)
-
-# def create_model(num_classes=10):
-
-#     model = vgg11(num_classes=num_classes, pretrained=False)
-#     TODO create model baed on input model 
-#     return model

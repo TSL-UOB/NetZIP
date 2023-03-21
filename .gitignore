@@ -1,9 +1,13 @@
-other/*
-older/*
+old_dev/*
+
 datasets/CIFAR10/*
 datasets/CIFAR100/*
 datasets/TinyImageNet/*
 datasets/COCO/*
+
+models/resnet/*.pt
+models/vgg/*.pt
+
 models/yolov5/yolov5s.pt
 models/yolov5/yolov5s-fp16.tflite
 models/yolov5/yolov5s_fp16.pt
@@ -12,6 +16,4 @@ models/yolov5/yolov5s_fp32.pt
 models/yolov5/yolov5s_fp32_pruned_sparsity0_3.pt
 models/yolov5/yolov5s-int8.tflite
 models/yolov5/yolov5s_saved_model
-models/trained_models/*
-models/resnet/*.pt
-models/vgg/*.pt
+
