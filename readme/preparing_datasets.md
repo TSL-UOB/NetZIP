@@ -8,3 +8,6 @@
 
 ## COCO dataset
 
+
+
+Structure the choosen dataset(s) as described [here](directory_scructures.md).
