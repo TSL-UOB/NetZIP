@@ -41,6 +41,7 @@ def model_selection(model_selection_flag=0, model_dir="", model_choice="", model
         model = create_model(model_dir, model_choice, model_variant, num_classes)
         model = load_model(model=model, model_filepath=saved_model_filepath, device=device)
 
+    model.to(device)
     return model
 
 

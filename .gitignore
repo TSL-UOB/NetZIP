@@ -18,5 +18,4 @@ models/yolov5/yolov5s-int8.tflite
 models/yolov5/yolov5s_saved_model
 
 # Byte-compiled / optimized / DLL files
-__pycache__/
-
+__pycache__
