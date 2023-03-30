@@ -17,10 +17,10 @@ USE_CUDA                         = True # When doing quantisation set to False a
 DATASET_NAME                     = "TinyImageNet" # Options: "CIFAR10" "CIFAR100" "TinyImageNet"  "ImageNet"
 NUM_CLASSES                      = 1000 # Number of classes in dataset
 
-MODEL_CHOICE                     = "vgg"   # Option:"resnet" "vgg"
-MODEL_VARIANT                    = "vgg11" # Common Options: "resnet18" "vgg11" For more options explore files in models to find the different options.
+MODEL_CHOICE                     = "resnet"   # Option:"resnet" "vgg"
+MODEL_VARIANT                    = "resnet18" # Common Options: "resnet18" "vgg11" For more options explore files in models to find the different options.
 
-COMPRESSION_TECHNIQUE            = "QAT"      # Option: "PTQ" "QAT"
+COMPRESSION_TECHNIQUE            = "GUP"      # Option: "PTQ" "QAT" "GWP"
 
 MODEL_DIR                        = "../../models/" + MODEL_CHOICE
 

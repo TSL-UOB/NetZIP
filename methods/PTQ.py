@@ -1,3 +1,5 @@
+# Post Training Quntisation (PTQ) method. Implemented based on Pytorch documentation.
+
 import torch
 import torch.nn as nn
 import copy
@@ -25,16 +27,20 @@ def PTQ(model, train_loader):
     # The model has to be switched to evaluation mode for quantisation.
     fused_model.eval()
 
-    # # Fusing layers  imporves speed and accuracy of quantized model performance. https://pytorch.org/blog/quantization-in-practice/
-    # # Code below is set and tested for Resnet16. This does not generlise, so commented out.
-    # fused_model = torch.quantization.fuse_modules(fused_model, [["conv1", "bn1", "relu"]], inplace=True)
-    # for module_name, module in fused_model.named_children():
-    #     if "layer" in module_name:
-    #         for basic_block_name, basic_block in module.named_children():
-    #             torch.quantization.fuse_modules(basic_block, [["conv1", "bn1", "relu1"], ["conv2", "bn2"]], inplace=True)
-    #             for sub_block_name, sub_block in basic_block.named_children():
-    #                 if sub_block_name == "downsample":
-    #                     torch.quantization.fuse_modules(sub_block, [["0", "1"]], inplace=True)
+    
+    # Fusing layers imporves speed and accuracy of Resnet quantized model performance. https://pytorch.org/blog/quantization-in-practice/
+    # If model can be fused fuse it.Code below is set and tested for Resnet16.
+    try: 
+        fused_model = torch.quantization.fuse_modules(fused_model, [["conv1", "bn1", "relu"]], inplace=True)
+        for module_name, module in fused_model.named_children():
+            if "layer" in module_name:
+                for basic_block_name, basic_block in module.named_children():
+                    torch.quantization.fuse_modules(basic_block, [["conv1", "bn1", "relu1"], ["conv2", "bn2"]], inplace=True)
+                    for sub_block_name, sub_block in basic_block.named_children():
+                        if sub_block_name == "downsample":
+                            torch.quantization.fuse_modules(sub_block, [["0", "1"]], inplace=True)
+    except:
+        print("Model did not fuse, so continuing without fusing.")
 
 
     compressed_model = QuantizedNN(model_fp32=fused_model)
