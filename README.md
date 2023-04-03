@@ -3,6 +3,8 @@ This is the official repository for our paper: [*NetZIP: A Standardised Bench fo
 
 NetZIP is an open-source benchmarking framework, based mainly on PyTorch, for evaluating the performance of model compression techniques on deep neural networks. It provides a standardized set of benchmarks and evaluation metrics for comparing different compression methods. The prominance of NetZIP is in the range of standardised evaluation metrics it provides to assess different aspects of performance affected by comrpession; these are broken into four main categories: accuracy, speed, size, and energy.
 
+*TODO Add Tain-Compress-Compare diagram*
+
 ## List of currently supported frameworks:
 Neural Networks (see [methods](methods)) :
 - Object Classification
@@ -20,14 +22,17 @@ Compression Methods (see [methods](methods)):
 -- Post Training Quantisation (PTQ)
 -- Quantisation Aware Training (QAT)
 
+NetZIP is developed for the community to grow it and utilise it. If there are particular neural network frameworks or compression methods that one would like us to add or would like to contribute to the NetZIP repository, please open an issue for your request to be take further. Thanks.
+
 # Installation
 1) Clone this repository: `git clone` 
 2) Clone our docker image and setup container: `docker run -t --runtime=nvidia --shm-size 8G -d --name netzip -v ~/gits:/home -p 5000:80 abanoubg/netzip:latest`.
 
-# Running Experiments.
+# Setup Datasets
 Before starting with running experiments, setup datasets through the instructions listed
 [here](readme/preparing_datasets.md).
 
+# Running Experiments
 We provide scripts to [train](scripts/object_classificaiton/train.py), [compress](scripts/object_classificaiton/compress.py) and [compare](scripts/object_classificaiton/compare.py) using different metrics reviewed in our paper.
 
 For object classificaiton:
@@ -37,5 +42,8 @@ For object classificaiton:
 
 - Third use [compare.py](scripts/object_classificaiton/compare.py) to compare between the different compressed models. You can choose which metrics you wish to use. 
 
-For object detection follow the same approach for object classificaiton but uses a different set of [train](scripts/object_detection/train.py), [compress](scripts/object_detection/compare.py) and [compare](scripts/object_detection/compare.py) scripts. Note, since we currently only use YOLOv5 for object detection experiments the current implementation of compression methods for object detection is reliant on the builtin compression techniques provied by [Ultralytics](https://github.com/ultralytics/yolov5), which are limited to a version of tflite [Post Training Quantisation](models/yolov5/export.py) and [Global Unstructured Pruning](models/yolov5/utils/torch_utils.py). 
+For object detection follow the same approach for object classificaiton but uses a different set of [train](scripts/object_detection/train.py), [compress](scripts/object_detection/compare.py) and [compare](scripts/object_detection/compare.py) scripts. Note, since we currently only use YOLOv5 for object detection experiments the current implementation of compression methods for object detection is reliant on the builtin compression techniques provied by [Ultralytics](https://github.com/ultralytics/yolov5), which are limited to tflite [Post Training Quantisation](models/yolov5/export.py) and [L1 Unstructured Pruning](models/yolov5/utils/torch_utils.py). 
+
+# Further Info
+For a list of useful tutorials that helped in constructing this repository please see [here](readme/useful_tutorials.md)
 

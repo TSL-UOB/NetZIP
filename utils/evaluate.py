@@ -1,7 +1,7 @@
-from methods.PTQ import PTQ
-from methods.GUP import GUP
+from metrics. import PTQ
+from metrics. import GUP
 
-def compress_model(model, compression_technique, device, train_loader, test_loader="",  learning_rate=1e-3 , num_epochs=2):
+def evaluate_model(models, metrics, device, test_loader=""):
     if compression_technique == "PTQ":
         compressed_model = PTQ(model, train_loader)
 
@@ -18,3 +18,6 @@ def compress_model(model, compression_technique, device, train_loader, test_load
         raise Exception("ERROR: An unknown compression method was selected.")
     
     return compressed_model
+
+def metrics_switch():
+    pass

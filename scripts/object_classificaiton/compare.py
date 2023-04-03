@@ -21,13 +21,18 @@ MODEL_VARIANT            = "resnet18" # Common Options: "resnet18" "vgg11" For m
 MODEL_DIR                = "../../models/" + MODEL_CHOICE
 MODEL_SELECTION_FLAG     = 2 # create an untrained model = 0, start from a pytorch trained model = 1, start from a previously saved local model = 2
 
-SAVED_MODEL_FILENAME     = MODEL_VARIANT +"_"+DATASET_NAME+str(NUM_CLASSES)+".pt"
-SAVED_MODEL_FILEPATH     = os.path.join(MODEL_DIR, SAVED_MODEL_FILENAME)
+UNCOMPRESSED_MODEL_FILENAME     = MODEL_VARIANT +"_"+DATASET_NAME+str(NUM_CLASSES)+".pt"
+UNCOMPRESSED_MODEL_FILEPATH     = os.path.join(MODEL_DIR, SAVED_MODEL_FILENAME)
 
-TRAINED_MODEL_FILENAME   = MODEL_VARIANT +"_"+DATASET_NAME+str(NUM_CLASSES)+".pt"
+COMPRESSION_TECHNIQUES_LIST  = ["PTQ", "QAT", "GUP_L1", "GUP_R"]      # Option: "PTQ" "QAT" "GUP_R" "GUP_L1"
 
-NUM_EPOCHS               = 100
-LEARNING_RATE            = 1e-2
+EVALUATION_METRICS_LIST = [] 
+
+# Option:
+# == Accuracy: "TOP1accuracy" "TOP5accuracy" "mAP" "Precision" "Recall" "F1Score"
+# == Size    : "MemorySize" "RAMutilisation"
+# == Speed   : "Latency" "MAC" "FLOPS"
+# == Energy  : "Energy" "Power"
 
 def main():
     # Fix seeds to allow for repeatable results 
@@ -40,13 +45,15 @@ def main():
     train_loader, test_loader = pytorch_dataloader(dataset_name=DATASET_NAME)
     print("Progress: Dataset Loaded.")
 
-    # Setup model
-    model = model_selection(model_selection_flag=MODEL_SELECTION_FLAG, model_dir=MODEL_DIR, model_choice=MODEL_CHOICE, model_variant=MODEL_VARIANT, saved_model_filepath=SAVED_MODEL_FILEPATH, num_classes=NUM_CLASSES, device=device)
+    # Setup original model
+    uncompressed_model = model_selection(model_selection_flag=MODEL_SELECTION_FLAG, model_dir=MODEL_DIR, model_choice=MODEL_CHOICE, model_variant=MODEL_VARIANT, saved_model_filepath=UNCOMPRESSED_MODEL_FILEPATH, num_classes=NUM_CLASSES, device=device)
     print("Progress: Model has been setup.")
 
-    # Save model.
-    save_model(model=model, model_dir=MODEL_DIR, model_filename=TRAINED_MODEL_FILENAME)
-    print("Progress: Model Saved.")
+    
+    for compression_technique in COMPRESSION_TECHNIQUES_LIST:
+        compressed_model_filename        = compression_technique+"_"+MODEL_VARIANT +"_"+DATASET_NAME+str(NUM_CLASSES)+".pt"
+        compressed_model_filepath        = os.path.join(MODEL_DIR, compressed_model_filename)
+        compressed_model = model_selection(model_selection_flag=MODEL_SELECTION_FLAG, model_dir=MODEL_DIR, model_choice=MODEL_CHOICE, model_variant=MODEL_VARIANT, saved_model_filepath=compressed_model_filepath, num_classes=NUM_CLASSES, device=device)
 
     # Evaluate model
     _,eval_accuracy     = top1Accuracy(model=model, test_loader=test_loader, device=device, criterion=None)

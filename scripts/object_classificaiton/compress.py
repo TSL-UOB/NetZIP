@@ -20,7 +20,7 @@ NUM_CLASSES                      = 1000 # Number of classes in dataset
 MODEL_CHOICE                     = "resnet"   # Option:"resnet" "vgg"
 MODEL_VARIANT                    = "resnet18" # Common Options: "resnet18" "vgg11" For more options explore files in models to find the different options.
 
-COMPRESSION_TECHNIQUE            = "GUP"      # Option: "PTQ" "QAT" "GWP"
+COMPRESSION_TECHNIQUE            = "GUP_L1"      # Option: "PTQ" "QAT" "GUP_R" "GUP_L1"
 
 MODEL_DIR                        = "../../models/" + MODEL_CHOICE
 
