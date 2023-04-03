@@ -19,5 +19,5 @@ models/yolov5/yolov5s_fp32_pruned_sparsity0_3.pt
 models/yolov5/yolov5s-int8.tflite
 models/yolov5/yolov5s_saved_model
 
-# Byte-compiled / optimized / DLL files
+# Byte-compiled / optimized / DLL file
 __pycache__
