@@ -62,9 +62,9 @@ def prune_and_finetune(model, train_loader, test_loader, device, method, prune_a
                 parameters_to_prune.append((module, "weight"))
                 # parameters_to_prune.append((module, "bias"))
 
-            if isinstance(module, torch.nn.Linear):
-                parameters_to_prune.append((module, "weight"))
-                # parameters_to_prune.append((module, "bias"))
+            # if isinstance(module, torch.nn.Linear):
+            #     parameters_to_prune.append((module, "weight"))
+            #     # parameters_to_prune.append((module, "bias"))
 
         num_zeros, num_elements, sparsity = get_global_sparsity(model)
 

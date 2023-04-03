@@ -35,7 +35,7 @@ def get_global_sparsity(model, weight=True, bias=False):
     num_elements = 0
 
     for module_name, module in model.named_modules():
-        if isinstance(module, torch.nn.Conv2d) or isinstance(module, torch.nn.Linear):
+        if isinstance(module, torch.nn.Conv2d):# or isinstance(module, torch.nn.Linear):
             module_num_zeros, module_num_elements, _ = get_module_sparsity(module, weight, bias)
             num_zeros += module_num_zeros
             num_elements += module_num_elements

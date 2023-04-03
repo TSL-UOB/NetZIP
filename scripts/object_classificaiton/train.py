@@ -12,21 +12,21 @@ from metrics.speed.latency import inference_latency
 SEED_NUMBER              = 0
 USE_CUDA                 = True
 
-DATASET_NAME             = "TinyImageNet" # Options: "CIFAR10" "CIFAR100" "TinyImageNet"  "ImageNet"
-NUM_CLASSES              = 1000 # Number of classes in dataset
+DATASET_NAME             = "CIFAR10" # Options: "CIFAR10" "CIFAR100" "TinyImageNet"  "ImageNet"
+NUM_CLASSES              = 10 # Number of classes in dataset
 
 MODEL_CHOICE             = "vgg" # Option:"resnet" "vgg"
 MODEL_VARIANT            = "vgg11" # Common Options: "resnet18" "vgg11" For more options explore files in models to find the different options.
 
 MODEL_DIR                = "../../models/" + MODEL_CHOICE
-MODEL_SELECTION_FLAG     = 1 # create an untrained model = 0, start from a pytorch trained model = 1, start from a previously saved local model = 2
+MODEL_SELECTION_FLAG     = 0 # create an untrained model = 0, start from a pytorch trained model = 1, start from a previously saved local model = 2
 
 SAVED_MODEL_FILENAME     = MODEL_VARIANT +"_"+DATASET_NAME+str(NUM_CLASSES)+".pt"
 SAVED_MODEL_FILEPATH     = os.path.join(MODEL_DIR, SAVED_MODEL_FILENAME)
 
 TRAINED_MODEL_FILENAME   = MODEL_VARIANT +"_"+DATASET_NAME+str(NUM_CLASSES)+".pt"
 
-NUM_EPOCHS               = 100
+NUM_EPOCHS               = 10
 LEARNING_RATE            = 1e-2
 
 def main():
