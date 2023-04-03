@@ -1,6 +1,7 @@
 import sys
 import os
 import wget
+from zipfile import ZipFile
 
 url = "http://cs231n.stanford.edu/tiny-imagenet-200.zip"
 path = "./TinyImageNet/"
