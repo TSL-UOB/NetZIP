@@ -4,6 +4,8 @@ datasets/CIFAR10/*
 datasets/CIFAR100/*
 datasets/TinyImageNet/*
 datasets/COCO/*
+datasets/ImageNet/*
+
 
 models/resnet/*.pt
 models/vgg/*.pt

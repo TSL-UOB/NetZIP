@@ -12,9 +12,9 @@ if len(os.listdir(path))==0:
    wget.download(url,out = path)
    print("Downloaded ImageNet zip file.")
         
-if len(os.listdir(path))<2:
-   with ZipFile(path+"tiny-imagenet-200.zip", "r") as file:
-       file.extractall(path)
-   print("Extracted ImageNet files.")
-else:
-   print("ImagNet files already exist.")
+# if len(os.listdir(path))<2:
+#    with ZipFile(path+"tiny-imagenet-200.zip", "r") as file:
+#        file.extractall(path)
+#    print("Extracted ImageNet files.")
+# else:
+#    print("ImagNet files already exist.")

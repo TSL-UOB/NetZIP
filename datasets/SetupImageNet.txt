@@ -1,0 +1,9 @@
+Setting up Imagenet:
+
+1) Join competition on kaggle: https://www.kaggle.com/competitions/imagenet-object-localization-challenge/
+
+2) Install the Kaggle CLI: pip3 install kaggle
+
+3) 
+
+4) kaggle competitions download -c imagenet-object-localization-challenge
