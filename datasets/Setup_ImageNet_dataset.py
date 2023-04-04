@@ -41,9 +41,7 @@ if not os.path.isdir(val_img_dir+"/"+list_of_val_imgs[5]):
       label_id = list_of_val_imgs_labels[0][i]
 
       # Find class from label
-      # input(label_id)
       img_class_name, _ = ObjectID_ClassName_ObjectName_dic[label_id]
-      # input(img_class_name)
 
       # Check if directory with class name exists, if not create it.
       class_name_dir = val_img_dir+"/"+img_class_name

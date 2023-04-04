@@ -7,7 +7,7 @@
 Run Setup_COCO_dataset.py in the datasets directory. This should download and organise COCO dataset.
 
 ## ImageNet dataset
-Follow the SetupImageNet.txt in the datasets directory
+Follow the guide in SetupImageNet.txt in the datasets directory
 
 
 ## COCO dataset

@@ -8,7 +8,6 @@ Setting up Imagenet:
 
 4) kaggle competitions download -c imagenet-object-localization-challenge
 
-
 5) Download the Development kit from https://image-net.org/challenges/LSVRC/2017/2017-downloads.php.
 
 6) Create ImagNet folder inside datasets folder and place in it the  imagenet-object-localization-challenge.zip and the  ILSVRC2017_devkit.tar.gz downloaded files.
