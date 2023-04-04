@@ -1,7 +1,7 @@
 from methods.PTQ import PTQ
 from methods.GUP import GUP
 
-def compress_model(model, compression_technique, device, train_loader, test_loader="",  learning_rate=1e-3 , num_epochs=2):
+def compress_model(model, compression_technique, device, train_loader, test_loader="",  learning_rate=1e-3 , num_epochs=10):
     if compression_technique == "PTQ":
         compressed_model = PTQ(model, train_loader)
 

@@ -20,6 +20,9 @@ def GUP(model, train_loader, test_loader, device, method="Random", prune_amount=
     print("Global Sparsity of unpruned model:")
     print("{:.2f}".format(sparsity))
 
+    _, eval_accuracy = top1Accuracy(model=model, test_loader=test_loader, device=device, criterion=None)
+    print("Test Accuracy: {:.3f}".format(eval_accuracy))
+
     pruned_model = copy.deepcopy(model)
 
     prune_and_finetune(pruned_model, train_loader, test_loader, device, 
@@ -67,9 +70,6 @@ def prune_and_finetune(model, train_loader, test_loader, device, method, prune_a
             #     # parameters_to_prune.append((module, "bias"))
 
         num_zeros, num_elements, sparsity = get_global_sparsity(model)
-
-        _, eval_accuracy = top1Accuracy(model=model, test_loader=test_loader, device=device, criterion=None)
-        print("Test Accuracy: {:.3f}".format(eval_accuracy))
         
         if method == "Random":
             prune.global_unstructured(parameters_to_prune,pruning_method=prune.RandomUnstructured,amount=prune_amount)

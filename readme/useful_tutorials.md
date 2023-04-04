@@ -5,3 +5,4 @@ The list of tutorials below helped in constructing this repository.
 * https://pytorch.org/tutorials/intermediate/pruning_tutorial.html
 * https://leimao.github.io/blog/PyTorch-Pruning/
 * https://leimao.github.io/blog/PyTorch-Static-Quantization/
+* https://towardsdatascience.com/downloading-and-using-the-imagenet-dataset-with-pytorch-f0908437c4be

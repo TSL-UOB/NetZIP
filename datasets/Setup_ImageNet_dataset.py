@@ -2,61 +2,60 @@ import sys
 import os
 import wget
 from zipfile import ZipFile
+import pandas as pd
 
-url = "http://cs231n.stanford.edu/tiny-imagenet-200.zip"
-path = "./TinyImageNet/"
-
-if not os.path.isdir(path):
-   os.makedirs(path)
-
-if len(os.listdir(path))==0:
-   wget.download(url,out = path)
-   print("Downloaded TinyImagnet zip file.")
-        
-if len(os.listdir(path))<2:
-   with ZipFile(path+"tiny-imagenet-200.zip", "r") as file:
-       file.extractall(path)
-   print("Extracted TinyImagnet files.")
-else:
-   print("TinyImagnet files already exist.")
+path = "./ImageNet/"
 
 
 
-# ==== Organize validation data folder in Tiny Imagenet to make it compatible with pytorch.
+# ==== Organize validation data folder in Imagenet to make it compatible with pytorch.
 # Create separate validation subfolders for the validation images based on
 # their labels indicated in the val_annotations txt file
-val_dir    = os.path.join(path, 'tiny-imagenet-200/val')
-if os.path.exists(val_dir+"/images"):
-   val_img_dir = os.path.join(val_dir, 'images')
+val_img_dir    = os.path.join(path, 'imagenet-object-localization-challenge/ILSVRC/Data/CLS-LOC/val')
+val_labels_file = path+"ILSVRC2017_devkit/ILSVRC/devkit/data/ILSVRC2015_clsloc_validation_ground_truth.txt"
+map_clsloc_file = path+"ILSVRC2017_devkit/ILSVRC/devkit/data/map_clsloc.txt"
 
-   # Open and read val annotations text file
-   fp = open(os.path.join(val_dir, 'val_annotations.txt'), 'r')
-   data = fp.readlines()
+# Create mapping dictionary
+if os.path.exists(map_clsloc_file):
+   map_data = pd.read_csv(map_clsloc_file, sep=" ", header=None)
+   map_data.columns = ["Class Name", "Object ID", "Object Name"]
+   ObjectID_ClassName_ObjectName_dic = {}
+   for i in range(len(map_data)):
+      ObjectID_ClassName_ObjectName_dic[map_data["Object ID"][i]]= [map_data["Class Name"][i], map_data["Object Name"][i]]
 
-   # Create dictionary to store img filename (word 0) and corresponding
-   # label (word 1) for every line in the txt file (as key value pair)
-   val_img_dict = {}
-   for line in data:
-      words = line.split('\t')
-      val_img_dict[words[0]] = words[1]
-   fp.close()
 
-   # Create subfolders (if not present) for validation images based on label,
-   # and move images into the respective folders
-   for img, folder in val_img_dict.items():
-      newpath_imgs       = (os.path.join(val_dir, folder,"images"))
+if os.path.exists(val_labels_file):
+   list_of_val_imgs_labels = pd.read_csv(val_labels_file, sep=" ", header=None)
 
-      if not os.path.exists(newpath_imgs):
-         os.makedirs(newpath_imgs)
+if os.path.exists(val_img_dir):
+   list_of_val_imgs = sorted(os.listdir(val_img_dir))
 
-      if os.path.exists(os.path.join(val_img_dir, img)):
-         os.rename(os.path.join(val_img_dir, img), os.path.join(newpath_imgs, img))
+if not os.path.isdir(val_img_dir+"/"+list_of_val_imgs[5]):
+
+   for i, img_file in enumerate(list_of_val_imgs):
+      
+      # Get image path
+      img_path = val_img_dir+"/"+img_file
+      
+      # Get label
+      label_id = list_of_val_imgs_labels[0][i]
+
+      # Find class from label
+      # input(label_id)
+      img_class_name, _ = ObjectID_ClassName_ObjectName_dic[label_id]
+      # input(img_class_name)
+
+      # Check if directory with class name exists, if not create it.
+      class_name_dir = val_img_dir+"/"+img_class_name
+      if not os.path.exists(class_name_dir):
+         os.makedirs(class_name_dir)
+      # Move image to its class name directory.
+      if os.path.exists(os.path.join(val_img_dir, img_file)):
+         os.rename(os.path.join(val_img_dir, img_file), os.path.join(class_name_dir, img_file))
          
-   # Delete old images folder after finishing oraginsiign the images
-   if os.path.exists(val_img_dir):
-      os.rmdir(val_img_dir)
-   print("Re-oragnised TinyImagenet val to Pytorch format.")
+   print("Re-oragnised Imagenet val to Pytorch format.")
 
 else:
-   print("TinyImagenet already oragnised to Pytorch format. Assumed because images folder does not exist.")
+
+   print("Imagenet val already oragnised to Pytorch format. Assumed because " +val_img_dir+" directory only contains other directories.")
 

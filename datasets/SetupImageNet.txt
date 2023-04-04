@@ -1,0 +1,18 @@
+Setting up Imagenet:
+
+1) Join competition on kaggle: https://www.kaggle.com/competitions/imagenet-object-localization-challenge/
+
+2) Install the Kaggle CLI: pip3 install kaggle
+
+3) Set up your credentials. Follow guidance on https://github.com/Kaggle/kaggle-api#api-credentials
+
+4) kaggle competitions download -c imagenet-object-localization-challenge
+
+
+5) Download the Development kit from https://image-net.org/challenges/LSVRC/2017/2017-downloads.php.
+
+6) Create ImagNet folder inside datasets folder and place in it the  imagenet-object-localization-challenge.zip and the  ILSVRC2017_devkit.tar.gz downloaded files.
+
+7) Extract imagenet-object-localization-challenge.zip and ILSVRC2017_devkit.tar.gz
+
+8) Run SetupImageNet.py 

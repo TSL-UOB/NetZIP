@@ -16,7 +16,7 @@ DATASET_NAME             = "ImageNet" # Options: "CIFAR10" "CIFAR100" "TinyImage
 NUM_CLASSES              = 1000 # Number of classes in dataset
 
 MODEL_CHOICE             = "resnet" # Option:"resnet" "vgg"
-MODEL_VARIANT            = "resnet50" # Common Options: "resnet50" "resnet18" "vgg11" For more options explore files in models to find the different options.
+MODEL_VARIANT            = "resnet50" # Common Options: "resnet18" "vgg11" For more options explore files in models to find the different options.
 
 MODEL_DIR                = "../../models/" + MODEL_CHOICE
 MODEL_SELECTION_FLAG     = 1 # create an untrained model = 0, start from a pytorch trained model = 1, start from a previously saved local model = 2
@@ -26,7 +26,7 @@ SAVED_MODEL_FILEPATH     = os.path.join(MODEL_DIR, SAVED_MODEL_FILENAME)
 
 TRAINED_MODEL_FILENAME   = MODEL_VARIANT +"_"+DATASET_NAME+str(NUM_CLASSES)+".pt"
 
-NUM_EPOCHS               = 10
+NUM_EPOCHS               = 2
 LEARNING_RATE            = 1e-2
 
 def main():

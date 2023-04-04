@@ -22,11 +22,12 @@ Compression Methods (see [methods](methods)):
 -- Post Training Quantisation (PTQ)
 -- Quantisation Aware Training (QAT)
 
-NetZIP is developed for the community to grow it and utilise it. If there are particular neural network frameworks or compression methods that one would like us to add or would like to contribute to the NetZIP repository, please open an issue for your request to be take further. Thanks.
+NetZIP is developed for the community to grow and utilise it. If there are particular neural network frameworks or compression methods that one would like us to add or would like to contribute to the NetZIP repository, please open an issue for your request to be take further. Thanks.
 
 # Installation
 1) Clone this repository: `git clone` 
-2) Clone our docker image and setup container: `docker run -t --runtime=nvidia --shm-size 8G -d --name netzip -v ~/gits:/home -p 5000:80 abanoubg/netzip:latest`.
+2) Clone our docker image and setup container: `docker run -t --runtime=nvidia --shm-size 16G -d --name netzip -v ~/gits:/home -p 5000:80 abanoubg/netzip:latest`.
+
 
 # Setup Datasets
 Before starting with running experiments, setup datasets through the instructions listed
