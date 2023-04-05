@@ -27,7 +27,7 @@ MODEL_SELECTION_FLAG     = 2 # create an untrained model = 0, start from a pytor
 UNCOMPRESSED_MODEL_FILENAME     = MODEL_VARIANT +"_"+DATASET_NAME+str(NUM_CLASSES)+".pt"
 UNCOMPRESSED_MODEL_FILEPATH     = os.path.join(MODEL_DIR, UNCOMPRESSED_MODEL_FILENAME)
 
-COMPRESSION_TECHNIQUES_LIST  = ["PTQ", "QAT", "GUP_L1", "GUP_R"]      # Option: "PTQ" "QAT" "GUP_R" "GUP_L1"
+COMPRESSION_TECHNIQUES_LIST  = ["GUP_L1", "GUP_R"]#,"PTQ", "QAT"]      # Option: "PTQ" "QAT" "GUP_R" "GUP_L1"
 
 EVALUATION_METRICS_LIST = ["TOP1accuracy", "Latency"] 
 

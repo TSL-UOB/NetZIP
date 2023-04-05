@@ -28,7 +28,7 @@ def evaluate_model(model, evaluation_metric, device, test_loader=""):
         pass
 
     elif evaluation_metric == "Latency":
-        evaluation_output = inference_latency(model=model, device=device, input_size=(1,3,32,32), num_samples=100)
+        evaluation_output = inference_latency(model=model, device=device,test_loader=test_loader)
         print("CPU Inference Latency: {:.2f} ms / sample".format(evaluation_output * 1000))
 
     elif evaluation_metric == "MAC":
