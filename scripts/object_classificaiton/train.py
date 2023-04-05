@@ -26,8 +26,8 @@ SAVED_MODEL_FILEPATH     = os.path.join(MODEL_DIR, SAVED_MODEL_FILENAME)
 
 TRAINED_MODEL_FILENAME   = MODEL_VARIANT +"_"+DATASET_NAME+str(NUM_CLASSES)+".pt"
 
-NUM_EPOCHS               = 10
-LEARNING_RATE            = 1e-2
+NUM_EPOCHS               = 2
+LEARNING_RATE            = 1e-5 # for imagenet use 1e-5, otherwise 1e-2
 
 def main():
     # Fix seeds to allow for repeatable results 
