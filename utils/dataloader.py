@@ -11,7 +11,7 @@ from PIL import Image
 import json
 
 
-def pytorch_dataloader(dataset_name="",num_workers=8, train_batch_size=32, eval_batch_size=32):
+def pytorch_dataloader(dataset_name="",num_workers=16, train_batch_size=32, eval_batch_size=32):
 
     train_transform = transforms.Compose([
         transforms.RandomCrop(32, padding=4),

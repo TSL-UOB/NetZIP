@@ -8,6 +8,8 @@ import torch.optim as optim
 
 from metrics.accuracy.topAccuracy import top1Accuracy
 
+import time
+
 
 def create_model(model_dir, model_choice, model_variant, num_classes=10):
     model_module_path = model_dir+"/"+model_choice+".py"
@@ -51,12 +53,12 @@ def train_model(model, train_loader, test_loader, device, learning_rate=1e-2, nu
 
     model.to(device)
 
-    # It seems that SGD optimizer is better than Adam optimizer for ResNet18 training on CIFAR10.
     optimizer = optim.SGD(model.parameters(), lr=learning_rate, momentum=0.9, weight_decay=1e-5)
-    # optimizer = optim.Adam(model.parameters(), lr=learning_rate, betas=(0.9, 0.999), eps=1e-08, weight_decay=0, amsgrad=False)
-
     
     for epoch in range(num_epochs):
+
+        # Time
+        t0 = time.time()
 
         # Training
         model.train()
@@ -89,7 +91,7 @@ def train_model(model, train_loader, test_loader, device, learning_rate=1e-2, nu
         # Evaluation
         model.eval()
         eval_loss, eval_accuracy = top1Accuracy(model=model, test_loader=test_loader, device=device, criterion=criterion)
-
-        print("Epoch: {:02d} Train Loss: {:.3f} Train Acc: {:.3f} Eval Loss: {:.3f} Eval Acc: {:.3f}".format(epoch, train_loss, train_accuracy, eval_loss, eval_accuracy))
+        t_end = time.time() - t0
+        print("Epoch: {:02d} Train Loss: {:.3f} Train Acc: {:.3f} Eval Loss: {:.3f} Eval Acc: {:.3f} Time(s) {:.4f}".format(epoch, train_loss, train_accuracy, eval_loss, eval_accuracy, t_end))
 
     return model

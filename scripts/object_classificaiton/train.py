@@ -12,22 +12,22 @@ from metrics.speed.latency import inference_latency
 SEED_NUMBER              = 0
 USE_CUDA                 = True
 
-DATASET_NAME             = "ImageNet" # Options: "CIFAR10" "CIFAR100" "TinyImageNet"  "ImageNet"
-NUM_CLASSES              = 1000 # Number of classes in dataset
+DATASET_NAME             = "CIFAR10" # Options: "CIFAR10" "CIFAR100" "TinyImageNet"  "ImageNet"
+NUM_CLASSES              = 10 # Number of classes in dataset
 
 MODEL_CHOICE             = "resnet" # Option:"resnet" "vgg"
-MODEL_VARIANT            = "resnet50" # Common Options: "resnet50" "resnet18" "vgg11" For more options explore files in models to find the different options.
+MODEL_VARIANT            = "resnet18" # Common Options: "resnet50" "resnet18" "vgg11" For more options explore files in models to find the different options.
 
 MODEL_DIR                = "../../models/" + MODEL_CHOICE
-MODEL_SELECTION_FLAG     = 1 # create an untrained model = 0, start from a pytorch trained model = 1, start from a previously saved local model = 2
+MODEL_SELECTION_FLAG     = 0 # create an untrained model = 0, start from a pytorch trained model = 1, start from a previously saved local model = 2
 
 SAVED_MODEL_FILENAME     = MODEL_VARIANT +"_"+DATASET_NAME+str(NUM_CLASSES)+".pt"
 SAVED_MODEL_FILEPATH     = os.path.join(MODEL_DIR, SAVED_MODEL_FILENAME)
 
 TRAINED_MODEL_FILENAME   = MODEL_VARIANT +"_"+DATASET_NAME+str(NUM_CLASSES)+".pt"
 
-NUM_EPOCHS               = 10
-LEARNING_RATE            = 1e-2
+NUM_EPOCHS               = 30
+LEARNING_RATE            = 1e-2 # for imagenet use 1e-5, otherwise 1e-2
 
 def main():
     # Fix seeds to allow for repeatable results 
@@ -54,10 +54,10 @@ def main():
 
     # Evaluate model
     _,eval_accuracy     = top1Accuracy(model=model, test_loader=test_loader, device=device, criterion=None)
-    eval_speed_latency = inference_latency(model=model, device=device, input_size=(1,3,32,32), num_samples=100)
+    # eval_speed_latency = inference_latency(model=model, device=device, test_loader=test_loader)#input_size=(1,3,32,32), num_samples=100)
 
     print("FP32 evaluation accuracy: {:.3f}".format(eval_accuracy))
-    print("FP32 CPU Inference Latency: {:.2f} ms / sample".format(eval_speed_latency * 1000))
+    # print("FP32 CPU Inference Latency: {:.2f} ms / sample".format(eval_speed_latency * 1000))
 
 if __name__ == "__main__":
 

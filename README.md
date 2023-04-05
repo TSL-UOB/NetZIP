@@ -6,15 +6,22 @@ NetZIP is an open-source benchmarking framework, based mainly on PyTorch, for ev
 ![NetZip Overview](readme/NetZIP_overview.png)
 
 ## List of currently supported frameworks:
-Neural Networks (see [methods](methods)) :
-- Object Classification: VGG, ResNet
+Neural Networks (see [models](models)) :
+- Object Classification: 
+	- VGG 
+	- ResNet
 
-- Object Detection: YOLOv5
+- Object Detection: 
+	- YOLOv5
 
 Compression Methods (see [methods](methods)):
-- Pruning: Global Unstructure Pruning Random (GUP_R), Global Unstructure Pruning lowest L1-norm (GUP_L1)
+- Pruning: 
+	- Global Unstructure Pruning Random (GUP_R), 
+	- Global Unstructure Pruning lowest L1-norm (GUP_L1)
 
-- Quantisation: Post Training Quantisation (PTQ), Quantisation Aware Training (QAT)
+- Quantisation: 
+	- Post Training Quantisation (PTQ)
+	- Quantisation Aware Training (QAT)
 
 NetZIP is developed for the community to grow and utilise it. If there are particular neural network frameworks or compression methods that one would like us to add or would like to contribute to the NetZIP repository, please open an issue for your request to be take further. Thanks.
 

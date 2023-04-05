@@ -39,6 +39,7 @@ def PTQ(model, train_loader):
                     for sub_block_name, sub_block in basic_block.named_children():
                         if sub_block_name == "downsample":
                             torch.quantization.fuse_modules(sub_block, [["0", "1"]], inplace=True)
+        print("Model fused")
     except:
         print("Model did not fuse, so continuing without fusing.")
 
