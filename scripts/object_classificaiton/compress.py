@@ -14,13 +14,13 @@ from metrics.speed.latency import inference_latency
 SEED_NUMBER                      = 0
 USE_CUDA                         = True # When doing quantisation set to False as only works with CPU at the moment.
 
-DATASET_NAME                     = "TinyImageNet" # Options: "CIFAR10" "CIFAR100" "TinyImageNet"  "ImageNet"
-NUM_CLASSES                      = 1000 # Number of classes in dataset
+DATASET_NAME                     = "CIFAR10" # Options: "CIFAR10" "CIFAR100" "TinyImageNet"  "ImageNet"
+NUM_CLASSES                      = 10 # Number of classes in dataset
 
-MODEL_CHOICE                     = "vgg"   # Option:"resnet" "vgg"
-MODEL_VARIANT                    = "vgg11" # Common Options: "resnet18" "vgg11" For more options explore files in models to find the different options.
+MODEL_CHOICE                     = "resnet" # Option:"resnet" "vgg"
+MODEL_VARIANT                    = "resnet18" # Common Options: "resnet50" "resnet18" "vgg11" For more options explore files in models to find the different options.
 
-COMPRESSION_TECHNIQUE            = "GUP_R"      # Option: "PTQ" "QAT" "GUP_R" "GUP_L1"
+COMPRESSION_TECHNIQUE            = "GUP_L1"      # Option: "PTQ" "QAT" "GUP_R" "GUP_L1"
 
 MODEL_DIR                        = "../../models/" + MODEL_CHOICE
 

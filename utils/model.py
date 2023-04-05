@@ -53,10 +53,7 @@ def train_model(model, train_loader, test_loader, device, learning_rate=1e-2, nu
 
     model.to(device)
 
-    # It seems that SGD optimizer is better than Adam optimizer for ResNet18 training on CIFAR10.
     optimizer = optim.SGD(model.parameters(), lr=learning_rate, momentum=0.9, weight_decay=1e-5)
-    # optimizer = optim.Adam(model.parameters(), lr=learning_rate, betas=(0.9, 0.999), eps=1e-08, weight_decay=0, amsgrad=False)
-
     
     for epoch in range(num_epochs):
 

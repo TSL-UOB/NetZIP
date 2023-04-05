@@ -1,4 +1,5 @@
 from methods.PTQ import PTQ
+from methods.QAT import QAT
 from methods.GUP import GUP
 
 def compress_model(model, compression_technique, device, train_loader, test_loader="",  learning_rate=1e-3 , num_epochs=10):
