@@ -11,25 +11,35 @@ from utils.results_manager import log
 from metrics.accuracy.topAccuracy import top1Accuracy
 from metrics.speed.latency import inference_latency
 
+import yaml
+import argparse
+parser = argparse.ArgumentParser()                                               
 
-SEED_NUMBER              = 0
-USE_CUDA                 = False
+parser.add_argument("--config_file", "-cf", type=str, required=True)
+args = parser.parse_args()
 
-DATASET_NAME             = "CIFAR10" # Options: "CIFAR10" "CIFAR100" "TinyImageNet"  "ImageNet"
-NUM_CLASSES              = 10 # Number of classes in dataset
+with open(args.config_file, "r") as ymlfile:
+    cfg = yaml.load(ymlfile)
 
-MODEL_CHOICE             = "resnet" # Option:"resnet" "vgg"
-MODEL_VARIANT            = "resnet18" # Common Options: "resnet18" "vgg11" For more options explore files in models to find the different options.
+SEED_NUMBER                     = cfg["SEED_NUMBER"]
 
-MODEL_DIR                = "../../models/" + MODEL_CHOICE
-MODEL_SELECTION_FLAG     = 2 # create an untrained model = 0, start from a pytorch trained model = 1, start from a previously saved local model = 2
+USE_CUDA                        = cfg["USE_CUDA"]
+
+DATASET_NAME                    = cfg["DATASET_NAME"] # Options: "CIFAR10" "CIFAR100" "TinyImageNet"  "ImageNet"
+NUM_CLASSES                     = cfg["NUM_CLASSES"] # Number of classes in dataset
+
+MODEL_CHOICE                    = cfg["MODEL_CHOICE"] # Option:"resnet" "vgg"
+MODEL_VARIANT                   = cfg["MODEL_VARIANT"] # Common Options: "resnet18" "vgg11" For more options explore files in models to find the different options.
+
+MODEL_DIR                       = "../../models/" + MODEL_CHOICE
+MODEL_SELECTION_FLAG            = 2 # create an untrained model = 0, start from a pytorch trained model = 1, start from a previously saved local model = 2
 
 UNCOMPRESSED_MODEL_FILENAME     = MODEL_VARIANT +"_"+DATASET_NAME+str(NUM_CLASSES)+".pt"
 UNCOMPRESSED_MODEL_FILEPATH     = os.path.join(MODEL_DIR, UNCOMPRESSED_MODEL_FILENAME)
 
-COMPRESSION_TECHNIQUES_LIST  = ["GUP_L1", "GUP_R"]#,"PTQ", "QAT"]      # Option: "PTQ" "QAT" "GUP_R" "GUP_L1"
+COMPRESSION_TECHNIQUES_LIST  = cfg["COMPRESSION_TECHNIQUES_LIST"]      # Option: "PTQ" "QAT" "GUP_R" "GUP_L1"
 
-EVALUATION_METRICS_LIST = ["TOP1accuracy", "Latency"] 
+EVALUATION_METRICS_LIST = cfg["EVALUATION_METRICS_LIST"] 
 
 # Option:
 # == Accuracy: "TOP1accuracy" "TOP5accuracy" "mAP" "Precision" "Recall" "F1Score"

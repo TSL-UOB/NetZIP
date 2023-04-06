@@ -11,16 +11,27 @@ from utils. compression import compress_model
 from metrics.accuracy.topAccuracy import top1Accuracy
 from metrics.speed.latency import inference_latency
 
-SEED_NUMBER                      = 0
-USE_CUDA                         = True # When doing quantisation set to False as only works with CPU at the moment.
+import yaml
+import argparse
+parser = argparse.ArgumentParser()                                               
 
-DATASET_NAME                     = "CIFAR10" # Options: "CIFAR10" "CIFAR100" "TinyImageNet"  "ImageNet"
-NUM_CLASSES                      = 10 # Number of classes in dataset
+parser.add_argument("--config_file", "-cf", type=str, required=True)
+args = parser.parse_args()
 
-MODEL_CHOICE                     = "resnet" # Option:"resnet" "vgg"
-MODEL_VARIANT                    = "resnet18" # Common Options: "resnet50" "resnet18" "vgg11" For more options explore files in models to find the different options.
+with open(args.config_file, "r") as ymlfile:
+    cfg = yaml.load(ymlfile)
+        
+SEED_NUMBER                      = cfg["SEED_NUMBER"]
 
-COMPRESSION_TECHNIQUE            = "GUP_L1"      # Option: "PTQ" "QAT" "GUP_R" "GUP_L1"
+USE_CUDA                         = cfg["USE_CUDA"]
+
+DATASET_NAME                     = cfg["DATASET_NAME"] # Options: "CIFAR10" "CIFAR100" "TinyImageNet"  "ImageNet"
+NUM_CLASSES                      = cfg["NUM_CLASSES"] # Number of classes in dataset
+
+MODEL_CHOICE                     = cfg["MODEL_CHOICE"] # Option:"resnet" "vgg"
+MODEL_VARIANT                    = cfg["MODEL_VARIANT"] # Common Options: "resnet18" "vgg11" For more options explore files in models to find the different options.
+
+COMPRESSION_TECHNIQUE            = cfg["COMPRESSION_TECHNIQUE"]      # Option: "PTQ" "QAT" "GUP_R" "GUP_L1"
 
 MODEL_DIR                        = "../../models/" + MODEL_CHOICE
 

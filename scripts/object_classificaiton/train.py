@@ -9,25 +9,36 @@ from utils.model import model_selection, train_model, save_model
 from metrics.accuracy.topAccuracy import top1Accuracy
 from metrics.speed.latency import inference_latency
 
-SEED_NUMBER              = 0
-USE_CUDA                 = True
+import yaml
+import argparse
+parser = argparse.ArgumentParser()                                               
 
-DATASET_NAME             = "CIFAR10" # Options: "CIFAR10" "CIFAR100" "TinyImageNet"  "ImageNet"
-NUM_CLASSES              = 10 # Number of classes in dataset
+parser.add_argument("--config_file", "-cf", type=str, required=True)
+args = parser.parse_args()
 
-MODEL_CHOICE             = "resnet" # Option:"resnet" "vgg"
-MODEL_VARIANT            = "resnet18" # Common Options: "resnet50" "resnet18" "vgg11" For more options explore files in models to find the different options.
+with open(args.config_file, "r") as ymlfile:
+    cfg = yaml.load(ymlfile, yaml.Loader)
 
-MODEL_DIR                = "../../models/" + MODEL_CHOICE
-MODEL_SELECTION_FLAG     = 0 # create an untrained model = 0, start from a pytorch trained model = 1, start from a previously saved local model = 2
+SEED_NUMBER                      = cfg["SEED_NUMBER"]
 
-SAVED_MODEL_FILENAME     = MODEL_VARIANT +"_"+DATASET_NAME+str(NUM_CLASSES)+".pt"
-SAVED_MODEL_FILEPATH     = os.path.join(MODEL_DIR, SAVED_MODEL_FILENAME)
+USE_CUDA                         = cfg["USE_CUDA"]
 
-TRAINED_MODEL_FILENAME   = MODEL_VARIANT +"_"+DATASET_NAME+str(NUM_CLASSES)+".pt"
+DATASET_NAME                     = cfg["DATASET_NAME"] # Options: "CIFAR10" "CIFAR100" "TinyImageNet"  "ImageNet"
+NUM_CLASSES                      = cfg["NUM_CLASSES"] # Number of classes in dataset
 
-NUM_EPOCHS               = 30
-LEARNING_RATE            = 1e-2 # for imagenet use 1e-5, otherwise 1e-2
+MODEL_CHOICE                     = cfg["MODEL_CHOICE"] # Option:"resnet" "vgg"
+MODEL_VARIANT                    = cfg["MODEL_VARIANT"] # Common Options: "resnet18" "vgg11" For more options explore files in models to find the different options.
+
+MODEL_DIR                        = "../../models/" + MODEL_CHOICE
+MODEL_SELECTION_FLAG             = cfg["MODEL_SELECTION_FLAG"] # create an untrained model = 0, start from a pytorch trained model = 1, start from a previously saved local model = 2
+
+SAVED_MODEL_FILENAME             = MODEL_VARIANT +"_"+DATASET_NAME+str(NUM_CLASSES)+".pt"
+SAVED_MODEL_FILEPATH             = os.path.join(MODEL_DIR, SAVED_MODEL_FILENAME)
+
+TRAINED_MODEL_FILENAME           = MODEL_VARIANT +"_"+DATASET_NAME+str(NUM_CLASSES)+".pt"
+
+NUM_EPOCHS                       = cfg["NUM_EPOCHS"]
+LEARNING_RATE                    = cfg["LEARNING_RATE"] # for imagenet use 1e-5, otherwise 1e-2
 
 def main():
     # Fix seeds to allow for repeatable results 

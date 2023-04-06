@@ -34,6 +34,16 @@ NetZIP is developed for the community to grow and utilise it. If there are parti
 Before starting with running experiments, setup datasets through the instructions listed
 [here](readme/preparing_datasets.md).
 
+# Quick Start
+Inside `scripts/object_classification`
+- Train: `python3 train.py -cf "./config/train/example_train.yml"`
+
+- Compress QAT: `python3 compress.py -cf "./config/compress/example_PTQ.yml"`
+
+- Compress GUP_R: `python3 compress.py -cf "./config/compress/example_GUP_R.yml"`
+
+- Compare: `python3 compare.py -cf "./config/compare/example_compare.yml"`
+
 # Running Experiments
 We provide scripts to [train](scripts/object_classificaiton/train.py), [compress](scripts/object_classificaiton/compress.py) and [compare](scripts/object_classificaiton/compare.py) using different metrics reviewed in our paper.
 
