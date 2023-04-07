@@ -38,9 +38,13 @@ Before starting with running experiments, setup datasets through the instruction
 Inside `scripts/object_classification`
 - Train: `python3 train.py -cf "./config/train/example_train.yml"`
 
-- Compress QAT: `python3 compress.py -cf "./config/compress/example_PTQ.yml"`
+- Compress PTQ: `python3 compress.py -cf "./config/compress/example_PTQ.yml"`
+
+- Compress QAT: `python3 compress.py -cf "./config/compress/example_QAT.yml"`
 
 - Compress GUP_R: `python3 compress.py -cf "./config/compress/example_GUP_R.yml"`
+
+- Compress GUP_L1: `python3 compress.py -cf "./config/compress/example_GUP_L1.yml"`
 
 - Compare: `python3 compare.py -cf "./config/compare/example_compare.yml"`
 
