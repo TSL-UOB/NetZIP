@@ -1,0 +1,16 @@
+TOP1accuracy : "%"
+TOP5accuracy : "%"
+mAP          : 
+Precision    :
+Recall       :
+F1Score      :
+
+MemorySize   : "MB"
+RAMutilisation :
+
+Latency         : "ms"
+MAC             : 
+FLOPS           :
+
+Energy           :
+Power            :

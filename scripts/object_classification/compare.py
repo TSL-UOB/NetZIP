@@ -7,7 +7,7 @@ from utils.common import set_random_seeds, set_cuda
 from utils.dataloader import pytorch_dataloader
 from utils.model import model_selection, train_model, save_model
 from utils.evaluation import evaluate_model
-from utils.results_manager import log
+from utils.results_manager import log, plot_results
 from metrics.accuracy.topAccuracy import top1Accuracy
 from metrics.speed.latency import inference_latency
 
@@ -40,6 +40,8 @@ UNCOMPRESSED_MODEL_FILEPATH     = os.path.join(MODEL_DIR, UNCOMPRESSED_MODEL_FIL
 COMPRESSION_TECHNIQUES_LIST  = cfg["COMPRESSION_TECHNIQUES_LIST"]      # Option: "PTQ" "QAT" "GUP_R" "GUP_L1"
 
 EVALUATION_METRICS_LIST = cfg["EVALUATION_METRICS_LIST"] 
+
+output_plots              = cfg["OUTPUT_PLOTS"]
 
 # Option:
 # == Accuracy: "TOP1accuracy" "TOP5accuracy" "mAP" "Precision" "Recall" "F1Score"
@@ -85,6 +87,10 @@ def main():
 
     # Save output log results
     results_log.write_file()
+
+    # Create Plots
+    if output_plots:
+        plot_results(results_log)
 
 
 if __name__ == "__main__":

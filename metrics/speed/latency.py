@@ -27,5 +27,5 @@ def inference_latency(model,device,test_loader,
     elapsed_time = end_time - start_time
     elapsed_time_ave = elapsed_time / num_samples
 
-    return elapsed_time_ave
+    return elapsed_time_ave*1000  # output in ms
     
