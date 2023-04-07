@@ -7,7 +7,7 @@ NUM_CLASSES              : 10 # Number of classes in dataset
 MODEL_CHOICE             : "resnet" # Option:"resnet" "vgg"
 MODEL_VARIANT            : "resnet18" # Common Options: "resnet18" "vgg11" For more options explore files in models to find the different options.
 
-COMPRESSION_TECHNIQUES_LIST  : ["PTQ", "GUP_R"] #,"PTQ", "QAT"]   # Option: "PTQ" "QAT" "GUP_R" "GUP_L1"
+COMPRESSION_TECHNIQUES_LIST  : ["QAT","PTQ", "GUP_R"] #,"PTQ", "QAT"]   # Option: "PTQ" "QAT" "GUP_R" "GUP_L1"
 
 EVALUATION_METRICS_LIST : ["TOP1accuracy", "Latency"] 
 
