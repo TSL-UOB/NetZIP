@@ -7,7 +7,7 @@ from methods.common import QuantizedNN
 from utils.model import train_model
 
 
-def QAT(model, train_loader, test_loader, device, learning_rate=1e-3 , num_epochs=10):
+def QAT(model, train_loader, test_loader, device, learning_rate=1e-5 , num_epochs=10):
     # Move the model to CPU since static quantization does not support CUDA currently.
     cpu_device = torch.device("cpu:0")
     model.to(cpu_device)

@@ -9,3 +9,5 @@ MODEL_VARIANT            : "resnet18" # Common Options: "resnet50" "resnet18" "v
 
 COMPRESSION_TECHNIQUE    : "QAT"      # Option: "PTQ" "QAT" "GUP_R" "GUP_L1"
 
+NUM_EPOCHS               : 5
+LEARNING_RATE            : 1.0e-5 # for imagenet use 1.0e-5, otherwise 1.0e-2

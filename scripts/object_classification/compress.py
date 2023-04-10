@@ -41,6 +41,9 @@ MODEL_TO_BE_COMPRESSED_FILEPATH  = os.path.join(MODEL_DIR, MODEL_TO_BE_COMPRESSE
 COMPRESSED_MODEL_FILENAME        = COMPRESSION_TECHNIQUE+"_"+MODEL_VARIANT +"_"+DATASET_NAME+str(NUM_CLASSES)+".pt"
 COMPRESSED_MODEL_FILEPATH        = os.path.join(MODEL_DIR, COMPRESSED_MODEL_FILENAME)
 
+NUM_EPOCHS                       = cfg["NUM_EPOCHS"]
+LEARNING_RATE                    = cfg["LEARNING_RATE"] # for imagenet use 1e-5, otherwise 1e-2
+
 MODEL_SELECTION_FLAG     = 2 # create an untrained model = 0, start from a pytorch trained model = 1, start from a previously saved local model = 2
 
 
@@ -60,7 +63,7 @@ def main():
     print("Progress: Model has been setup.")
 
     # Compress model
-    compressed_model = compress_model(model, COMPRESSION_TECHNIQUE, device, train_loader, test_loader)
+    compressed_model = compress_model(model, COMPRESSION_TECHNIQUE, device, train_loader, test_loader, learning_rate=LEARNING_RATE , num_epochs=NUM_EPOCHS)
     
     # Save compressed model.
     save_model(model=compressed_model, model_dir=MODEL_DIR, model_filename=COMPRESSED_MODEL_FILENAME)

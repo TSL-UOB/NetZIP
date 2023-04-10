@@ -7,13 +7,13 @@ def compress_model(model, compression_technique, device, train_loader, test_load
         compressed_model = PTQ(model, train_loader)
 
     elif compression_technique == "QAT":
-        compressed_model = QAT(model, train_loader, test_loader, device)
+        compressed_model = QAT(model, train_loader, test_loader, device, learning_rate=learning_rate , num_epochs=num_epochs)
 
     elif compression_technique == "GUP_R":
-        compressed_model = GUP(model, train_loader, test_loader, device, method = "Random", prune_amount=0.75, num_epochs_per_iteration=num_epochs)
+        compressed_model = GUP(model, train_loader, test_loader, device, method = "Random", prune_amount=0.75, num_epochs_per_iteration=num_epochs, learning_rate = learning_rate)
 
     elif compression_technique == "GUP_L1":
-        compressed_model = GUP(model, train_loader, test_loader, device, method = "L1", prune_amount=0.75, num_epochs_per_iteration=num_epochs)
+        compressed_model = GUP(model, train_loader, test_loader, device, method = "L1", prune_amount=0.75, num_epochs_per_iteration=num_epochs, learning_rate = learning_rate)
 
     else:
         raise Exception("ERROR: An unknown compression method was selected.")
