@@ -1,0 +1,10 @@
+modelName ,datasetName, evaluationMetric, compressionTechnique, value_array
+resnet18, CIFAR10, TOP1accuracy, None, 0.826 
+resnet18, CIFAR10, TOP1accuracy, PTQ, 0.822 
+resnet18, CIFAR10, TOP1accuracy, QAT, 0.825 
+resnet18, CIFAR10, Latency, None, 4.982 
+resnet18, CIFAR10, Latency, PTQ, 2.322 
+resnet18, CIFAR10, Latency, QAT, 2.262 
+resnet18, CIFAR10, Size, None, 42.733 
+resnet18, CIFAR10, Size, PTQ, 10.794 
+resnet18, CIFAR10, Size, QAT, 10.794 

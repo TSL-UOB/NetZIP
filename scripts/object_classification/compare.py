@@ -43,11 +43,6 @@ EVALUATION_METRICS_LIST = cfg["EVALUATION_METRICS_LIST"]
 
 output_plots              = cfg["OUTPUT_PLOTS"]
 
-# Option:
-# == Accuracy: "TOP1accuracy" "TOP5accuracy" "mAP" "Precision" "Recall" "F1Score"
-# == Size    : "MemorySize" "RAMutilisation"
-# == Speed   : "Latency" "MAC" "FLOPS"
-# == Energy  : "Energy" "Power"
 
 def main():
     # Fix seeds to allow for repeatable results 
@@ -69,7 +64,8 @@ def main():
         print("====== EVALUATION METRIC: ", evaluation_metric)
         # For Uncompressed model
         print("=== Compression Technique: None - Uncompressed model")
-        value = evaluate_model(uncompressed_model, evaluation_metric, device, test_loader)
+        value = evaluate_model(model=uncompressed_model, evaluation_metric=evaluation_metric, device=device, 
+                                    test_loader=test_loader, model_path =UNCOMPRESSED_MODEL_FILEPATH)
         results_log.append(MODEL_VARIANT, DATASET_NAME, evaluation_metric, "None", value)
         
         # For compressed model
@@ -80,7 +76,8 @@ def main():
             compressed_model = model_selection(model_selection_flag=MODEL_SELECTION_FLAG, model_dir=MODEL_DIR, model_choice=MODEL_CHOICE, model_variant=MODEL_VARIANT, saved_model_filepath=compressed_model_filepath, num_classes=NUM_CLASSES, device=device)
             
             # Evaluate model
-            value = evaluate_model(compressed_model, evaluation_metric, device, test_loader)
+            value = evaluate_model(model=compressed_model, evaluation_metric=evaluation_metric, device=device, 
+                                    test_loader=test_loader, model_path =compressed_model_filepath)
             
             # Log
             results_log.append(MODEL_VARIANT, DATASET_NAME, evaluation_metric, compression_technique, value)

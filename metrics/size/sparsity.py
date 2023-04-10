@@ -31,6 +31,20 @@ def get_module_sparsity(module, weight=True, bias=False):
 
 def get_global_sparsity(model, weight=True, bias=False):
 
+    """
+    Computes model sparsity.
+
+    Args:
+        model  : takes in loaded model.
+        weight : Boolean, if true will include sparsity for weights.
+        bias   : Boolean, if true will include sparsity of bias.
+
+    Returns:
+        num_zeros    : number of zeros
+        num_elements : total number of elements in model.
+        sparsity     : returns sparsity
+    """
+
     num_zeros = 0
     num_elements = 0
 
@@ -40,6 +54,9 @@ def get_global_sparsity(model, weight=True, bias=False):
             num_zeros += module_num_zeros
             num_elements += module_num_elements
 
-    sparsity = num_zeros / num_elements
+    if num_elements == 0:
+        sparsity = float('inf') 
+    else:
+        sparsity = num_zeros / num_elements
 
     return num_zeros, num_elements, sparsity

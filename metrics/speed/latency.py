@@ -3,6 +3,10 @@ import time
 
 def inference_latency(model,device,test_loader,
                     num_samples=1000, num_warmups=10):
+    """
+    Returns inference latency in miliseconds
+    
+    """
     for test_images, test_labels in test_loader:  
         sample_image_size = test_images[0].size()
         input_size = (1,sample_image_size[0], sample_image_size[1], sample_image_size[2])

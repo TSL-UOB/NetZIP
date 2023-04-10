@@ -49,7 +49,10 @@ def plot_results(logs_class):
         compression_techniques = np.array(logs_class.compressionTechnique_array)[idx]
         values = np.array(logs_class.value_array)[idx]
         ax.bar(compression_techniques,values, color = 'k', width = 0.25)
-
+        if metric == "MAC" or metric == "FLOPS" or metric == "CPU_usage":
+            ax.set_yscale('log')
+        else:
+            ax.set_yscale('linear')
         # save plot to logs folder
         fig.tight_layout()
         plt.savefig(logs_class.output_results_folder+"/"+metric+".png")
