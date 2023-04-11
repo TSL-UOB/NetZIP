@@ -4,8 +4,14 @@ import time
 def inference_latency(model,device,test_loader,
                     num_samples=1000, num_warmups=10):
     """
-    Returns inference latency in miliseconds
-    
+    Computes average inference latency over 1000 samples.
+    Args:
+        model        : takes the loaded model.
+        device       : device to load the model.
+        test_loader  : dataset loader
+
+    Returns inference latency in miliseconds.
+
     """
     for test_images, test_labels in test_loader:  
         sample_image_size = test_images[0].size()

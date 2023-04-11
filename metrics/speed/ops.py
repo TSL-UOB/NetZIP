@@ -38,8 +38,7 @@ def flops(model, device, test_loader):
         device       : device to load the model.
         test_loader  : dataset loader
 
-    Returns Gega FLOPS () GFLOPs
-
+    Returns Gega FLOPS (GFLOPs)
     """
     mac, params = macs(model,device,test_loader)  
 

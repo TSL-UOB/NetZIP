@@ -3,7 +3,7 @@ from metrics.speed.latency import inference_latency
 from metrics.speed.ops import macs, flops
 from metrics.size.size import model_size, gpu_mem_usage, cpu_mem_usage, parameters_count 
 from metrics.size.sparsity import get_global_sparsity
-# from metrics.energy import energy
+from metrics.energy.energy import energy
 # import numpy as np
 
 
@@ -52,10 +52,10 @@ def evaluate_model(model, evaluation_metric, device, test_loader="", model_path 
         evaluation_output = flops(model=model, device=device,test_loader=test_loader)
 
     elif evaluation_metric == "Energy":
-        pass 
+        evaluation_output,_ = energy(model=model, device=device,test_loader=test_loader) 
 
     elif evaluation_metric == "Power":
-        pass 
+        _,evaluation_output = energy(model=model, device=device,test_loader=test_loader) 
 
     else:
         raise Exception("ERROR: An unknown evaluation metric was selected.")
