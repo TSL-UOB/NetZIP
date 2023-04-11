@@ -1,4 +1,4 @@
-from metrics.accuracy.topAccuracy import top1Accuracy
+from metrics.accuracy.topAccuracy import top1Accuracy, top5Accuracy
 from metrics.speed.latency import inference_latency
 from metrics.speed.ops import macs, flops
 from metrics.size.size import model_size, gpu_mem_usage, cpu_mem_usage, parameters_count 
@@ -9,9 +9,12 @@ from metrics.energy.energy import energy
 
 def evaluate_model(model, evaluation_metric, device, test_loader="", model_path =""):
     if evaluation_metric == "TOP1accuracy":
-        _ , evaluation_output = top1Accuracy(model=model, test_loader=test_loader, device=device, criterion=None)
+        _ , evaluation_output = top1Accuracy(model=model, test_loader=test_loader, device=device)
         evaluation_output=evaluation_output.item()#np.float(evaluation_output)
         # print("Top1-Accuracy = ", evaluation_output)
+
+    elif evaluation_metric == "TOP5accuracy":
+        evaluation_output = top5Accuracy(model=model, test_loader=test_loader, device=device)
 
     elif evaluation_metric == "mAP":
         pass

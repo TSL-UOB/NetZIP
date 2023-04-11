@@ -31,7 +31,26 @@ def top1Accuracy(model, test_loader, device, criterion=None):
     return eval_loss, eval_accuracy
 
 
-# def top5Accuracy():
-#     """Returns top 5 accuracy
-    
-#     """
+def top5Accuracy(model, test_loader, device):
+
+    model.eval()
+    model.to(device)
+
+    running_corrects = 0
+
+    for inputs, labels in test_loader:
+        
+        inputs = inputs.to(device)
+        labels = labels.to(device)
+        outputs = model(inputs)
+
+        for i, output in enumerate(outputs):
+            result = torch.topk(output,5)
+            top5preds = result.indices
+            label = labels.data[i]
+            if label in top5preds:
+                running_corrects += 1
+
+    eval_accuracy = running_corrects / len(test_loader.dataset)
+
+    return eval_accuracy
