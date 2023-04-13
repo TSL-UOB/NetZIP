@@ -4,7 +4,7 @@ import torch
 
 def macs(model,device,test_loader):
     """
-    Computes Multiply–Accumulate Operation (MAC)
+    Computes Multiply–Accumulate Operations (MACs)
     Args:
         model        : takes the loaded model.
         device       : device to load the model.
@@ -28,7 +28,7 @@ def macs(model,device,test_loader):
 
 def flops(model, device, test_loader):
     """
-    Computes Floating Points Operations (FLOPS)
+    Computes Floating Points Operations (FLOPs)
 
     One MAC contains one multiplication and one addition. 
     One multiplication or one addition can be seen as one FLOP. So one MAC has two FLOPS.

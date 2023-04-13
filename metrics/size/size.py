@@ -2,6 +2,7 @@ import os
 import psutil
 import torch
 import numpy as np
+import torch.nn.quantized as nnq  
 
 def model_size(file_path):
     """
@@ -37,7 +38,7 @@ def cpu_mem_usage():
 
 # from prettytable import PrettyTable
 
-def parameters_count(model):
+def parameters_count(model, count_non_zero_only = True):
     """
     Calculates the number of parameters in a model.
     Args:
@@ -47,16 +48,36 @@ def parameters_count(model):
         Number of parameters.
 
     """
-    # table = PrettyTable(["Modules", "Parameters"])
-    # total_params = 0
-    # for name, parameter in model.named_parameters():
-    #     if not parameter.requires_grad: continue
-    #     params = parameter.numel()
-    #     table.add_row([name, params])
-    #     total_params+=params
-    # print(table)
-    # print(f"Total Trainable Params: {total_params}")
-
-    # Parameters count for quantised models is zero. Could this be due the parameters not being floats, therefore not detected?
+     
+    parameters_count = 0 
     
-    return np.sum([p.numel() for p in model.parameters()]).item()
+    # === Count model parameters
+    for p in model.parameters():
+        if count_non_zero_only:
+            parameters_count += torch.count_nonzero(p) # Only counts non zeros
+        else:
+            parameters_count += p.numel() # Counts zeros or non-zeros 
+        
+    # === Count number of parameters if model is quantised, as the above will output zero for quantised models.
+    for name, mod in model.named_modules():
+        if isinstance(mod, nnq.Conv2d):                              
+            weight, bias = mod._weight_bias()                        
+            # print(name, 'weight', weight, 'bias', bias) 
+            parameters_count += weight.numel()
+            parameters_count += bias.numel()
+
+
+    # === If parmaeters count is in tensor conver to numpy integer
+    try :
+        parameters_count.item()
+    except:
+        pass
+
+    try:
+        parameters_count = np.int(parameters_count)
+    except:
+        pass
+
+
+    # return np.sum([p.numel() for p in model.parameters()]).item()
+    return parameters_count

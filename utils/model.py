@@ -34,12 +34,20 @@ def save_model(model, model_dir, model_filename):
 def model_selection(model_selection_flag=0, model_dir="", model_choice="", model_variant="", saved_model_filepath="",num_classes=1, device=""):
     
     if model_selection_flag == 0:
-        # Create an untrained model.
-        model = create_model(model_dir, model_choice, model_variant, num_classes)
+        if model_choice == "yolo":
+            model = torch.hub.load('ultralytics/yolov5', model_variant, autoshape=False, pretrained=False)  
+        else:
+            # Create an untrained model.
+            model = create_model(model_dir, model_choice, model_variant, num_classes)
+
+
 
     elif model_selection_flag == 1:
-        # Load a pretrained model from Pytorch.
-        model = torch.hub.load('pytorch/vision:v0.10.0', model_variant, pretrained=True)
+        if model_choice == "yolo":
+            model = torch.hub.load('ultralytics/yolov5', model_variant, autoshape=False, pretrained=True)
+        else:
+            # Load a pretrained model from Pytorch.
+            model = torch.hub.load('pytorch/vision:v0.10.0', model_variant, pretrained=True)
     
     elif model_selection_flag == 2:
         try:
