@@ -1,8 +1,8 @@
 SEED_NUMBER              : 0
 USE_CUDA                 : False
 
-DATASET_NAME             : "CIFAR10" # Options: "CIFAR10" "CIFAR100" "TinyImageNet"  "ImageNet"
-NUM_CLASSES              : 10 # Number of classes in dataset
+DATASET_NAME             : "ImageNet" # Options: "CIFAR10" "CIFAR100" "TinyImageNet"  "ImageNet"
+NUM_CLASSES              : 1000 # Number of classes in dataset
 
 MODEL_CHOICE             : "resnet" # Option:"resnet" "vgg"
 MODEL_VARIANT            : "resnet18" # Common Options: "resnet18" "vgg11" For more options explore files in models to find the different options.
