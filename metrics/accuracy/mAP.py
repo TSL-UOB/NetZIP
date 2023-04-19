@@ -13,4 +13,4 @@ def mAP():
     """Returns mean average precision
     
     """
-    mAP = sum(AP)/ N
+    # mAP = sum(AP)/ N
