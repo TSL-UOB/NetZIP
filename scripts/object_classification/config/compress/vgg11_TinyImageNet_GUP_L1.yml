@@ -1,0 +1,13 @@
+SEED_NUMBER              : 0
+USE_CUDA                 : True
+
+DATASET_NAME             : "TinyImageNet" # Options: "CIFAR10" "CIFAR100" "TinyImageNet"  "ImageNet"
+NUM_CLASSES              : 1000 # Number of classes in dataset
+
+MODEL_CHOICE             : "vgg" # Option:"resnet" "vgg"
+MODEL_VARIANT            : "vgg11" # Common Options: "resnet50" "resnet18" "vgg11" For more options explore files in models to find the different options.
+
+COMPRESSION_TECHNIQUE    : "GUP_L1"      # Option: "PTQ" "QAT" "GUP_R" "GUP_L1"
+
+NUM_EPOCHS               : 10
+LEARNING_RATE            : 1.0e-2 # for imagenet use 1.0e-5, otherwise 1.0e-2

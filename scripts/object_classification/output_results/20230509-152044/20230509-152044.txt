@@ -1,0 +1,6 @@
+modelName ,datasetName, evaluationMetric, compressionTechnique, value_array
+resnet18, CIFAR10, FLOPS, None, 0.148 
+resnet18, CIFAR10, FLOPS, PTQ, 0.000 
+resnet18, CIFAR10, FLOPS, QAT, 0.000 
+resnet18, CIFAR10, FLOPS, GUP_R, 0.148 
+resnet18, CIFAR10, FLOPS, GUP_L1, 0.148 

@@ -51,8 +51,19 @@ def plot_results(logs_class):
         ax.bar(compression_techniques,values, color = 'k', width = 0.25)
         if metric == "MAC" or metric == "FLOPS" or metric == "CPU_usage":
             ax.set_yscale('log')
+            if max(values) == 0 or max(values) == float('Inf') or max(values) == float('NaN'):
+                pass #ax.set_ylim([1, None])
+            else:
+                ax.set_ylim([1, max(values)*2])
+        
         else:
+
             ax.set_yscale('linear')
+            if max(values) == 0 or max(values) == float('Inf') or max(values) == float('NaN'):
+                pass #ax.set_ylim([0, None])
+            else:
+                ax.set_ylim([0, max(values)*1.1])
+
         # save plot to logs folder
         fig.tight_layout()
         plt.savefig(logs_class.output_results_folder+"/"+metric+".png")

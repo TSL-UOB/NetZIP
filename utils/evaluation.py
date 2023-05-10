@@ -1,6 +1,6 @@
 from metrics.accuracy.topAccuracy import top1Accuracy, top5Accuracy
 from metrics.speed.latency import inference_latency
-from metrics.speed.ops import macs, flops
+from metrics.speed.ops import ops_counter, macs, flops
 from metrics.size.size import model_size, gpu_mem_usage, cpu_mem_usage, parameters_count 
 from metrics.size.sparsity import get_global_sparsity
 from metrics.energy.energy import energy
@@ -48,8 +48,11 @@ def evaluate_model(model, evaluation_metric, device, test_loader="", model_path 
         evaluation_output = inference_latency(model=model, device=device,test_loader=test_loader)
         # print("CPU Inference Latency: {:.2f} ms / sample".format(evaluation_output))
 
+    elif evaluation_metric == "OPS":
+        evaluation_output = ops_counter(model=model, device=device,test_loader=test_loader)
+
     elif evaluation_metric == "MAC":
-        evaluation_output,_ = macs(model=model, device=device,test_loader=test_loader)
+        evaluation_output = macs(model=model, device=device,test_loader=test_loader)
 
     elif evaluation_metric == "FLOPS":
         evaluation_output = flops(model=model, device=device,test_loader=test_loader)
