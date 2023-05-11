@@ -1,0 +1,5 @@
+Model,Machine,datastet,Library,Compression Strategy,bitwidth,Inference Latency (ms),Model Size (MB),mAP50,mAP95,Precision,Recal,F1 Score,Duration (s),Total Energy (J),Total Energy (kJ),Average Power(W)
+YOLOv5s,Raspberry pi 4 model B,COCO,Pytorch,Pytorch_fp32,FP32,3165.1,29.2,0.566,0.371,0.672,0.52,0.586,15763.70,66311.4,66.3,4.2
+YOLOv5s,Raspberry pi 4 model B,COCO,Tensorflow,Tensorflow_fp32,FP32,1270.3,29.2,0.565,0.371,0.668,0.522,0.586,6505.80,34892.6,34.9,5.4
+YOLOv5s,Raspberry pi 4 model B,COCO,Tensorflow,TF_tflite-fp16,FP16,2288.8,14.6,0.565,0.371,0.668,0.523,0.587,11555.40,44248.4,44.2,3.8
+YOLOv5s,Raspberry pi 4 model B,COCO,Tensorflow,TF_tflite-int8,Int8,1393.3,7.6,0.547,0.336,0.653,0.504,0.569,7090.80,26173.6,26.2,3.7

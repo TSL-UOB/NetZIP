@@ -44,7 +44,8 @@ def plot_results(logs_class):
     for metric in metrics:
         plt.clf()
         fig = plt.figure()
-        ax = fig.add_axes([0.1,0.1,0.8,0.8])
+        plt.rcParams.update({'font.size': 16})
+        ax = fig.add_axes([0.12,0.1,0.84,0.85])#fig.add_axes([0.1,0.1,0.8,0.8])
         idx = np.where(np.array(logs_class.evaluationMetric_array) == metric)[0]
         compression_techniques = np.array(logs_class.compressionTechnique_array)[idx]
         values = np.array(logs_class.value_array)[idx]

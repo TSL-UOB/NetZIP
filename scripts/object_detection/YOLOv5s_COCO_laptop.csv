@@ -1,0 +1,5 @@
+Model,Machine,datastet,Library,Compression Strategy,bitwidth,Inference Latency (ms),Model Size (MB),mAP50,mAP95,Precision,Recal,F1 Score,Duration (s),Total Energy (J),Total Energy (kJ),Average Power(W)
+YOLOv5s,laptop,COCO,Pytroch,Pytorch_fp32,FP32,84.3,29.2,0.565,0.371,0.668,0.522,0.586,467.16,19982.9,20.0,42.8
+YOLOv5s,laptop,COCO,Pytroch,Tensorflow_fp32,FP32,82.6,29.2,0.565,0.371,0.668,0.522,0.586,456.10,20486.6,20.5,44.9
+YOLOv5s,laptop,COCO,Tensorflow,TF_tflite-fp16,FP16,302.9,14.6,0.565,0.371,0.668,0.523,0.587,1539.16,40890.5,40.9,26.6
+YOLOv5s,laptop,COCO,Tensorflow,TF_tflite-int8,Int8,362.1,7.6,0.547,0.335,0.657,0.504,0.57,1911.83,49511.9,49.5,25.9
