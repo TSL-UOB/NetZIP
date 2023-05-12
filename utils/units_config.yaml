@@ -1,0 +1,20 @@
+TOP1accuracy : "Top-1 accuracy (%)"
+TOP5accuracy : "Top-5 accuracy (%)"
+mAP          : "mAP"
+Precision    : "Precision (%)"
+Recall       : "Recall (%)"
+F1Score      : "F1 Score (%)"
+
+Size             : "Disk Size (MB)"
+GPU_usage        : "GPU usage (GB)"
+CPU_usage        : "CPU usage (GB)"
+Parameters_count : "Parameters count"
+Sparsity         : "Sparsity (%)"
+
+Latency         : "Latency (ms)"
+OPS             : "Number of Operations"
+MAC             : "MAC"
+FLOPS           : "FLOPS"
+
+Energy           : "Average Energy (J/prediction)" 
+Power            : "Power (W)"

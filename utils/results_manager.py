@@ -3,6 +3,9 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 
+import yaml
+
+
 class log():
     def __init__(self):
         self.modelName_array               = []
@@ -41,11 +44,15 @@ class log():
 
 def plot_results(logs_class):
     metrics = np.unique(logs_class.evaluationMetric_array)
+
+    with open("../../utils/units_config.yaml", "r") as ymlfile:
+        cfg = yaml.load(ymlfile)
+
     for metric in metrics:
         plt.clf()
         fig = plt.figure()
         plt.rcParams.update({'font.size': 16})
-        ax = fig.add_axes([0.12,0.1,0.84,0.85])#fig.add_axes([0.1,0.1,0.8,0.8])
+        ax = fig.add_axes([0.15,0.14,0.8,0.8])#fig.add_axes([0.1,0.1,0.8,0.8])
         idx = np.where(np.array(logs_class.evaluationMetric_array) == metric)[0]
         compression_techniques = np.array(logs_class.compressionTechnique_array)[idx]
         values = np.array(logs_class.value_array)[idx]
@@ -55,7 +62,7 @@ def plot_results(logs_class):
             if max(values) == 0 or max(values) == float('Inf') or max(values) == float('NaN'):
                 pass #ax.set_ylim([1, None])
             else:
-                ax.set_ylim([1, max(values)*2])
+                ax.set_ylim([1, max(values)*10])
         
         else:
 
@@ -66,5 +73,7 @@ def plot_results(logs_class):
                 ax.set_ylim([0, max(values)*1.1])
 
         # save plot to logs folder
-        fig.tight_layout()
+        # fig.tight_layout()
+        print(cfg[metric])
+        plt.ylabel(cfg[metric])
         plt.savefig(logs_class.output_results_folder+"/"+metric+".png")

@@ -10,7 +10,7 @@ def energy(model, device, test_loader):
         test_loader  : dataset loader
 
     Returns:
-        Energy (J/prediction)
+        Energy (kJ/prediction)
         Power  (W)
 
     """
