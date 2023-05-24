@@ -18,6 +18,7 @@ args = parser.parse_args()
 
 with open(args.config_file, "r") as ymlfile:
     cfg = yaml.load(ymlfile, yaml.Loader)
+    print(cfg)
 
 SEED_NUMBER                      = cfg["SEED_NUMBER"]
 

@@ -1,0 +1,150 @@
+\RequirePackage{etex} %% **************** add this for ARXIV submission
+\documentclass[runningheads,twocolumn,a4paper,10pt]{llncs}
+% \documentclass[runningheads,a4paper]{llncs}
+% \usepackage{threeparttable}
+% \usepackage{hyperref}
+% \usepackage[colorlinks,citecolor=blue]{hyperref}
+% \usepackage{draftwatermark}
+% \usepackage[maxnames=3,firstinits=true,sorting=none,doi=false,url=true,isbn=false]{biblatex}
+% \usepackage[maxnames=6,firstinits=true,doi=false,url=true,isbn=false]{biblatex}
+% \addbibresource{../source/refs.bib}
+
+\usepackage{etex}
+\reserveinserts{28}
+\pdfoutput=1
+\setcounter{tocdepth}{3}
+\usepackage[a4paper, total={7in, 10in}]{geometry}
+% \usepackage[linesnumbered,lined,boxed,commentsnumbered,ruled]{algorithm2e}
+% \renewcommand{\algorithmcfname}{ALGORITHM}
+% \SetAlFnt{\small}
+% \SetAlCapFnt{\small}
+% \SetAlCapNameFnt{\small}
+% \SetAlCapHSkip{0pt}
+% \IncMargin{-\parindent}
+\usepackage{ textcomp }
+\usepackage{ comment }
+\usepackage[color=yellow!60,textsize=footnotesize,obeyDraft,draft]{todonotes}
+\usepackage{colortbl}
+\usepackage{booktabs}
+% \usepackage[pdftex]{graphicx}
+\usepackage{tabularx}
+\usepackage{capt-of}
+\usepackage{makecell}
+\usepackage{multirow}
+\usepackage{listings}
+% \usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage[font=footnotesize,labelfont=bf]{subcaption}
+\usepackage[hidelinks]{hyperref}
+\usepackage[capitalize]{cleveref}
+\captionsetup{compatibility=false}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=newest}
+\pgfplotsset{plot coordinates/math parser=false}
+\usepackage[para,online,flushleft]{threeparttable}
+\usepackage{wasysym}
+\usepackage{amssymb}
+\usetikzlibrary{arrows}
+% \usepackage{subfig}
+\usepackage{breakcites}
+\usepackage{array}
+\usepackage{color}
+\usepackage{balance} %balance columns
+\usepackage{lastpage}
+\hyphenation{op-tical net-works semi-conduc-tor}
+\usepackage{dblfloatfix}
+\usepackage{authblk}
+% \usepackage[disable]{todonotes}
+\usepackage{siunitx}
+\usepackage{xurl} %for long URLs
+\usepackage[shortlabels]{enumitem}
+\usepackage{soul}
+% \usepackage[dvipsnames]{xcolor}
+\usepackage{xcolor,listings}
+\usepackage{relsize}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+% for caption at top of table
+\usepackage{float}
+\floatstyle{plaintop}
+\restylefloat{table}
+\setcounter{secnumdepth}{3}
+\lstset{upquote=true}
+
+% Packages for drawing
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows,calc}
+\tikzstyle{startstop} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, draw=black, fill=none]
+\tikzstyle{io} = [trapezium, trapezium left angle=70, trapezium right angle=110, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=blue!30]
+\tikzstyle{process} = [rectangle, minimum width=3.5cm, minimum height=1cm, text centered, draw=black, fill=orange!0]
+\tikzstyle{neuron} = [circle, minimum size=3cm, text centered, draw=black, fill=orange!0]
+\tikzstyle{decision} = [diamond, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=green!30]
+\tikzstyle{arrow} = [thick,->,>=stealth]
+
+
+\usepackage[maxnames=6,firstinits=true,doi=false,url=true,isbn=false]{biblatex}
+\addbibresource{netzip_arxiv.bib}
+
+\def \assumptionSGDfirst {1}
+\def \assumptionEWCfirst {2}
+\def \assumptionEWCsecond {3}
+
+\pagenumbering{arabic}
+
+
+\begin{document} 
+
+% \title{Towards a Measure of Trustworthiness to Evaluate CNNs During Operation}
+\title{Evaluation Metrics for CNNs Compression}%A Measure of Trustworthiness to Evaluate CNNs Predictions}
+\titlerunning{Evaluation Metrics for CNNs Compression}
+\authorrunning{Ghobrial et al.}
+
+\author{Abanoub Ghobrial\inst{1}, Dieter Balemans\inst{2}, Hamid Asgari\inst{3}, Phil Reiter\inst{2}, Kerstin Eder\inst{1}}
+
+\institute{University of Bristol, Bristol, UK \and University of Antwerp, Antwerp, Belgium \and Thales, Reading, UK}
+\tocauthor{Authors' Instructions}
+
+\maketitle
+% \let\thefootnote\relax\footnotetext{
+% Abanoub Ghobrial (e-mail: abanoub.ghobrial@bristol.ac.uk), 
+% and 
+% Kerstin Eder (e-mail: kerstin.eder@bristol.ac.uk) 
+% are with the Trustworthy Systems Lab, Department of Computer Science, University of Bristol, Merchant Ventures Building, Woodland Road, Bristol, BS8 1UB, United Kingdom.
+% %
+% Dieter Balemans (e-mail:) and Phil Reiter (e-mail:) 
+% %
+% Hamid Asgari (e-mail: hamid.asgari@uk.thalesgroup.com) 
+% is with Technology and Innovation Research,Thales, Reading, United Kingdom.}
+
+%
+\makeatletter
+\renewcommand\subsubsection{\@startsection{subsubsection}{3}{\z@}%
+                       {-18\p@ \@plus -4\p@ \@minus -4\p@}%
+                       {4\p@ \@plus 2\p@ \@minus 2\p@}%
+                       {\normalfont\normalsize\bfseries\boldmath
+                        \rightskip=\z@ \@plus 8em\pretolerance=10000 }}
+\makeatother
+
+\textbf{\textit{Abstract}--\input{source/abstract.tex}}
+
+% ***************************************************
+%  Main Body
+% ***************************************************
+\input{source/body.tex}
+% \balance
+
+% ***************************************************
+%  Bib
+% ***************************************************
+\printbibliography
+
+% ***************************************************
+%  Appendix
+% ***************************************************
+
+\end{document}
+% \grid

@@ -9,5 +9,5 @@ MODEL_VARIANT            : "vgg11" # Common Options: "resnet50" "resnet18" "vgg1
 
 MODEL_SELECTION_FLAG     : 1 # create an untrained model = 0, start from a pytorch trained model = 1, start from a previously saved local model = 2
 
-NUM_EPOCHS               : 200
+NUM_EPOCHS               : 100
 LEARNING_RATE            : 1.0e-2 # for imagenet use 1.0e-5, otherwise 1.0e-2
