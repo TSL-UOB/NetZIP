@@ -1,0 +1,11 @@
+modelName ,datasetName, evaluationMetric, compressionTechnique, value_array
+resnet18, CIFAR10, MAC, None, 37069564.000 
+resnet18, CIFAR10, MAC, PTQ, 37023232.000 
+resnet18, CIFAR10, MAC, QAT, 37023232.000 
+resnet18, CIFAR10, MAC, GUP_R, 37069564.000 
+resnet18, CIFAR10, MAC, GUP_L1, 37069564.000 
+resnet18, CIFAR10, CHATS, None, 0.000 
+resnet18, CIFAR10, CHATS, PTQ, 0.000 
+resnet18, CIFAR10, CHATS, QAT, 0.000 
+resnet18, CIFAR10, CHATS, GUP_R, 0.000 
+resnet18, CIFAR10, CHATS, GUP_L1, 0.000 

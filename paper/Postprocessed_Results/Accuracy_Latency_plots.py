@@ -12,36 +12,36 @@ s = [48, 134, 391, 203, 193]
 
 max_ram = 64 # GB
 
-None_df = pd.DataFrame({'Latency':    [25],
-                   'Accuracy':        [90],
-                   'Disk_size':       [100],
-                   'RAM_usage':       [50/max_ram],
-                   'cpu_utilisation': [0.7]})
+None_df = pd.DataFrame({'Latency':    [14],
+                   'Accuracy':        [70.3],
+                   'Disk_size':       [44.7],
+                   'RAM_usage':       [2.48/max_ram],
+                   'cpu_utilisation': [0.496]})
 
-PTQ_df = pd.DataFrame({'Latency':    [15],
-                   'Accuracy':        [70],
-                   'Disk_size':       [25],
-                   'RAM_usage':       [50/max_ram],
-                   'cpu_utilisation': [0.1]})
+PTQ_df = pd.DataFrame({'Latency':    [7],
+                   'Accuracy':        [70.1],
+                   'Disk_size':       [11.3],
+                   'RAM_usage':       [2.52/max_ram],
+                   'cpu_utilisation': [0.491]})
 
-QAT_df = pd.DataFrame({'Latency':    [15],
-                   'Accuracy':        [90],
-                   'Disk_size':       [25],
-                   'RAM_usage':       [50/max_ram],
-                   'cpu_utilisation': [0.1]})
+QAT_df = pd.DataFrame({'Latency':    [7],
+                   'Accuracy':        [69.6],
+                   'Disk_size':       [11.3],
+                   'RAM_usage':       [2.51/max_ram],
+                   'cpu_utilisation': [0.491]})
 
 
-GUP_R_df = pd.DataFrame({'Latency':    [25],
-                   'Accuracy':        [70],
-                   'Disk_size':       [100],
-                   'RAM_usage':       [50/max_ram],
-                   'cpu_utilisation': [0.2]})
+GUP_R_df = pd.DataFrame({'Latency':    [15],
+                   'Accuracy':        [50.8],
+                   'Disk_size':       [44.7],
+                   'RAM_usage':       [2.51/max_ram],
+                   'cpu_utilisation': [0.496]})
 
-GUP_L1_df = pd.DataFrame({'Latency':    [25],
-                   'Accuracy':        [85],
-                   'Disk_size':       [100],
-                   'RAM_usage':       [50/max_ram],
-                   'cpu_utilisation': [0.5]})
+GUP_L1_df = pd.DataFrame({'Latency':    [14],
+                   'Accuracy':        [66.6],
+                   'Disk_size':       [44.7],
+                   'RAM_usage':       [2.46/max_ram],
+                   'cpu_utilisation': [0.496]})
 
 # print(None_df.cpu_utilisation[0])
 fig, ax = plt.subplots()
