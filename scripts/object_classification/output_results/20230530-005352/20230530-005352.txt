@@ -1,0 +1,11 @@
+modelName ,datasetName, evaluationMetric, compressionTechnique, value_array
+resnet18, CIFAR10, CPU_usage, None, 47.210 
+resnet18, CIFAR10, CPU_usage, PTQ, 37.214 
+resnet18, CIFAR10, CPU_usage, QAT, 37.192 
+resnet18, CIFAR10, CPU_usage, GUP_R, 47.636 
+resnet18, CIFAR10, CPU_usage, GUP_L1, 47.635 
+resnet18, CIFAR10, RAM_usage, None, 2.304 
+resnet18, CIFAR10, RAM_usage, PTQ, 2.311 
+resnet18, CIFAR10, RAM_usage, QAT, 2.312 
+resnet18, CIFAR10, RAM_usage, GUP_R, 2.309 
+resnet18, CIFAR10, RAM_usage, GUP_L1, 2.317 

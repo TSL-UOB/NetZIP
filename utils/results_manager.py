@@ -57,7 +57,7 @@ def plot_results(logs_class):
         compression_techniques = np.array(logs_class.compressionTechnique_array)[idx]
         values = np.array(logs_class.value_array)[idx]
         ax.bar(compression_techniques,values, color = 'k', width = 0.25)
-        if metric == "MAC" or metric == "FLOPS" or metric == "CPU_usage":
+        if metric == "MAC" or metric == "FLOPS":
             ax.set_yscale('log')
             if max(values) == 0 or max(values) == float('Inf') or max(values) == float('NaN'):
                 pass #ax.set_ylim([1, None])

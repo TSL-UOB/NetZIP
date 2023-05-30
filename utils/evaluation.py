@@ -1,13 +1,14 @@
 from metrics.accuracy.topAccuracy import top1Accuracy, top5Accuracy
 from metrics.speed.latency import inference_latency
 from metrics.speed.ops import ops_counter, macs, flops
-from metrics.size.size import model_size, gpu_mem_usage, cpu_mem_usage, parameters_count 
+from metrics.speed.chats import chats
+from metrics.size.size import model_size, gpu_utilisation, cpu_utilisation, ram_usage, parameters_count 
 from metrics.size.sparsity import get_global_sparsity
 from metrics.energy.energy import energy
 # import numpy as np
 
 
-def evaluate_model(model, evaluation_metric, device, test_loader="", model_path =""):
+def evaluate_model(model, evaluation_metric, device, test_loader, model_path , initial_machine_status):
     if evaluation_metric == "TOP1accuracy":
         _ , evaluation_output = top1Accuracy(model=model, test_loader=test_loader, device=device)
         evaluation_output=evaluation_output.item()#np.float(evaluation_output)
@@ -32,10 +33,13 @@ def evaluate_model(model, evaluation_metric, device, test_loader="", model_path 
         evaluation_output = model_size(model_path) 
 
     elif evaluation_metric == "GPU_usage":
-        evaluation_output = gpu_mem_usage() 
+        evaluation_output = gpu_utilisation(model=model, device=device,test_loader=test_loader, initial_machine_status=initial_machine_status) 
 
     elif evaluation_metric == "CPU_usage":
-        evaluation_output, _ = cpu_mem_usage() 
+        evaluation_output = cpu_utilisation(model=model, device=device,test_loader=test_loader, initial_machine_status=initial_machine_status) 
+
+    elif evaluation_metric == "RAM_usage":
+        evaluation_output = ram_usage(model=model, device=device,test_loader=test_loader, initial_machine_status=initial_machine_status) 
 
     elif evaluation_metric == "Parameters_count":
         evaluation_output = parameters_count(model)
@@ -56,6 +60,9 @@ def evaluate_model(model, evaluation_metric, device, test_loader="", model_path 
 
     elif evaluation_metric == "FLOPS":
         evaluation_output = flops(model=model, device=device,test_loader=test_loader)
+
+    elif evaluation_metric == "CHATS":
+        evaluation_output = chats(model=model, device=device,test_loader=test_loader)
 
     elif evaluation_metric == "Energy":
         evaluation_output,_ = energy(model=model, device=device,test_loader=test_loader) 

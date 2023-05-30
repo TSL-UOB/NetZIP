@@ -3,6 +3,21 @@ import sys
 
 sys.path.append('../../')
 
+
+import psutil
+import torch
+vram  = psutil.virtual_memory()
+initial_ram_usage_gegabytes = (vram.total - vram.available)   / 1024 ** 3
+
+initial_cpu_utilistation_percentage = psutil.cpu_percent(5) # Measruing insitial CPU utilisation over 5 seconds.
+
+initial_gpu_utilisation_gegabytes = torch.cuda.max_memory_allocated() / 1024 ** 3
+
+initial_machine_status_df= {'ram_usage': initial_ram_usage_gegabytes,
+                               'CPU_utilisation': initial_cpu_utilistation_percentage,
+                               'GPU_utilisation': initial_gpu_utilisation_gegabytes}
+
+
 from utils.common import set_random_seeds, set_cuda
 from utils.dataloader import pytorch_dataloader
 from utils.model import model_selection, train_model, save_model
@@ -65,7 +80,7 @@ def main():
         # For Uncompressed model
         print("=== Compression Technique: None - Uncompressed model")
         value = evaluate_model(model=uncompressed_model, evaluation_metric=evaluation_metric, device=device, 
-                                    test_loader=test_loader, model_path =UNCOMPRESSED_MODEL_FILEPATH)
+                                    test_loader=test_loader, model_path =UNCOMPRESSED_MODEL_FILEPATH, initial_machine_status=initial_machine_status_df)
         results_log.append(MODEL_VARIANT, DATASET_NAME, evaluation_metric, "None", value)
         
         # For compressed model
@@ -77,7 +92,7 @@ def main():
             
             # Evaluate model
             value = evaluate_model(model=compressed_model, evaluation_metric=evaluation_metric, device=device, 
-                                    test_loader=test_loader, model_path =compressed_model_filepath)
+                                    test_loader=test_loader, model_path =compressed_model_filepath, initial_machine_status=initial_machine_status_df)
             
             # Log
             results_log.append(MODEL_VARIANT, DATASET_NAME, evaluation_metric, compression_technique, value)

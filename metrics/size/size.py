@@ -16,25 +16,105 @@ def model_size(file_path):
     file_stats = os.stat(file_path)
     return file_stats.st_size / (1024 * 1024)
 
-def gpu_mem_usage():
+def gpu_utilisation():
     """
     Returns the GPU memory usage in gega bytes(GB).
     """
     mem_usage_bytes = torch.cuda.max_memory_allocated()
     return mem_usage_bytes / 1024 ** 3
 
-def cpu_mem_usage():
+def cpu_utilisation(model, device,test_loader, initial_machine_status):
+    """
+    Returns the CPU utilisation in gega bytes(GB).
+    """
+    
+    # == Measure before utilsiation before inference.
+    utilisation_before = initial_machine_status['CPU_utilisation']
+    
+    # == Measure utilistion during inference.
+    num_samples=10000
+    num_warmups=1000
+
+    utilisation_during = 0
+
+    for test_images, test_labels in test_loader:  
+        sample_image_size = test_images[0].size()
+        input_size = (1,sample_image_size[0], sample_image_size[1], sample_image_size[2])
+        break
+    
+    model.to(device)
+    model.eval()
+
+    x = torch.rand(size=input_size).to(device)
+
+    with torch.no_grad():
+        for _ in range(num_warmups):
+            _ = model(x)
+    torch.cuda.synchronize()
+
+    with torch.no_grad():
+        psutil.cpu_percent(interval=0, percpu=False) # Running command which should be the reference meaurement for next time the command is called.
+        for _ in range(num_samples):
+            _ = model(x)
+            torch.cuda.synchronize()
+            
+            # Measure utilsiation
+            utilisation_during += psutil.cpu_percent(interval=0, percpu=False)
+
+    utilisation_during = utilisation_during/num_samples
+
+    # == Subtract to get utilisation due to inference
+    cpu_utilisation_by_model = utilisation_during - utilisation_before
+    print("cpu_utilisation_by_model = ",cpu_utilisation_by_model)
+    return cpu_utilisation_by_model
+
+
+def ram_usage(model, device,test_loader,initial_machine_status):
     """
     Compute the system memory (RAM) usage for the current device (GB).
     Returns:
         usage (float): used memory (GB).
         total (float): total memory (GB).
     """
-    vram = psutil.virtual_memory()
-    usage = (vram.total - vram.available) / 1024 ** 3
-    total = vram.total / 1024 ** 3
 
-    return usage, total
+    # == Measure before utilsiation before inference.
+    usage_before = initial_machine_status['ram_usage']
+    
+    # == Measure utilistion during inference.
+    num_samples=10000
+    num_warmups=1000
+
+    usage_during = 0
+
+    for test_images, test_labels in test_loader:  
+        sample_image_size = test_images[0].size()
+        input_size = (1,sample_image_size[0], sample_image_size[1], sample_image_size[2])
+        break
+    
+    model.to(device)
+    model.eval()
+
+    x = torch.rand(size=input_size).to(device)
+
+    with torch.no_grad():
+        for _ in range(num_warmups):
+            _ = model(x)
+    torch.cuda.synchronize()
+
+    with torch.no_grad():
+        # start_time = time.time()
+        for _ in range(num_samples):
+            _ = model(x)
+            torch.cuda.synchronize()
+            
+            # Measure utilsiation
+            vram  = psutil.virtual_memory()
+            usage_during = max(usage_during,((vram.total - vram.available) / 1024 ** 3))
+
+    # == Subtract to get utilisation due to inference
+    ram_usage_by_model = usage_during - usage_before
+
+    return ram_usage_by_model
 
 # from prettytable import PrettyTable
 
