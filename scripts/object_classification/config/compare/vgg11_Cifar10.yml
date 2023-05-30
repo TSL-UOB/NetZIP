@@ -1,0 +1,20 @@
+SEED_NUMBER              : 0
+USE_CUDA                 : False
+
+DATASET_NAME             : "CIFAR10" # Options: "CIFAR10" "CIFAR100" "TinyImageNet"  "ImageNet"
+NUM_CLASSES              : 10 # Number of classes in dataset
+
+MODEL_CHOICE             : "vgg" # Option:"resnet" "vgg"
+MODEL_VARIANT            : "vgg11" # Common Options: "resnet18" "vgg11" For more options explore files in models to find the different options.
+
+COMPRESSION_TECHNIQUES_LIST  : ["PTQ", "QAT", "GUP_R", GUP_L1]  # Option: "PTQ" "QAT" "GUP_R" "GUP_L1"
+
+EVALUATION_METRICS_LIST : ["TOP1accuracy", "Latency", "MAC", "CHATS", "Size", "Parameters_count", "CPU_usage", "RAM_usage", "Sparsity", "Energy", "Power"] 
+
+OUTPUT_PLOTS            : True
+
+# Metrics Options:
+# == Accuracy: "TOP1accuracy" "TOP5accuracy" "mAP" "Precision" "Recall" "F1Score"
+# == Size    : "Size", "GPU_usage", "CPU_usage", "Parameters_count", Sparsity
+# == Speed   : "Latency" "MAC" "FLOPS"
+# == Energy  : "Energy" "Power"
