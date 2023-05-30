@@ -9,7 +9,7 @@ MODEL_VARIANT            : "resnet18" # Common Options: "resnet18" "vgg11" For m
 
 COMPRESSION_TECHNIQUES_LIST  : ["PTQ", "QAT", "GUP_R", GUP_L1]  # Option: "PTQ" "QAT" "GUP_R" "GUP_L1"
 
-EVALUATION_METRICS_LIST : ["TOP1accuracy","TOP5accuracy", "Latency", "Size",  "GPU_usage", "CPU_usage", "Parameters_count", "Sparsity", "OPS", "MAC", "FLOPS", "Energy", "Power"] 
+EVALUATION_METRICS_LIST : ["TOP1accuracy", "Latency", "MAC",  "CHATS", "Size", "Parameters_count", "Sparsity", "RAM_usage", "CPU_usage", "Energy", "Power"] 
 
 OUTPUT_PLOTS            : True
 

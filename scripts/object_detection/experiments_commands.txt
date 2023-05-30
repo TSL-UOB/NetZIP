@@ -11,9 +11,9 @@ TFlite int8                                     : python3 models/yolov5/export.p
 
 ==== Validating YOLO 
 
-pytorch fp32                                    : python3 val_YOLO_COCO_energy.py --weights models/yolov5/yolov5s.pt --data COCO.yaml --img 640
+pytorch fp32                                    : python3 val_YOLO_COCO_energy.py --weights ../../models/yolov5/yolov5s.pt --data COCO.yaml --img 640
 
-Tensorflow fp32                                 : python3 val_YOLO_COCO_energy.py --weights models/yolov5/yolov5s_saved_model --data COCO.yaml --img 640
+Tensorflow fp32                                 : python3 val_YOLO_COCO_energy.py --weights ../../models/yolov5/yolov5s_saved_model --data COCO.yaml --img 640
 
 TFlite fp16                                     : python3 val_YOLO_COCO_energy.py --weights ../../models/yolov5/yolov5s-fp16.tflite --data COCO.yaml --img 640
 
