@@ -1,18 +1,18 @@
 \section{Introduction}
 
 % == The Challenge -> to raise importance for CNNs compression.
-State-of-the-art Convolutional Neural Networks (CNNs) are becoming the go-to solution in computer vision for automated systems operating in complex high dimensional domains. 
+State-of-the-art Deep Neural Networks (DNNs) are becoming the go-to solution in computer vision for automated systems operating in complex high dimensional domains. 
 %
-Achieving high accuracy of CNN models during training usually come at the expense of overparameterizing the model~\cite{Neill2020}.
+Achieving high accuracy of DNN models during training usually come at the expense of overparameterizing the model~\cite{Neill2020}.
 %
-This results in well performing CNNs that are oversized. 
+This results in well performing DNNs that are oversized. 
 %
-Being oversized hinders the deployment of CNN models on low-resource computers as well as having an unnecessary large carbon footprint during operation.
+Being oversized hinders the deployment of DNN models on low-size weight and power (SWaP) edge devices, as well as having an unnecessary large carbon footprint during operation.
 %
 These issues are expected to get worse as the complexity of operational environments increase and thus the models will consequently need to be larger, making the deployment even more challenging~\cite{Marino2023, Brown2020}.  
 
 % == Introduce Deep Neural Network Compression
-A work around could be to take an adaptability approach, where a smaller model is trained on a subset of the operational environment and then one relies on adapting the model depending on shifts in the environment e.g.~\cite{Ghobrial2022, mirza2022norm}.
+A possible solution is to take an adaptive approach, where a smaller model is trained on a subset of the operational environment and then adapted depending on shifts in the environment e.g.~\cite{Ghobrial2022, mirza2022norm}.
 %
 These approaches present their own questions regarding information forgetting, resource requirements and energy consumption.
 %
@@ -20,13 +20,13 @@ Also, whilst this may assist with the problem of needing to increase the model s
 % increasing operational envionrnments deploying models on to low resource computers.
 the neural network will still be oversized compared to the amount of information retained at one time. 
 
-Therefore, \textit{neural network compression} has recently seen a surge in its research outputs, as compression offers significant reduction in size and energy consumption whilst retaining more or less the same overall accuracy performance and improving the speed of predictions. 
+Therefore, \textit{neural network compression} has recently seen a surge in its research outputs, as compression offers significant reduction in size and energy consumption whilst aiming to retain the same overall accuracy performance and improving the speed of predictions. 
 %
 % == Brief overview on existing CNN compression techniques. Highlight on Quantisation and Pruning if adequate.
 There are many compression techniques in the literature that fall under one of these compression categories: pruning, quantisation, knowledge distillation and tensor decomposition. These different categories are nicely discussed in these two reviews \cite{Neill2020}\cite{Marino2023}.
 %
 % == Elaborate on the need for standardisation between these techniques.
-With all of the effort being put in developing different compression techniques, yet the community seems to lack a standardised way of evaluating different compression techniques.
+Most research efforts has focused on developing compression techniques but the community seems to lack a standardised way of evaluation between different compression techniques.
 
   
 % Goal of NEtzip is standardising evaluation of DNN Quantisation. Netzip also facilitates the usage of ShrinkBench is a standardisation library for pruning methods, which allows users to compare between pruning and quantisation techniques.  
@@ -38,20 +38,24 @@ With all of the effort being put in developing different compression techniques,
 % \subsection{Motivation}
 
 % Why is it important to standardise?
-Based on a recent review, most of the introduced methods in the literature available do not compare their introduced compression techniques with existing techniques and where comparisons are made they tend to vary between different publications~\cite{Blalock2020}.
+Based on a recent review, most of the methods in the literature do not compare their compression techniques with existing techniques and where comparisons are made they tend to vary between different publications~\cite{Blalock2020}.
 %
-This is largely due to the lack of standardised implementations of metrics, neural networks, compression techniques. 
+This is largely due to the lack of standardised implementation of metrics, neural networks, and compression techniques. 
 %
 In this paper, we focus predominantly on the metrics aspect.
 %
-The contributions of this paper are two folds: 
-\begin{enumerate}
-    \item Provide a review of evaluation metrics used to assess compression techniques. 
-    \item Using the reviewed evaluation metrics, we introduce NetZIP, a growing standardized benchmark library for comparing compression techniques available at \url{https://github.com/TSL-UOB/NetZIP}. NetZIP is aimed to help users identify the most suitable compression technique for their trained neural network using several baseline compression techniques, and also serve to compare newly developed compression techniques against others.%some standard compression techniques and CNNs. 
-\end{enumerate}
+The contributions of this paper are three folds: 
+% \begin{enumerate}
+    % \item 
+    1) Provide a review of evaluation metrics used to assess compression techniques. 
+    % \item 
+    2) Identify gaps in evaluation metrics and contribute metrics to fill these gaps.
+    % \item 
+    3) Using the reviewed and our developed evaluation metrics, we introduce NetZIP, a growing standardized benchmark library for comparing compression techniques available at \url{https://github.com/TSL-UOB/NetZIP}. NetZIP is aimed to help users identify the most suitable compression technique for their trained neural network using several baseline compression techniques, and also serve to compare newly developed compression techniques against others.%some standard compression techniques and CNNs. 
+% \end{enumerate}
 %
 
-The paper is organised as follows, in section~\ref{sec:background} we overview compression methods and existing compression benches. We provide our review of evaluation metrics in section~\ref{sec:metrics}. Section~\ref{sec:NetZIP_overview} introduces NetZIP and section~\ref{sec:casestudies} showcases comparisons made using NetZIP. Conclusions and futures work are provided in section~\ref{sec:Conclusions}.
+The paper is organised as follows, in section~\ref{sec:background} we overview compression methods and existing compression benches. We provide our review of evaluation metrics and our novel metrics in section~\ref{sec:metrics}. Section~\ref{sec:NetZIP_overview} introduces NetZIP and section~\ref{sec:casestudies} showcases comparisons made using NetZIP. Conclusions and futures work are provided in section~\ref{sec:Conclusions}.
 
 \begin{figure*}
     \centering
@@ -114,23 +118,23 @@ The paper is organised as follows, in section~\ref{sec:background} we overview c
 % \section{Definitions (~0.5 pages)}
 
 
-\section{Background} \label{sec:background}
+\section{Background and Related Work} \label{sec:background}
 
 % \begin{figure*}
 %     \centering
-%     \includegraphics[width=1\textwidth]{other/figures/metrics.pdf}{}
+%     \includegraphics[width=1\textwidth]{figures/metrics.pdf}{}
 %     \caption{Metrics}
 %     \label{fig:metrics}
 % \end{figure*}
 
-In this section we cover a high-level overview of compression methods and we discuss existing compression benches.% and how NetZIP compliments and extends existing works.
+In this section we cover a high-level overview of compression methods and we discuss existing compression benchmarks.% and how NetZIP compliments and extends existing works.
 
 \subsection{Compression Methods Overview}
-Following Neill et.al.~\cite{Neill2020} and Marino et.al.~\cite{Marino2023} overviews, compression techniques are broken into four categories shown in Figure~\ref{fig:compression_methods} and briefly explained below:
+Following Neill et.al.~\cite{Neill2020} and Marino et.al.~\cite{Marino2023} overviews, compression techniques can be broken into four categories shown in Figure~\ref{fig:compression_methods} and briefly explained below:
 \begin{enumerate}
     \item \textit{Pruning:} Requires the scanning and removing of neurons and connections that does not have a significant influence on the output prediction of the neural network.
 
-    \item \textit{Quantisation:} Aims at reducing the numerical representation of values in a neural network model, for example by converting values expressed in a neural network from single-precision 32-bit floating point (FP32) numbers to 8-bit integers (INT8).
+    \item \textit{Quantisation:} Aims at reducing the numerical representation of values in a neural network model, for example by converting values expressed in a neural network from single-precision 32-bit floating point (FP32) numbers to 8-bit integers (INT8) or even to binarised neural networks~\cite{BNNs,TNNs}.
 
     \item \textit{Knowledge Distillation:} Trains a large neural network (teacher model) on a dataset. Then a smaller neural network (student model) is trained on the same dataset whilst guided by the teacher model through transfer learning techniques to help the student model optimise achieving similar accuracy as the teacher model.
 
@@ -159,8 +163,8 @@ Following Neill et.al.~\cite{Neill2020} and Marino et.al.~\cite{Marino2023} over
 % ===================================
 
 
-\subsection{Compression Benches}
-Creating benches for standardising neural network compression is currently a growing area of research. %
+\subsection{Compression Benchmarks}
+Creating benchmarks for standardising neural network compression is currently a growing area of research. %
 %
 Microsoft Neural Network Intelligence (Microsoft NNI)~\cite{nni2021} is an open-source toolkit that helps users automate the optimization of deep learning models. It supports different deep learning frameworks mainly PyTorch and TensorFlow, allowing users to easily run experiments for optimising their models. 
 %
@@ -168,25 +172,34 @@ One of the core parts of Microsoft NNI toolkit is model compression. They provid
 %
 However, the toolkit does not dive into standardisation nor provides a comprehensive set of metrics for standardising the evaluation of neural network compression.
 
-Blalock et.al.\cite{Blalock2020} tried to solve the lack of neural network compression standardisation in the community by analysing a large number of literature and generated a catalog of common issues in comparisons of compression techniques.
+Blalock et.al.\cite{Blalock2020} tried to solve the lack of neural network compression standardisation in the community for pruning methods by analysing a large number of literature and generated a catalog of common issues in comparisons between pruning algorithms.
 %
-This was summarised into a set of best practices to mitigate these issues. Using these best practices they implemented ShrinkBench, a standardised library for comparing between neural network pruning methods. 
+This was summarised into a set of best practices to mitigate these issues. Using these best practices they implemented ShrinkBench, a standardised library for pruning neural networks. 
 %
 % In summary these best practices are summarised here: 1) start from the same initial model 2) Compare accuracy and theoretical speed up for the same compression ratio, as different compression ratios may result in which compression technique is best....  
 %
-We take into account the best practices summarised by Blalock et.al.\cite{Blalock2020} when carrying out our experiments using NetZIP. 
+For NetZIP, we focus on evaluation to give a holistic view showing the pros and cons between different compression categories and algorithms. 
 %
-NetZIP is also a standardised compression bench but aimed at providing a comprehensive set of metrics for evaluating deep neural networks compression techniques. The need for such a tool standardising metrics for compression as been pointed out implicitly by Blalock et.al. 
+We chose to create NetZIP independently instead of extending ShrinkBench with our suite of metrics, as it was more effort efficient to build NetZIP to be lenient to accept different compression methods and focused on evaluation, rather than reconstructing ShrinkBench to allow it to accept different compression categories other than pruning. 
+%
+We take into account the best practices summarised by Blalock et.al.\cite{Blalock2020} when carrying out our experiments using NetZIP, as many of their best practices are applicable regardless of the compression method.
+%
+% NetZIP is also a standardised compression benchmark but aimed at providing a comprehensive set of metrics for evaluating deep neural networks compression techniques. The need for such a tool standardising metrics for compression as been pointed out implicitly by Blalock et.al.\cite{Blalock2020}. 
 
-Facebook research provides some relevant evaluation metrics for neural networks as part of their \textit{Slowfast}~\cite{fan2020pyslowfast} repository implementation. Whilst the metrics provided are not comprehensive for compression methods evaluation, yet it has provided some insight in the course of development of our paper.
+Facebook research provides some relevant evaluation metrics for neural networks as part of their \textit{Slowfast}~\cite{fan2020pyslowfast} repository implementation. Whilst the metrics provided are not comprehensive for compression methods evaluation, it has provided some insight in the course of development of our paper.
 
-An issue relevant to the context of our paper is the difficulty in generalising the removal of zeroed parameters from different pruned neural network architectures. For example, current implementations of pruning in PyTorch sets a value of zero to the pruned parameters but does not automatically remove the zeros from the network structure. This is because removing structural parameters from a neural network can result in malfunctioning of the network and generated errors. 
+An issue relevant to the context of our paper is the difficulty in generalising the removal of zeroed parameters from different pruned neural network architectures. For example, current implementations of pruning in PyTorch sets a value of zero to the pruned parameters but do not automatically remove the zeros from the network structure. 
 %
-Hence, removing the zeroed parameters currently rely on manually designing case-dependent schemes that do not generalize to different neural network architectures. 
+% This is because removing structural parameters from a neural network can result in malfunctioning of the network and generated errors. 
+% %
+% Hence, removing the zeroed parameters currently rely on manually designing case-dependent schemes that do not generalize to different neural network architectures. 
+% %
+% Developing a method for generalising and automating the removal of these parameters is beyond the scope of our paper. 
+% % but we use the sparsity level to provide an evaluation of the compression in size as will be discussed later in the paper. Removing the zeroed parameters is case-dependent, 
 %
-Developing a method for generalising and automating the removal of these parameters is beyond the scope of our paper. 
-% but we use the sparsity level to provide an evaluation of the compression in size as will be discussed later in the paper. Removing the zeroed parameters is case-dependent, 
-We direct interested readers towards DeGraph~\cite{fang2023depgraph} which aims at generalising the the approach of removing pruned parameters invariant of the architecture. 
+This is because most network operations are large matrix multiplications, which have been efficiently implemented in software to perform operations on fully connected graphs. Therefore removing connections, will often require custom software, unless done in a software aware way. This problem lies outside the scope of this work.  
+%
+We direct interested readers towards DepGraph~\cite{fang2023depgraph} which aims at generalising the the approach of removing pruned parameters invariant of the architecture. 
 %
 
 
@@ -215,66 +228,89 @@ We direct interested readers towards DeGraph~\cite{fang2023depgraph} which aims 
 
 
 \section{Metrics}\label{sec:metrics}
-In this section we overview different assessment metrics that serve the evaluation of networks models and compression techniques. For each metric we discuss how it can be computed and the information it provides for assessment. We break the evaluation metrics into five categories: Accuracy, Size, Speed, Energy and Other; each category has different evaluation metrics (see Table~\ref{tab:metrics_summary}).
+In this section we overview different assessment metrics that serve the evaluation of DNN models and compression techniques. For each metric we discuss how it can be computed and the information it provides for assessment. We break the evaluation metrics into five categories: Accuracy, Size, Speed, Energy, and Combined Measures.%; each category has different evaluation metrics (see Table~\ref{tab:metrics_summary}).
 
-\setlength{\arrayrulewidth}{0.1mm}
-\setlength{\tabcolsep}{2pt}
-\renewcommand{\arraystretch}{1.75}
-\begin{table*}[]
-    \centering
-    \begin{tabular}{| c | l l l l l |} 
-        \hline
-        Category &  & & Metrics & &  \\
-        % \multicolumn{5}{1}{Metrics} \vline \\
-        \hline
-        Accuracy & Top-k Accuracy &  Precision & Recall & F1-Score & Mean Average Precision \\ 
-        Size     & Disk Size &  Parameters Count & CPU usage & GPU usage &  \\  
-        Speed    & Inference Latency &  Number of Operations & MACs & FLOPs &   \\ 
-        Energy   & Power &  Energy &  &  &  \\ 
-        Other    & Compression Ratio & Speedup Ratio &  Efficiency Ratio &  & \\ 
-        \hline
-    \end{tabular}
-    \caption{Metrics Summary}
-    \label{tab:metrics_summary}
-\end{table*}
+% \setlength{\arrayrulewidth}{0.1mm}
+% \setlength{\tabcolsep}{2pt}
+% \renewcommand{\arraystretch}{1.75}
+% \begin{table*}[]
+%     \centering
+%     \begin{tabular}{| c | l l l l l |} 
+%         \hline
+%         Category &  &  & Metrics &  &    \\
+%         \hline
+%         Accuracy & Top-k Accuracy &  Precision & Recall & F1-Score & mAP \\ 
+%         Size     & Disk Size &  Parameters Count & CPU usage & GPU usage &  \\  
+%         Speed    & Inference Latency &  Number of Operations & MACs & FLOPs &   \\ 
+%         Energy   & Power &  Energy &  &  &  \\ 
+%         Combined Measures    & Compression Ratio & Speedup Ratio &  Efficiency Ratio &  & \\ 
+%         \hline
+%     \end{tabular}
+%     \caption{Metrics Summary}
+%     \label{tab:metrics_summary}
+% \end{table*}
 
 \subsection{Accuracy}
-\subsubsection{Top-k Accuracy}
-Top-k accuracy is used to measure the accuracy of a model.%, often used in the context of object classification.
+In this section we discuss different metrics for measuring accuracy for both object classification and object detection.
 %
-Top-k accuracy shows the proportion of test samples for which the most likely $k$ predicted class labels match the ground truth class label, where $k \in \{1, ...,  K\}$ and $K$ is the max number of classes in the model being evaluated.
+We use true positives (TP) to refer to predictions that agree with ground truth; false positives (FP) for predictions which are considered false; and false negatives (FN) for ground truth annotations that were not detected.
+%
+In the context of object classifications, TPs are counted by simply matching the predicted label with the ground truth label. 
+%
+In object detection, a given bounding box is considered TP if the intersection over union (IoU), which is the ratio of overlap between a detected box and ground truth, is over a certain threshold.
+
+% \subsubsection{Classification}
+% Top-k accuracy measures the proportion of samples where the ground truth class is contained in the top-k predictions of a model~\cite{petersen2022differentiable}. Higher k is used when the number of classes is large and there are understandable confusions between some classes. 
+\subsubsection{Top-k Accuracy}
+% Top-k accuracy is used to measure the accuracy of a model.%, often used in the context of object classification.
+%
+Measures the proportion of samples where the ground truth class is contained in the top-k predictions of a model~\cite{petersen2022differentiable}, 
+%
+% Top-k accuracy shows the proportion of test samples for which the most likely $k$ predicted class labels match the ground truth class label
+where $k \in \{1, ...,  K\}$ and $K$ is the max number of classes in the model being evaluated.
 %
 Two commonly used values for $k$ are 1 and 5. Top-1 accuracy in this case will only consider a prediction correct if it matches the ground truth label, whilst Top-5 accuracy will consider a prediction correct if one of the top 5 predictions of the model output matches the ground truth label. 
-
-Top-k accuracy, for $k>1$, can be particularly useful where the model has a large number of classes, with several classes being similar to each other. 
+%
+Top-k accuracy, for $k>1$, can be particularly useful where the model has a large number of classes, with several classes being similar to each other or where understandable confusions exist between some classes. %between them. 
 %
 In this case it may be challenging for the model to accurately predict the correct class, but for example a prediction amongst the top three possibilities may still be helpful.
 
+
+
+
+
+% Detection:
+% * IoU: For detection a given bounding box is considered true if the IoU (the measure of ratio of overlap between a detected box and ground truth) is over a certain threshold (normally 0.5).
+% * TP: Detections which are considered true. 
+% * FP - Detections which are considered false.
+% *FN - Ground truth that was not detected.
+% * Precision - the portion of detections that are TPs. [equation]
+% * Recall - the portion of ground truth that were detected [ equation]
+% * F1 Score - [ keep yours]
+% * MaP - [keep yours]
+
+% I question your choice of F1 score - i.e. picking a single threshold, it does not give a fair caparison and could lead to misleading results if a compression technique is threshold sensitive. I appreciate you may not have time to change this.
+
+
+
 \subsubsection{Precision}
-Precision is a measure of the accuracy of the predictions output by a model, which aims at conveying how many of the predictions are accurate out all predictions. 
+% Precision is a measure of the accuracy of the predictions output by a model, which aims at conveying how many of the predictions are accurate out of all predictions. 
 %
-In other words, precision is the fraction of predictions that are true positives (TP), i.e. correctly identified objects out of all the predictions made by the model, including both true positives and false positives (FP),i.e. objects incorrectly identified (see equation~\ref{eq:precision}).
+% In other words, 
+Is the the portion of predictions that are TPs, see equation~\ref{eq:precision}. 
 %
-In the context of object classifications TP and FP are counted by simply matching the predicted label with the ground truth label. 
-%
-In object detection the intersection over union (IoU) is calculated as the ratio of overlap between the ground truth annotations and the output predictions. If the IoU passes a certain chosen threshold, then the prediction is counted as TP. 
+% In object detection, given a bounding box the intersection over union (IoU) is calculated as the ratio of overlap between the ground truth annotations and the output predictions. If the IoU passes a certain chosen threshold, then the prediction is counted as TP. 
 \begin{equation}
   Precision =   \frac{TP}{TP+FP}
   \label{eq:precision}
 \end{equation}
 
-
-% \begin{equation}
-%     AP = \frac{1}{N} \sum_{i=1}^{N} AP_i
-% \end{equation}
-
-% \begin{equation}
-%     mAP = \frac{1}{N} \sum_{i=1}^{N} AP_i
-% \end{equation}
-
-\subsubsection{Recall} On the other hand, \textit{recall} is a measure that expresses the rate of a model getting correct predictions.
-% Is a measure of how well a model is able to identify all instances of a particular object class within an image or a set of images. 
-Specifically, recall is the fraction of true positive predictions, out of all present instances in the test sample  i.e. true positives + false negatives (FN), see equation~\ref{eq:recall}.
+\subsubsection{Recall} Is the portion of ground truth annotations that were predicted by the model, see equation~\ref{eq:recall}.
+% is a measure that expresses the rate of a model getting correct predictions.
+% Is a measure of how well a model is able to identify all instances of a particular object class within an image or a set of images.
+%
+% Specifically, recall is the fraction of true positive predictions, out of all present instances in the test sample  i.e. true positives + false negatives (FN), see equation~\ref{eq:recall}.
+%
 % Recall is an important measure in object detection, as it helps to ensure that a model is not missing any instances of a particular object class. However, it should be used in conjunction with other metrics, such as precision and mean average precision (mAP), to provide a more complete evaluation of the performance of an object detection model.
 
 \begin{equation}
@@ -282,92 +318,109 @@ Specifically, recall is the fraction of true positive predictions, out of all pr
   \label{eq:recall}
 \end{equation}
 
-\subsubsection{F1 Score}
-The F1 score is a metric that combines both precision and recall into a single metric. The F1 score is the harmonic mean of precision and recall, given by equation~\ref{F1_score}.
+\subsubsection{F1 Score} Is a metric that combines both precision and recall into a single metric. The F1 score is the harmonic mean of precision and recall, given by equation~\ref{F1_score}.
 %
-The F1 score provides a way to balance the trade-off between precision and recall, as both measures are important for different aspects of model performance. A high F1 score indicates that a model has both high precision and high recall, meaning that it is able to correctly identify a high percentage of positive instances whilst also minimizing the number of false positives.
+The F1 score provides a way to balance the trade-off between precision and recall, as both measures are important for different aspects of model performance. A high F1 score indicates that a model has both high precision and high recall%, meaning that it is able to correctly identify a high percentage of positive instances whilst also minimizing the number of false positives.
 
 \begin{equation}
   \text{F1 Score} =   \frac{2 \cdot \text{Precision} \cdot \text{Recall}}{\text{Precision} + \text{Recall}}
   \label{F1_score}
 \end{equation}
 
-\subsubsection{Mean average precision (mAP)}
-Mean average precision (mAP) is a metric that takes into account both precision and recall of a model. 
+\subsubsection{Mean average precision (mAP)} Is a metric that takes into account both precision and recall of a model. 
 %
 The metric is calculated by summing the average precision ($AP$) of each class $k$ over the number of classes $K$, as shown by equation~\ref{eq:mAP}.  
 % of the the mean of the different average precision for different classes as shown by equation~\ref{eq:mAP}
+%
+The AP of each class is calculated by plotting precision for different recall values and calculating the area under the curve (AUC)\footnote{To plot the precision-recall graph an IoU threshold needs to be selected. In the case where an optimal IoU threshold is not selected or unknown, then the AUC can be calculated for several IoU thresholds and averaged to give an AP representative of a range of IoU thresholds.}.
+%
+Compared to F1 score, mAP is more sensitive to imbalances in the number of training samples between different classes, whilst the F1 score is insensitive to these imbalances in training samples. On the other hand mAP is more expensive to compute compared to the F1 score.
+%
+% When the model is at the stage of training, mAP is a more informative metric to use in assessing the performance of the model on different prediction classes. 
+% %
+% However, in comparing between compression techniques the F1 score may be a more efficient metric for carrying out an initial assessment to identify best compression techniques. Dependent on application, analysis using mAP may still be useful.
 
 \begin{equation}
     mAP = \frac{1}{K} \sum_{k=1}^{k=K} AP_k
     \label{eq:mAP}
 \end{equation}
-The AP of each class is calculated by plotting precision for different recall values and calculating the area under the curve (AUC). To plot the precision-recall graph an intersection over union (IoU) threshold needs to be selected. In the case where an optimal IoU threshold is not selected or unknown, then the AUC can be calculated for several IoU thresholds and averaged to give an AP representative of a range of IoU thresholds.  
-
-Compared to F1 Score, mAP is more sensitive to imbalances in the number of training samples between different classes, whilst the F1-score is insensitive to these imbalances in training samples. On the other hand mAP is more expensive to compute compared to the F1 Score.
-%
-When the model is at the stage of training, mAP is a more informative metric to use in assessing the performance of the model on different prediction classes. 
-%
-However, in comparing between compression techniques the F1 score may be a more efficient metric for carrying out an initial assessment to identify best compression techniques. A thorough analysis using mAP may still be required dependent on the application context.
-
-
-% This shows that the AP metric is dependent on the IoU threshold. Choosing the IoU threshold becomes an arbitrary process for the researcher as it needs to be carefully chosen for each task as the model's accuracy expectation may vary. Hence, to avoid this ambiguity while evaluating an object detection model, the mean average precision(mAP) came into existence.
-%
-% The metric is calculated by computing the precision for different levels of recall, by varying the threshold for how confident a model needs to be in order to consider a prediction as positive. The area under the curve (AUC) for the precision-recall curve plot is computed.
-%
-% The mAP is the average of the area under the curve  values for each class
-
-% is then plotted, and the area under the curve (AUC) is calculated. The mAP is the average of the AUC values for each class of object being detected. A high mAP indicates a model that produces accurate and reliable predictions across a range of recall levels, and is often used to compare the performance of different object detection models.
-
-% In the context of compression, the model being compressed is usually trained to there may be less emphasis on training balance  
-% The mAP for object detection is the average of the AP calculated for all the classes. mAP@0.5 means that it is the mAP calculated at IOU threshold 0.5... %usefull link -> %https://www.kdnuggets.com/2020/08/metrics-evaluate-deep-learning-object-detectors.html
-
-% The difference between mAP and F1 score is that the F1 score is a single value that provides an overall evaluation of the balance between precision and recall in a classification task, while mAP is a more detailed evaluation metric that is used in object detection tasks to measure the accuracy of detection for different object classes.
 
 \subsection{Speed}
-\subsubsection{Inference Latency}
-Is the time taken for the model to output its prediction of the input. 
+\subsubsection{Inference Latency} Is the time taken for the model to output its prediction. 
 %
-Whilst latency may give the most practical real-time value for operation speed estimates and machine specific comparisons, it is affected by resource utilisation of the machine at the time of measurement. 
+Whilst inference latency may give the most practical real-time value for operational speed estimates and machine specific comparisons, it is affected by resource utilisation at the time of measurement. 
 %
-This makes the measured time variant to the level of resource utilisation, thus may be less informative about the benefit of compression in some cases, especially if experiments are run on different machines or at different times where the level of resource utilisation may vary. 
+This makes the measured inference latency variant to the level of resource utilisation, thus can be less informative about the benefit of compression in some cases. Especially if experiments are run on different machines or at different times where the level of resource utilisation may vary. 
 %
-This is analogous to an issue of variance in generated test results caused by resource utilisation changes in simulation based testing~\cite{determinisim}.
-%
-In cases where the resource utilisation is known to have significant variations, one may resort to counting the number of operations or analysing the different proportions of numerical representation in the model after compression to deduce signs of speed improvement.%, analysing the different portions of numerical representation in the model, or observing the reduction in disk size after compression to deduce signs of speed improvement. 
-%
-These other metrics may be useful when comparing between different compression algorithms within the same category of compression (e.g. pruning only or quantisation only) but may suffer from providing useful information when comparing between different compression categories. 
-%
-This is discussed further below, however, during carrying out our experimentation, we found that controlling the resource utilisation and using inference latency as a metric is the best way to quantitatively compare improvements in speed between different compression categories.
-
-% or comparisons are being made between compression techniques ran on different machines, one may resort to counting the number of operations or  
+This is analogous to an issue in simulation based testing, where variances in results for the same test can vary significantly due to resource utilisation changes~\cite{determinisim}.
+% %
+% In cases where the resource utilisation is known to have significant variations, one may resort to counting the number of operations or analysing the different proportions of numerical representation in the model after compression to deduce signs of speed improvement.
+% %
+% These other metrics may be useful when comparing between different compression algorithms within the same category of compression (e.g. pruning only or quantisation only) but may suffer from providing useful information when comparing between different compression categories. 
+% %
+% This is discussed further below, however, during carrying out our experimentation, we found that controlling the resource utilisation and using inference latency as a metric is the best way to quantitatively compare improvements in speed between different compression categories.
 
 
-% a more informative measure to report improvement on speed can be %MACs or FLOPs, which effectively 
-% to count the number of operations undertaken to output a prediction as a measure of speed, discussed in more detail below. 
+\subsubsection{Number of Operations (OPs)}
+The number of operations (OPs) required to process a given input, can provide a hardware agnostic measure of the improvement in speed gained by a compression method.
+%
+It does not provide any information for quantization as this family of compression does not reduce the number of OPs, just the amount of hardware needed to carry out a given operation~\cite{Budgett2022}. 
+%
+% If a given quantisation is supported by the hardware for most neural network operations the hardware requirement scales as the square of the number of bits. 
+%
+Floating point operations (FLOPs) are often referred to in literature instead of OPs due to most neural network processing being done with floating point operations. However, here to generalise between floating point and quantised operations we will use OPs.
+%
+Furthermore, most operations in a neural network are multiply-accumulator operations (MACs), which contain one multiplication and one addition operations. Therefore a neural network typically has half the MACs compared to OPs. Given that MACs refer to the majority of neural network operations and some hardware are tuned to processing MACs, this measure is often used instead of OPs.  
 
 
-\subsubsection{Number of Operations}
-Computing the total number of operations for a neural network to output a prediction can be another way of measuring the improvement in speed gained by compression. 
-%
-This is especially useful when carrying out experiments on different machines or if resource utilisation varies between different experiments run on the same machine. 
-%
-For quantisation techniques, however, only the numerical representation type changes in the neural network but the number of parameters stay the same in the model. 
-%
-Even though quantisation does provide improvement in speed, calculating the number of operations may not provide any insight of that, as the number of operations count will be the same pre- and post-compression. 
-%
-For other compression techniques like pruning for example where parameters are removed from the model, measuring the number of operations can be an insightful metric for evaluating speed improvements.
+% ====================================
 
-Floating-Point Operations (FLOPs) is a popular metric in measuring the speed improvement in compression literature especially for pruning. FLOPs only takes into account floating points operations. 
+% Computing the total number of operations for a neural network to output a prediction can be another way of measuring the improvement in speed gained by compression. 
+% %
+% This is especially useful when carrying out experiments on different machines or if resource utilisation varies between different experiments run on the same machine. 
+% %
+% For quantisation techniques, however, only the numerical representation type changes in the neural network but the number of parameters stay the same in the model. 
+% %
+% Even though quantisation does provide improvement in speed, calculating the number of operations may not provide any insight of that, as the number of operations count will be the same pre- and post-compression. 
+% %
+% For other compression techniques like pruning for example where parameters are removed from the model, measuring the number of operations can be an insightful metric for evaluating speed improvements.
+
+% Floating-Point Operations (FLOPs) is a popular metric in measuring the speed improvement in compression literature especially for pruning. FLOPs only takes into account floating points operations. 
 %
-Therefore, for quantisation techniques where the parameters are not of type float, not all operations will be counted. This may convey inaccurate estimations of speed improvements when comparing between quantisation and pruning techniques. Nevertheless, observing proportions of different types of numerical representations may give insights of speed improvements.  
+% Therefore, for quantisation techniques where the parameters are not of type float, not all operations will be counted. This may convey inaccurate estimations of speed improvements when comparing between quantisation and pruning techniques. Nevertheless, observing proportions of different types of numerical representations may give insights of speed improvements.  
+
+% Multiply-Accumulator Operations (MACs) is another commonly used metric to count operations that involve all types of numerical representations i.e. not only floats. There are not any obvious advantages, as far as we are aware, of using MACs over the total number of operations referred to earlier. Perhaps the main strength of using MACs is its popularity over total number of operations. One MAC is defined as containing one multiplication and one addition operations, therefore MACs can be calculated as the total number of operations divided by two. 
+
+\subsubsection{Compression and Hardware Agnostic Theoretical Speed (CHATS)}
+Given the current limitations of previously discussed speed metrics, relating to poor generalisation between compression techniques and sensitivity to resource utilisation variances, we introduce the \textit{CHATS} metric.
 %
-% Yet measuring if there any floating points operations existing in a quantised model may give indicative signs of speed improvements for quantisation, as noticed in the experimental case studies section discussed later. 
+CHATS aims at providing a theoretical speed quantity that is agnostic to the compression technique, and simultaneously not affected by the resource utilisation levels of hardware.
 %
-% From this observation, an interesting area of research is to find if there can be an analytical or empirical correlations between speed improvements and proportions of different numerical representation types involved in a compressed neural network.  
+The metric succeeds in providing such theoretical speed by combining OPs with the bit width representation used by the model, see equation~\ref{eq:CHATS}.
+
+The number of binary digits to be processed scales as the square of the bit width for multiplication, whilst for addition it scales linearly with the bit width. 
+%
+In DNNs, where both multiplication and addition may exist, the actual reduction in processing binary digits as a result of reducing the bit width will scale somewhere between the square of the bit width and linearly with the bit width. 
+%
+Leading GPU developers such as NVIDIA, often report improvements in theoretical speeds as a linear relationship with bit width e.g.~\cite{NVIDIA_TURING_GPU_ARCHITECTURE_2018}.  
+%
+Similarly, we also adopt a linear relationship with bit width when calculating CHATS. We introduce a hardware specific constant, $\zeta$, when calculating the speedup ratio for CHATS (see section~\ref{combined_measures}) to act as a scaling coefficient dependent on the hardware. 
+%
+For example, for results of NVIDIA Turing Tensor Cores hardware shown in~\cite{NVIDIA_TURING_GPU_ARCHITECTURE_2018}, the speedup ratio scales linearly with the bit width and hardware constant $\zeta = 4$. 
+
+Furthermore, as technology of DNNs tailored hardware advances to prioritise efficiency, where multiplication operations dominate~ e.g.~\cite{Budgett2022}, we may find that CHATS scales as the square of the bit width. Investigating this further remains as future work. 
 
 
-Multiply-Accumulator Operations (MACs) is another commonly used metric to count operations that involve all types of numerical representations i.e. not only floats. There are not any obvious advantages, as far as we are aware, of using MACs over the total number of operations referred to earlier. Perhaps the main strength of using MACs is its popularity over total number of operations. One MAC is defined as containing one multiplication and one addition operations, therefore MACs can be calculated as the total number of operations divided by two. 
+
+% For tailored hardware to the bit width, we speculate that this relationship scale as the square of the bit width instead.
+ 
+%
+% Based on empirical results provided by Budgett and deWard~\cite{Budgett2022}, they report that the square of the bit width gives roughly the hardware scaling required. 
+
+\begin{equation}
+    CHATS = OPs \cdot bit width
+    \label{eq:CHATS}
+\end{equation}
 
 \subsection{Size}
 \subsubsection{Disk size}
@@ -385,25 +438,60 @@ Another way of measuring the size of the model is by counting the number of para
 %
 The usefulness of parameters count will fall short when it comes to quantisation techniques, where the number of parameters stay the same but the numerical representation changes.
 In these cases using the disk size as a metric to compare between compression techniques can be a more informative measure than parameters count.
-
+%
 Nevertheless parameters count can be of great use at early stage assessment of pruning techniques.
 %
 In many of the popular pruning libraries implementations e.g. PyTorch~\cite{paszke2017automatic}, typically the pruned parameters are zeroed but not removed from the model.
 %
-This is due to errors likely to occur when structural parameters are removed in pruning. Removing the zeroed parameters from the architecture is currently an active area of research e.g.~\cite{fang2023depgraph}, as currently removing the pruned parameters is a manual and custom process reliant on the model architecture. 
-
+% This is due to errors likely to occur when structural parameters are removed in pruning. Removing the zeroed parameters from the architecture is currently an active area of research e.g.~\cite{fang2023depgraph}, as currently removing the pruned parameters is a manual and custom process reliant on the model architecture. 
+%
 Therefore, non-zeroed parameters count can serve to show how much reduction in disk size will be achieved using different pruning techniques, prior to committing to the manual process of removing pruned parameters. 
 %
 Furthermore, the proportion of the uncompressed model parameters which are zeros after compression is known as \textit{sparsity}.
 % ratio of zeroed parameters over the tota metric derivative of parameters count showing what 
 % Note: Due to errors likely to occur when structural parameters are removed inp pruning as discussed earlier in our related work section, we use the sparsity in the neural network to measure the size/compression ratio.
 
-\subsubsection{CPU/GPU usage}
-Measuring the reduction in computational resources used by the model to output a prediction is another important factor to assess when investigating the trade-offs between different compression techniques.
+
+% \subsubsection{Space and Resource Theroitcial Size (SARTS)}
+% Params . bit . 
+
+\subsubsection{CPU/GPU utilisation}
+
+When CPU is not running a program, it is \textit{idle}. The running total (RT) is the total time the CPU spent on running programs i.e. not being idle, through out the switched on time of the computer. 
 %
-This becomes of interest in applications where onboard processing resources are limited and critical to the survival of the system. 
+The CPU utilisation is the percentage of time the CPU is not idle, calculated by subtracting two samples of RT and dividing by the time between taking the two samples.
 %
+Figure~\ref{fig:cpu_utilisation_illustration}, shows an illustration for CPU switching between running a program and being idle. If sample measurements are taken every five seconds, then the CPU utilisation for the initial 5s was 60\% then dropped to 40\%. 
 %
+GPU utilisation will take  a similar approach of measuring time spent on processing requests against idle time to calculate utilisation. 
+%
+In terms of how CPU and GPU utilisation can be measured practically, \texttt{psutil} \cite{psutil2019} and \texttt{nvidia-smi}~\cite{NVIDIA_SMI} are popular libraries that provide these measurements.
+
+Measuring the reduction in computational resources used by the model to output a prediction is an important factor to assess when investigating the trade-offs between different compression techniques.
+%
+When taking measurements for utilisation, other programs should be terminated and only the model outputting predictions should be the running process. In most computers, however, there are many background processes that need to run for the computer to operate. 
+%
+In which case, the best estimate is to subtract the utilisation measurement before and during making predictions.
+
+\begin{figure*}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{other/figures/CPU_utilisation_diagram_v1.pdf}
+    \caption{Illustration of CPU switching between running a process and being idle.}
+    \label{fig:cpu_utilisation_illustration}
+\end{figure*}
+
+\subsubsection{RAM usage}
+RAM (Random Access Memory) usage in inference is a measure of paramount importance to report. 
+%
+Knowing how much reduction in RAM usage is achieved by different compression techniques can be advantageous in determining specifications of hardware needed for a model to operate on SWaP devices.
+%
+Libraries such as \texttt{psutil} \cite{psutil2019} can be used to determined RAM usage.
+%
+Similar to CPU utilisation, when taking measurements of RAM usage, other programs should be terminated other than the inference model. 
+% Also subtracting RAM usage before inference from usage during inference give the best estimate 
+%
+% In which case, the best estimate is to subtract the utilisation measurement before and during making predictions.
+
 % Measuring CPU and even GPU useage can be achevied ....
 
 % ========================
@@ -421,7 +509,6 @@ This becomes of interest in applications where onboard processing resources are 
 
 % \subsubsection{Storage size}
 % To measure the size of the stored file we use the built-in python library os function {\tt os.path.getsize()}.
-
 
 
 
@@ -456,29 +543,32 @@ A more generic  way is to use power measurement tools that can connect between t
 %
 This way of measuring energy is more informative for applications requiring energy budgeting. 
 
-\begin{figure}[h]
+\begin{figure*}[h]
     \centering
-    \includegraphics[width=0.49\textwidth]{other/figures/energy_measurment_schematic.pdf}
+    \includegraphics[width=0.6\textwidth]{other/figures/energy_measurment_schematic.pdf}
     \caption{Illustration of energy measurement from fine (left plot) and coarse (right plot) power reading intervals.}
     \label{fig:energy_illustration}
-\end{figure}
+\end{figure*}
 
-\subsection{Other}
-We use this section to capture derived metrics from the aforementioned metrics and discuss potential future metrics that can benefit the evaluation of compression techniques. 
-
-\subsubsection{Improvement Ratio}
+\subsection{Combined Measures} \label{combined_measures}
+We use this section to capture derived metrics from the aforementioned metrics.% and discuss potential future metrics that can benefit the evaluation of compression techniques. 
+%
+% \subsubsection{Improvement Ratio}
 It is often that improvement ratio provided by a compression technique is reported in the literature ~\cite{He2018,Blalock2018,Menghani2023}. Two popular improvement ratios are \textit{compression ratio} and \textit{(theoretical) speedup ratio}.
 %, given by equations \ref{compression_ratio} and \ref{speedup_ratio} respectively.
 %
-The speedup ratio refers to the reduction in computation time that can be achieved by using a compressed model, relative to the original uncompressed model. Typically calculated as a ratio between the computation time of the uncompressed model and the computation time of the compressed model (see Equation~\ref{compression_ratio}). When this speedup ratio computation is carried out using a non temporal metric e.g.(FLOPs, MAC) then it is referred to as \textit{theoretical speedup}.
+The speedup ratio refers to the reduction in computation time that can be achieved by using a compressed model, relative to the original uncompressed model. Typically calculated as a ratio between the computation time of the uncompressed model and the computation time of the compressed model (see Equation~\ref{speedup_ratio}). When this speedup ratio computation is carried out using a non temporal metric e.g.(OPs, FLOPs, MAC) then it is referred to as \textit{theoretical speedup}. 
+We incorporate a hardware specific constant, $\zeta$, in the speedup ratio to provide means of correcting the speedup ratio based on the operational hardware. %For example, for results of throughput discussed in \cite{NVIDIA_TURING_GPU_ARCHITECTURE_2018},  $\zeta = 4$   
+
 %
 % \subsubsection{Compression Ratio}
-Similarly, \textit{compression ratio} is another derived metric based on size reduction of the model. It refers to the reduction in model size achieved by a compression technique, relative to the size of the original uncompressed model (see Equation~\ref{speedup_ratio}). 
+\textit{Compression ratio} is another derived metric based on size reduction of the model. It refers to the reduction in model size achieved by a compression technique, relative to the size of the original uncompressed model (see Equation~\ref{compression_ratio}). 
 %
-We extend this further to include \textit{efficiency ratio} (see Equation~\ref{effeciency_ratio}), which aims at reporting improvement in energy consumption between the compressed and uncompressed models.
- 
+We extend this further to include \textit{efficiency ratio} (Equation~\ref{effeciency_ratio}) and \textit{performance ratio} (Equation~\ref{performance_ratio}), which aim at reporting improvements in  energy consumption and accuracy, respectively, between the compressed and uncompressed models.
+
+
 \begin{equation}
-  \text{Speedup ratio} =   \frac{\text{original speed}}{\text{compressed speed}}
+  \text{Speedup ratio} =   \zeta \cdot\frac{\text{original speed}}{\text{compressed speed}}
   \label{speedup_ratio}
 \end{equation}
 
@@ -492,18 +582,28 @@ We extend this further to include \textit{efficiency ratio} (see Equation~\ref{e
   \label{effeciency_ratio}
 \end{equation}
 
-Reporting improvement ratios alone is not enough, as the ratio can be calculated using different metrics, for example one may calculate the compression ratio using disk size, whilst another can use parameters count, or CPU/GPU usage to calculate the compression ratio. Similarly, one may use inference latency, FLOPs, or MAC to compute speedup ratio.
-%
-Therefore when reporting improvement ratios, one need to outline what metrics were used in their computation to allow for reliable comparisons between different works. 
+\begin{equation}
+  \text{Performance Ratio} =   \frac{\text{compressed accuracy}}{\text{original accuracy}}
+  \label{performance_ratio}
+\end{equation}
 
-\subsubsection{Verification metrics}
-Verification aims at providing confidence that the actual behaviour of a system matches the requirements and expected behaviour of the system~\cite{Chance_2020}. This is particularly important in deployment of machine learning models in safety critical applications.
+Reporting improvement ratios alone is not enough, as the ratio can be calculated using different metrics, for example one may calculate the compression ratio using disk size, whilst another can use parameters count, or CPU/GPU usage to calculate the compression ratio. Similarly, one may use inference latency, OPs, or MAC to compute speedup ratio.
 %
-Compressing after a model passed some verification processes may require tedious amounts of effort to rerun these verification evaluations.
-% for different compression techniques and include it in the evaluation of the compression technique. 
+Therefore when reporting improvement ratios, one need to outline what metrics were used in their computation to allow for reliable comparisons between different works.
+
+\subsubsection{Overall Compression Success (OCS)}
+We introduce the Overall Compression Success (OCS) metric. The metric combines the different improvement ratios into one metric summarising the overall success of a compression technique. 
 %
-Therefore, being able to ensure and quantify functional equivalence post compression is important and currently overlooked by the research community. Whilst the metrics discussed throughout this paper aim at evaluating different aspects of a neural network post compression, it is not clear how these metrics may be used to quantify functional equivalence in the context of verification. Further research can benefit in this direction.   
-% functional equivalence, more research is required to investigate how these metrics may be used to quantify functional equivalence in the context of verification.  
+OCS is shown by equation~\ref{OCS}, where P, S, C and E are the calculated performance, speed, compression and efficiency ratios respectively. 
+%
+The $\lambda$s are weight parameters, to allow for adjusting the importance of the different assessment categories. 
+%
+The OCS metric is set in a way to output a positive value if there is an overall improvement, a negative value if there is an overall  worsening. OCS will output a value close to zero if there is no change from the uncompressed model, the trade-offs cancel out, or the compressed model accuracy has dropped significantly. 
+
+\begin{equation}
+  \text{OCS} =  P \cdot \Bigl( \lambda_1 (P-1) + \lambda_2 (S-1) + \lambda_3 (C-1) + \lambda_4 (E-1) \Bigl) 
+  \label{OCS}
+\end{equation}
 
 \section{NetZIP Overview} \label{sec:NetZIP_overview}
 % \subsection{Overview}
@@ -534,344 +634,210 @@ In the ``Compare" stage, the user can select several options from the metrics su
 % Whilst one may utilise the ``Compare" stage in NetZIP to compare readily compressed models, we recommend to use the workflow constructed in the NetZIP library shown in Figure~\ref{fig:Netzip}, to ensure that any gains you get from compression is due to the compression technique used and not due to the different training or configuration settings.
 
 
-\begin{figure}[h]
+\begin{figure*}[h]
     \centering
-    \includegraphics[width=0.49\textwidth]{other/figures/NetZIP_overview.pdf}
+    \includegraphics[width=0.7\textwidth]{other/figures/NetZIP_overview.pdf}
     \caption{NetZIP overview}
     \label{fig:Netzip}
-\end{figure}
+\end{figure*}
 
 
 
 \section{Example Case Studies} \label{sec:casestudies}
-We use three case studies to showcase the usage of metrics available in NetZIP. We break our case studies into three different themes: object classification, object detection, and edge devices. 
-% We use the suite of metrics available in NetZIP to evaluate the effectiveness of different compression techniques in the three themes of our case studies.
+We use two case studies implemented as part of NetZIP, to showcase some of the evaluation metrics reviewed and the novel metrics we contributed in this paper. 
 %
-Table~\ref{tab:casestudy_summary} shows a summary of the neural network architectures, datasets, compression techniques, and the machines used in our case studies. Table~\ref{tab:Hardware_summary} shows the machines hardware specifications. In all of our evaluations we eliminated the usage of GPU and used only CPU, to maintain fair availability of resources in our experiments, especially that some compression techniques implementations currently only operate on CPU. 
+Table~\ref{tab:casestudy_summary}, shows a summary of the two case studies, including the neural network architectures, datasets, compression techniques, and the hardware used in our case studies.
+%
+Table~\ref{tab:Hardware_summary} shows the hardware specifications. 
+%
+In all of our evaluations we eliminated the usage of GPU and used only CPU, to maintain fair availability of resources in our experiments, especially that some compression techniques implementations currently only operate on CPU. 
+%
+The majority of metrics used in the assessment are the same for the both case studies, as can be seen from the results tables~\ref{tab:resnet-imagnet1k} and ~\ref{tab:Yolov5s-COCO}. The only different assessment metric is the accuracy metric, for case study 1 we used top-1 accuracy and for case study 2 we used mean average precision.
+
+\subsection{Case Study 1}
+In the first case study we selected object classification as our theme, using ResNet18~\cite{he2015deep} architecture on ImageNet1k~\cite{imagenet_cvpr09} dataset. This case study was run on a power full Dell Alienware PC with 64 GB of RAM.
+%
+We used four compression techniques available in the 
+ PyTorch library, two based on quantisation and two based on pruning: 
+\begin{enumerate}
+    \item Post Training Quantisation (PTQ), where the model is trained on the dataset and then quantised.
+    
+    \item Quantisation Aware Training (QAT), where the model is trained on the dataset, quantised and then further training is done to try and recover drop in accuracy as result of quantisation.
+
+    \item Global Unstructured Random Pruning (GUP$_R$), where parameters through out the model are pruned randomly until the required level of sparsity is achieved. 
+
+    \item Global Unstructured L1-norm Pruning (GUP$_{L1}$), prunes the least significant parameters in the model globally until the required level of sparsity is achieved. 
+\end{enumerate}
+
+\subsection{Case Study 2}
+The second case study focuses on object detection using YOLOv5s~\cite{Jocher_YOLOv5_by_Ultralytics_2020} to output predicts for COCO~\cite{lin2015microsoft} dataset.
+%
+We use the compression methods already integrated within the YOLOv5 repository~\cite{Jocher_YOLOv5_by_Ultralytics_2020}, which are limited to post training quantisation using TensorFlow lite (PTQ-TFlite) to FP16 and INT8 numerical representations. We also included in our comparison the Tensorflow (TF) FP32 version of the YOLOv5s architecture. 
+%
+In this case study we have run experiments using Raspberry Pi 4 Moodel B, as means of studying benefits of compression on hardware with limited resources.
 
 \begin{table*}[]
     \centering
-    \begin{tabular}{| c  | c | c | c | c |} 
+    \begin{tabular}{| c | c  | c | c | c | c |} 
         \hline
-        Theme & Network Architecture(s) & Datasets & Compression Techniques & Hardware  \\
+        Case Study No. & Theme & Network Architecture & Datasets & Compression Techniques & Hardware  \\
         \hline        
-        Object Classification  & ResNet18 & CIFAR10, ImageNet1k & PTQ, QAT, GUP$_R$, GUP$_{L1}$ & Laptop, PC \\ 
-        Object Detection  & YOLOv5s & COCO  &  PTQ-TF  & Laptop  \\
-        Embedded Systems  & YOLOv5s & COCO  & PTQ-TF  & RasPi 4 \\
+        1 & Object Classification  & ResNet18 & ImageNet1k & PTQ, QAT, GUP$_R$, GUP$_{L1}$ & PC \\ 
+        % Object Detection  & YOLOv5s & COCO  &  PTQ-TF  & Laptop  \\
+        2 & Object Detection  & YOLOv5s & COCO  & PTQ-TFlite  & RasPi 4 \\
         \hline
     \end{tabular}
     \caption{Case Studies Summary}
     \label{tab:casestudy_summary}
 \end{table*}
-
-
+%
 \begin{table*}[]
     \centering
     \begin{tabular}{| l  | l | l | l |} 
         \hline
         Name & Product Name & Specifications & Operating System \\
         \hline        
-        Laptop  & MSI GF65 THIN 3060  & 64GB RAM, NVIDIA 3060 & Linux Ubuntu 20.04.2 LTS (64-bit)\\ 
-        PC  & Dell Alienware Desktop & 64GB RAM, NVIDIA 2080 & Linux Ubuntu 18.04.4 LTS (64-bit)\\
+        % Laptop  & MSI GF65 THIN 3060  & 64GB RAM%, NVIDIA 3060 & Linux Ubuntu 20.04.2 LTS (64-bit)\\ 
+        PC  & Dell Alienware Desktop & 64GB RAM%, NVIDIA 2080 
+        & Linux Ubuntu 18.04.4 LTS (64-bit)\\
         RasPi 4  & Raspberry Pi 4 Model B & 4GB RAM &  Linux Ubuntu 22.04.2 LTS (64-bit) \\
         \hline
     \end{tabular}
-    \caption{Hardware Specifications Summary.}% In all cases an Ubuntu Linux operating system was used.}
+    \caption{Hardware Specifications Summary.}
     \label{tab:Hardware_summary}
 \end{table*}
 
-% three different neural network architectures: VGG\cite{ref}, ResNet\cite{ref} and YOLO\cite{ref}. We use a number of different datasets in our case studies: CIFAR100\cite{ref}, TinyImagNet\cite{ref}, ImageNet\cite{ref}, COCO\cite{ref}.
 
+\section{Results and Discussion}
 
-% The case studies are broken into three themes, object classification, object detection
-
-% networks 
-% case studies to show case 
-% There is a suite of example case studies implemented in NetZIP to guide users on how to utilise the evaluation metrics provided by NetZIP and also act as baselines for researchers experiments. 
-% %
-% We utilise this section to showcase the evaluation metrics reviewed on these different case studies. 
-
-\begin{figure*}[]
-    \centering
-    \begin{subfigure}{0.19\textwidth}
-        \includegraphics[width=1\textwidth]{other/figures/Resnet18_CIFAR10_Laptop/TOP1accuracy.png}
-        \caption{Accuracy - Top1}
-    \end{subfigure}
-    \begin{subfigure}{0.19\textwidth}
-        \includegraphics[width=1\textwidth]{other/figures/Resnet18_CIFAR10_Laptop/TOP5accuracy.png}
-        \caption{Accuracy - Top5}
-    \end{subfigure}
-    \begin{subfigure}{0.19\textwidth}
-        \includegraphics[width=1\textwidth]{other/figures/Resnet18_CIFAR10_Laptop/Latency.png}
-        \caption{Speed - Latency}
-    \end{subfigure}
-    \begin{subfigure}{0.19\textwidth}
-        \includegraphics[width=1\textwidth]{other/figures/Resnet18_CIFAR10_Laptop/MAC.png}
-        \caption{Speed - MAC}
-    \end{subfigure}
-    \begin{subfigure}{0.19\textwidth}
-        \includegraphics[width=1\textwidth]{other/figures/Resnet18_CIFAR10_Laptop/FLOPS.png}
-        \caption{Speed - FLOPs}
-    \end{subfigure}
-    \begin{subfigure}{0.19\textwidth}
-        \includegraphics[width=1\textwidth]{other/figures/Resnet18_CIFAR10_Laptop/Size.png}
-        \caption{Size - Disk Size}
-    \end{subfigure}
-    \begin{subfigure}{0.19\textwidth}
-        \includegraphics[width=1\textwidth]{other/figures/Resnet18_CIFAR10_Laptop/Parameters_count.png}
-        \caption{Size - Params Count}
-    \end{subfigure}
-    \begin{subfigure}{0.19\textwidth}
-        \includegraphics[width=1\textwidth]{other/figures/Resnet18_CIFAR10_Laptop/CPU_usage.png}
-        \caption{Size - CPU usage}
-    \end{subfigure}
-    \begin{subfigure}{0.19\textwidth}
-        \includegraphics[width=1\textwidth]{other/figures/Resnet18_CIFAR10_Laptop/Energy.png}
-        \caption{Energy -  Energy}
-    \end{subfigure}
-    \begin{subfigure}{0.19\textwidth}
-        \includegraphics[width=1\textwidth]{other/figures/Resnet18_CIFAR10_Laptop/Power.png}
-        \caption{Energy - Power}
-    \end{subfigure}
-    \caption{ResNet18 - CIFAR10 - Laptop}
-    \label{fig:Resnet-cifar-laptop}
-\end{figure*}
-
-% \begin{figure*}[h]
-%     \centering
-%     \begin{subfigure}{0.19\textwidth}
-%         \includegraphics[width=1\textwidth]{other/figures/VGG11_TinyImageNet_Laptop/TOP1accuracy.png}
-%         \caption{Accuracy - Top1}
-%     \end{subfigure}
-%     \begin{subfigure}{0.19\textwidth}
-%         \includegraphics[width=1\textwidth]{other/figures/VGG11_TinyImageNet_Laptop/TOP5accuracy.png}
-%         \caption{Accuracy - Top5}
-%     \end{subfigure}
-%     \begin{subfigure}{0.19\textwidth}
-%         \includegraphics[width=1\textwidth]{other/figures/VGG11_TinyImageNet_Laptop/Latency.png}
-%         \caption{Speed - Latency}
-%     \end{subfigure}
-%     \begin{subfigure}{0.19\textwidth}
-%         \includegraphics[width=1\textwidth]{other/figures/VGG11_TinyImageNet_Laptop/MAC.png}
-%         \caption{Speed - MAC}
-%     \end{subfigure}
-%     \begin{subfigure}{0.19\textwidth}
-%         \includegraphics[width=1\textwidth]{other/figures/VGG11_TinyImageNet_Laptop/FLOPS.png}
-%         \caption{Speed - FLOPs}
-%     \end{subfigure}
-%     \begin{subfigure}{0.19\textwidth}
-%         \includegraphics[width=1\textwidth]{other/figures/VGG11_TinyImageNet_Laptop/Size.png}
-%         \caption{Size - Disk Size}
-%     \end{subfigure}
-%     \begin{subfigure}{0.19\textwidth}
-%         \includegraphics[width=1\textwidth]{other/figures/VGG11_TinyImageNet_Laptop/Parameters_count.png}
-%         \caption{Size - Params Count}
-%     \end{subfigure}
-%     \begin{subfigure}{0.19\textwidth}
-%         \includegraphics[width=1\textwidth]{other/figures/VGG11_TinyImageNet_Laptop/CPU_usage.png}
-%         \caption{Size - CPU usage}
-%     \end{subfigure}
-%     \begin{subfigure}{0.19\textwidth}
-%         \includegraphics[width=1\textwidth]{other/figures/VGG11_TinyImageNet_Laptop/Energy.png}
-%         \caption{Energy -  Energy}
-%     \end{subfigure}
-%     \begin{subfigure}{0.19\textwidth}
-%         \includegraphics[width=1\textwidth]{other/figures/VGG11_TinyImageNet_Laptop/Power.png}
-%         \caption{Energy - Power}
-%     \end{subfigure}
-%     \caption{VGG11 - TinyImageNet - Laptop}
-% \end{figure*}
-
-\begin{figure*}[]
-    \centering
-    \begin{subfigure}{0.19\textwidth}
-        \includegraphics[width=1\textwidth]{other/figures/Resnet18_ImageNet1k_PC/TOP1accuracy.png}
-        \caption{Accuracy - Top1}
-    \end{subfigure}
-    \begin{subfigure}{0.19\textwidth}
-        \includegraphics[width=1\textwidth]{other/figures/Resnet18_ImageNet1k_PC/TOP5accuracy.png}
-        \caption{Accuracy - Top5}
-    \end{subfigure}
-    \begin{subfigure}{0.19\textwidth}
-        \includegraphics[width=1\textwidth]{other/figures/Resnet18_ImageNet1k_PC/Latency.png}
-        \caption{Speed - Latency}
-    \end{subfigure}
-    \begin{subfigure}{0.19\textwidth}
-        \includegraphics[width=1\textwidth]{other/figures/Resnet18_ImageNet1k_PC/MAC.png}
-        \caption{Speed - MAC}
-    \end{subfigure}
-    \begin{subfigure}{0.19\textwidth}
-        \includegraphics[width=1\textwidth]{other/figures/Resnet18_ImageNet1k_PC/FLOPS.png}
-        \caption{Speed - FLOPs}
-    \end{subfigure}
-    \begin{subfigure}{0.19\textwidth}
-        \includegraphics[width=1\textwidth]{other/figures/Resnet18_ImageNet1k_PC/Size.png}
-        \caption{Size - Disk Size}
-    \end{subfigure}
-    \begin{subfigure}{0.19\textwidth}
-        \includegraphics[width=1\textwidth]{other/figures/Resnet18_ImageNet1k_PC/Parameters_count.png}
-        \caption{Size - Params Count}
-    \end{subfigure}
-    \begin{subfigure}{0.19\textwidth}
-        \includegraphics[width=1\textwidth]{other/figures/Resnet18_ImageNet1k_PC/CPU_usage.png}
-        \caption{Size - CPU usage}
-    \end{subfigure}
-    \begin{subfigure}{0.19\textwidth}
-        \includegraphics[width=1\textwidth]{other/figures/Resnet18_ImageNet1k_PC/Energy.png}
-        \caption{Energy -  Energy}
-    \end{subfigure}
-    \begin{subfigure}{0.19\textwidth}
-        \includegraphics[width=1\textwidth]{other/figures/Resnet18_ImageNet1k_PC/Power.png}
-        \caption{Energy - Power}
-    \end{subfigure}
-    \caption{ResNet18 - ImageNet1k - PC}
-    \label{fig:Resnet-imagenet-pc}
-\end{figure*}
-
-\begin{figure*}[]
-    \centering
-    \begin{subfigure}{0.19\textwidth}
-        \includegraphics[width=1\textwidth]{other/figures/YOLOv5s_COCO_Laptop/F1score.png}
-        \caption{Accuracy - F1 Score}
-    \end{subfigure}
-    \begin{subfigure}{0.19\textwidth}
-        \includegraphics[width=1\textwidth]{other/figures/YOLOv5s_COCO_Laptop/Latency.png}
-        \caption{Speed - Latency}
-    \end{subfigure}
-    \begin{subfigure}{0.19\textwidth}
-        \includegraphics[width=1\textwidth]{other/figures/YOLOv5s_COCO_Laptop/Size.png}
-        \caption{Size - Disk Size}
-    \end{subfigure}
-    \begin{subfigure}{0.19\textwidth}
-        \includegraphics[width=1\textwidth]{other/figures/YOLOv5s_COCO_Laptop/Energy.png}
-        \caption{Energy - Energy}
-    \end{subfigure}
-    \begin{subfigure}{0.19\textwidth}
-        \includegraphics[width=1\textwidth]{other/figures/YOLOv5s_COCO_Laptop/Power.png}
-        \caption{Energy - Power}
-    \end{subfigure}
-    \caption{YOLOv5s - COCO - Laptop}
-    \label{fig:yolo-coco-laptop}
-\end{figure*}
-
-\begin{figure*}[]
-    \centering
-    \begin{subfigure}{0.19\textwidth}
-        \includegraphics[width=1\textwidth]{other/figures/YOLOv5s_COCO_RasPi/rasPI_f1score_v2.png}
-        \caption{Accuracy - F1 Score}
-    \end{subfigure}
-    \begin{subfigure}{0.19\textwidth}
-        \includegraphics[width=1\textwidth]{other/figures/YOLOv5s_COCO_RasPi/rasPI_latency_v2.png}
-        \caption{Speed - Latency}
-    \end{subfigure}
-    \begin{subfigure}{0.19\textwidth}
-        \includegraphics[width=1\textwidth]{other/figures/YOLOv5s_COCO_RasPi/rasPI_size_v2.png}
-        \caption{Size - Disk Size}
-    \end{subfigure}
-    \begin{subfigure}{0.19\textwidth}
-        \includegraphics[width=1\textwidth]{other/figures/YOLOv5s_COCO_RasPi/rasPI_energy_v2.png}
-        \caption{Energy - Energy}
-    \end{subfigure}
-    \begin{subfigure}{0.19\textwidth}
-        \includegraphics[width=1\textwidth]{other/figures/YOLOv5s_COCO_RasPi/rasPI_power_v2.png}
-        \caption{Energy - Power}
-    \end{subfigure}
-    \caption{YOLOv5s - COCO - Raspberry Pi}
-    \label{fig:yolo-coco-raspeberrypi}
-\end{figure*}
-
-
-\subsection{Object Classification}
-The first theme in our case studies is for object classification. 
+% == Tables results
+Tables~\ref{tab:resnet-imagnet1k} and ~\ref{tab:Yolov5s-COCO} shows results for case studies 1 and 2 respectively. 
+% Changes in Accuracy
+For case study 1 , the accuracy of PTQ provided the least drop in accuracy of 0.2\% compared to the uncompressed model,  whilst GUP$_R$ had the most significant drop in accuracy of about 19.5\%. 
 %
-We used four compression techniques, two based on quantisation and two based on pruning: 1) Post Training Quantisation (PTQ), 2) Quantisation Aware Training (QAT), 3)  Global Unstructured Random Pruning (GUP$_R$) and 4) Global Unstructured L1-norm Pruning (GUP$_{L1}$) i.e. components with lowest values get pruned. 
-%
-% We have run experiments using
-We show experiments run using ResNet18~\cite{he2015deep} architecture
-%and VGG11\cite{} 
-on CIFAR10~\cite{krizhevsky2009learning}
-%, TinyImageNet\cite{} 
-and ImageNet1k~\cite{imagenet_cvpr09} datasets. 
-% However we only show results based on ResNet18 here due to space limitations.
+In the second case study, there were no significant drops in accuracy, the highest drop of 1.9\% was incurred by PTQ TFlite (INT8) compression technique.   
 
-Figures~\ref{fig:Resnet-cifar-laptop} and \ref{fig:Resnet-imagenet-pc} shows matrix plots output from NetZIP using different metrics for CIFAR10 and ImagNet1k datasets respectively.
+% Speed gains. Using latency. 
+In terms of speed, compression provided improvements in both case studies.  
 %
-Each plot shows a different metric. The x-axis shows the compression method and the y-axis shows the output value of the assessment metric. 
-
-For PTQ, QAT and GUP$_{L1}$ compression techniques the accuracy is maintained more or less the same for both CIFAR10 and ImageNet1k, whilst for GUP$_{R}$ the drop in accuracy is clearly more significant.
+For the first case study compressing using quantisation improved the inference latency by $\times 2$. However, no changes in speed are seen for pruning techniques.
 %
-For speed, quantisation techniques provide a clear improvement in inference latency. However, the speed improvement can not be noticed using any of the speed metrics for pruning. This is due to the issue discussed earlier with current pruning implementations where the pruned parameters are zeroed but not removed from the architecture. Removing the pruned parameters can output errors from the architecture therefore, removing pruned parameters currently relies on custom processes dependent on the architecture. However there are efforts being made in automating the removal of pruned parameters from models e.g.~\cite{fang2023depgraph}. 
+Noting that monitoring inference latency is sensitive to hardware resource utilisation, we resort to observe the MACs metric, which is insensitive to resource utilisation variations. 
+% Using MACS and CHATS.
+MACs suggests there should be no change in speed for any of the compression techniques, but using the CHATS metric we introduced, it can be seen that it suggests that inference time should decrease for quantisation techniques but should stay the same for pruning techniques.
+% Pruning limitations
+As discussed previously in our related works section, current implementations of pruning are limited to setting pruned parameters to zero but they are not actually removed from the model. Therefore, we see changes in accuracy due to pruning, but not in speed or any of the other metrics. 
+% Hence, the current results for pruning compression techniques are not expressive of the benefits from pruning. 
 %
-Alternatively, since speed metrics MAC and FLOPs have are related to parameters count, one may be able to deduce an expected improvement in speed when the number of non-zero parameters are counted, as shown by the ``Params Count" metric plot. Observing the parameters count, it can be seen that there is a significant improvement in speed expected to happen once pruned parameters are removed. %Based on this a similar improvement is also expected to occur to the disk size of the model.% so as to the size of the model. 
-
-Inspecting model size metrics, the disk size metric shows that quantisation decreases the model size by a quarter, whilst pruning does not. This again due to the same problem discussed with zero parameters are not removed from the model. Using parameters count of non-zero parameters, again can be used in this case to show the expected decrease in disk size occupied by the pruned model. Additionally, no improvement was noticed in CPU usage by compressed models.
+% TF model perfomraning better than compressed models.
+For the second case study, the latency and CHATS decreased as expected, with increasing quantisation levels. 
 %
-% Another aspect of size is the resources CPU usage size. There are no significant changes noticeable from the CPU usage plot as a result of compression. 
-
-For Energy metrics, the average power seems to hold with little variations.%, possibly due to difficulty controlling operation system background processes involved in big computers like laptops and PCs. 
-However for the average energy used to output a prediction the quantisation techniques provided a clear improvement, with the pruning techniques providing still a decrease in energy consumption even though the pruned parameters are not removed from the model. Interestingly, zeroing parameters seems to still provide more efficiency in terms of energy consumption. 
-
-
-\subsection{Object Detection}
-Beyond object classification, we run experiments for object detection using YOLOv5s~\cite{Jocher_YOLOv5_by_Ultralytics_2020} on COCO~\cite{lin2015microsoft} dataset.
+However, interestingly the TensorFlow FP32 model had the least inference latency.  
 %
-We use the compression methods already integrated within the YOLOv5 repository~\cite{Jocher_YOLOv5_by_Ultralytics_2020} in this case study, which are limited to post training quantisation using TensorFlow lite (TFlite) to FP16 and INT8 numerical representations.
-%
-Figure~\ref{fig:yolo-coco-laptop} shows plots evaluating the effectiveness of compression in each of the four main categories of metrics that we have discussed previously. 
-%
-For accuracy, no significant changes in performance can be spotted from the bar plot. 
-%
-However, interestingly the inference latency has increased with compression. 
-%
-The size of the model has decreased as expected so as the power consumption, but the energy consumption for outputting predictions has increased with quantisation.
-%
-The reason why the latency and the energy consumption increase after quantisation may be attributed to the different library implementations between our uncompressed base lines (FP32-PyTorch and FP32-TensorFlow) and the TensorFlow lite quantisation. 
-%
-Even between quantisation from FP16-TFlite to INT8-TFlite the speed and energy performance worsens, which is counter-intuitive. 
-%
-We speculate that this may be limited by configurations in the operation system that may need alteration to maximise efficiency of TFlite models. 
+We speculate that this may be a result of different library implementations compared to PyTorch. 
 %
 Investigating these speculations are beyond the scope of this paper, however it is important that these factors are investigated further in real life applications.
+%
+Using CHATS as a metric for comparing between compression techniques can be a more reliable metric to use in such cases.
 
-% - YOLO ~\cite{Jocher_YOLOv5_by_Ultralytics_2020} on laptop (F1 Score, Network Size, Latency, Energy)
-\subsection{Edge Devices}
-We distinguish that the real benefit of compression in neural networks is to allow their deployment on real-time systems where inference time and energy consumption are key. Therefore we extend the YOLOv5s case study to run on a raspberry pi.
+In both case studies compression using quantisation decreased the disk size of the model but has not changed the parameters count as expected. 
 %
-One thing to note is that raspberry pi does not have an intel CPU, which is key for the {\tt pyrapl} function for measuring energy to work. Instead we used a SIGLENT SPD3303X Programmable power supply to measure the energy consumption. 
+For pruning in the first case study this decrease can not be noticed, but to showcase the potential provided by pruning in size reduction we have included the parameters count for non zero parameters between brackets.
 %
-Figure~\ref{fig:yolo-coco-raspeberrypi} shows the output of this experiment.
+% Gains in Hardware utilsiation
+Reducing hardware usage by compression was not observed in neither CPU utilisation nor gigabytes of RAM usage for case study 1.
 %
-In this setup, the benefits of using TFlite models is prevalent compared to the experiment using a Laptop shown in Figure~\ref{fig:yolo-coco-laptop}.
+On the other hand, on less powerful hardware used in case study 2, significant reduction in hardware usage can be observed for compressed models.
+
+% Gains in Energy utilisation
+Last but not least compression had energy consumption improvements in both case studies. The interesting observation is in case study 2, that is even though the TF (FP32) implementation had better speed compared to TFlite (INT8), the energy efficiency of the PTQ TFlite (INT8) was best.  
 %
-Yet, interestingly on the raspberry pi the TensorFlow implementation using FP32 still had better speed compared to TensorFlow lite (TFlite) 8 bit integer numerical representation. 
-%
-However, the energy consumption of the TFlite INT8 was the most energy efficient. This observation is very interesting as one may expect the INT8 implementation to be both quicker and more energy efficient. 
+This observation is very interesting as one may expect the INT8 implementation to be both quicker and more energy efficient. 
 %
 Field et.al.~\cite{Field2014} reported a similar observation, where shorter bits save more energy but take more execution time than longer bit representations. 
 %
 This may perhaps be resolved through reconfiguration of hardware, however, it is beyond the scope of this paper to investigate technically how this can be achieved.
 
-% Paper on energy transparency to support the case that longer bits tend to be quicker than shorter bits \cite{Field2014}, however shorter bits save more energy.
+% == Improvement Ratios 
+Furthermore, as can be seen comparing benefits of compression is multivariate, which can be difficult to quickly digest when comparing different techniques. Here is where our overall compression success (OCS) metric can assist. It can give an overall idea of which techniques is best overall. This is more informative when viewed a long with the other improvement ratios. 
+%
+Therefore, we choose to view the overall compression success using spider web diagrams (or radar charts), which provides an optimal way for observing overall compression success and the trade-offs made (see figure~\ref{fig:Radar-spider}) in the different assessment categories. 
+%
+The OCS and each improvement ratio are represented by a separate axis in figure~\ref{fig:Radar-spider}. Data
+points for each improvement ratio are plotted on the axes and connected to form a polygon. 
+%
+The value of OCS and the shape of this polygon represent a more tangible approach for assessing the best compression technique. 
+%
+Using the spider web diagrams in figure~\ref{fig:Radar-spider} it can be seen that in case study 1, PTQ and QAT both have equivalent overall compression successes, whilst in case study 2 the quantisation to TFlite INT8  had the best overall compression success. 
 
 
-% yolo quantisation vs pruning
+\begin{table*}[]
+    \centering
+    \begin{tabular}{| l || l | l | l | l | l | l | l | l | l |l|} 
+        \hline
+        Compression & Top-1 & Latency & MACs & CHATS & Disk & Params & CPU & RAM & Energy & Power \\
+        Technique & Accuracy & (ms) &  $(\times 10^9)$ & $(\times 10^9)$ & Size & count & util & usage &(J) & (W) \\
+         &  & & & & (MB) & $\times 10^6$& (\%) & (GB) & & \\
+        \hline        
+        None (FP32)      & 70.3 & 14 & 1.81 & 57.92 & 44.7 & 11.2 & 49.6 & 2.48 & 2.2 & 117.8\\
+        PTQ (INT8)       & 70.1 & 7 & 1.81 & 14.48 & 11.3 & 11.2 & 49.1 & 2.52 & 0.8 & 111.6\\
+        QAT (INT8)       & 69.6  & 7 & 1.81 & 14.48 & 11.3 & 11.2 & 49.1 & 2.51 & 0.8 & 111.6 \\
+        GUP$_R$ (FP32)   & 50.8 & 15 & 1.81 & 57.92 & 44.7 & 11.2 (3.3) & 49.6& 2.51 & 1.8 & 121.8 \\
+        GUP$_{L1}$ (FP32)& 66.6 & 14 & 1.81 & 57.92 & 44.7 & 11.2 (3.3) & 49.6 & 2.46 & 1.7 &122.0\\
+        \hline
+    \end{tabular}
+    \caption{Summary of results for Resnet-18 inference on ImageNet1k running on PC.}% In all cases an Ubuntu Linux operating system was used.}
+    \label{tab:resnet-imagnet1k}
+\end{table*}
 
-% \section{Discussion} \label{sec:Discussion}
+\begin{table*}[]
+    \centering
+    \begin{tabular}{| l || l | l | l | l | l | l | l | l | l | l|} 
+        \hline
+        Compression & mAP & Latency & MACs & CHATS & Disk & Params & CPU & RAM & Energy & Power \\
+        Technique &  & (ms) & $(\times 10^9)$& $(\times 10^9)$ & Size & count & util & usage &(J) & (W) \\
+         &  & & & & (MB) & $(\times 10^6)$ & (\%) & (GB) & & \\
+        \hline        
+        None PyTorch (FP32)     & 56.6 & 3165 & 8.1 & 259.2  & 29.2 & 7.2 & 75.6 & 1.9  & 13.4 & 4.2 \\
+        None TF (FP32)          & 56.5 & 1270 & 8.1 & 259.2 & 29.2 & 7.2 & 89.6 & 1.13 & 7.0 & 5.4 \\
+        PTQ TFlite (FP16)  & 56.5 & 2288 & 8.1 & 129.6 & 14.6 & 7.2 & 25.1 & 0.49 & 8.9 & 3.8 \\
+        PTQ TFlite (INT8)  & 54.7 & 1393 & 8.1 & 64.8 & 7.6  & 7.2 & 24.9 & 0.37 & 5.3 & 3.7 \\
+        \hline
+    \end{tabular}
+    \caption{Summary of results for YOLOv5s inference on COCO running on RasPi 4.}% In all cases an Ubuntu Linux operating system was used.}
+    \label{tab:Yolov5s-COCO}
+\end{table*}
 
-% - Importance in security applications where processing has to be done on board and hence energy consumption and performance are key for effective functioning of the system.
 
-% - Metrics provided can serve in domain of evaluating the trustworthiness of a system as energy can play a major role [trustworthiness paper (discussing spider web trustworthiness mapping)] 
 
-% - In our context of metrics for evaluating compression, not being able to remove the pruned parameters stops us from evaluating size and speed gains from compression after pruning. To overcome this problem we use sparsity level to derive metrics for measuring size and speed of pruned models. These can be seen as helpful metrics either for evaluating the model before one committing to designing a manual-case-specific process for removing pruned parameters, or as temporary metrics for evaluating the effectiveness of pruning until research advances to generalising and automating the removal of zero parameters from different neural network architectures.   
+\begin{figure*}[]
+    \centering
+    \begin{subfigure}{0.49\textwidth}
+        \includegraphics[width=1\textwidth]{other/figures/spider_pc_resnet18.pdf}
+        \caption{}
+    \end{subfigure}
+    \begin{subfigure}{0.49\textwidth}
+        \includegraphics[width=1\textwidth]{other/figures/spider_raspebrrypi_yolo.pdf}
+        \caption{}
+    \end{subfigure}
+   
+    \caption{Radar plots summarising improvement ratios for (a) case study 1 and (b) for case study 2. The following summarises the metrics used in calculating the improvement ratios: Performance Ratio (Top1 for object classification and mAP for object detection),  Speedup Ratio (CHATS), Compression Ratio (CPU utilisation), Efficiency Ratio (Energy).}
+    \label{fig:Radar-spider}
+\end{figure*}
+
+
 
 
 \section{Conclusions and Future Works} \label{sec:Conclusions}
-In this paper we have provided a review of evaluation metrics for neural networks compression, with the aim of standardising evaluation of neural network compression.
+In this paper we have provided a review of evaluation metrics for neural networks compression, with the aim of standardising evaluation of neural network compression. 
 %
-The metrics are grouped into five categories: Accuracy, Speed, Size, Energy, and Other.
+The metrics are grouped into five categories: Accuracy, Speed, Size, Energy, and Combined Measures.
+%
 The metrics reviewed were implemented and included in a compression bench library and named NetZIP, available publicly.
 %
-We used NetZIP to demonstrate the usage of most metrics reviewed in three different case studies focusing on object classification, object detection, and edge devices.
+We identified lacking metrics that are needed to achieve more effective comparisons between compression techniques. Two novel evaluation metrics were contributed to cover the gap identified: 1) Compression and Hardware Agnostic Theoretical Speed (CHATS) and 2) Overall Compression Success (OCS). 
+%
+Furthermore, we used NetZIP to demonstrate the usage of reviewed and contributed metrics in two different case studies focusing on object classification, and object detection using two hardware platforms, a regular PC and a Raspberry pi 4.
 
 Throughout the development of this work we used Quantisation and Pruning as the compression strategies on a limited number of neural network architectures. A future work is to expand NetZIP to include other compression strategies (e.g. Knowledge Distillation, Tensor Decomposition) and more neural network architectures.
 %
@@ -884,16 +850,10 @@ Currently, pruning techniques only zero parameters but pruned parameters are not
 %
 There is need for developing model agnostic techniques for removal of pruned parameters.
 %
-Additionally, there is still scope for development of new metrics focused on  verification transferability pre- and post-compression.
+Additionally, there is still scope for development of new metrics focused on  verification transferability pre- and post-compression to quantify functional equivalence.
 %
 Furthermore, there is need for doing more feasibility studies for utilisation of compressed models on edge devices. 
-% - Verification transferability pre- and post-compression metric. 
-%
-% How can information theory be used to quantify info lost and hence quantify verification transferability.
-%
-% - Expand to knowledge distillation and tensor decomposition compression techniques.
-%
-% - Expanding to natural language processing (NLP) applications.
+
 
 
 
@@ -901,4 +861,3 @@ Furthermore, there is need for doing more feasibility studies for utilisation of
 The work has been funded by the Thales Bristol Partnership in Hybrid Autonomous Systems Engineering (T-B PHASE).
 %
 This paper is based upon work from the COST Action no. CA19135 ``Connecting Education and Research Communities for an Innovative Resource Aware Society (CERCIRAS)", supported by the European Commission through the European Cooperation in Science and Technology (COST) Association.
-

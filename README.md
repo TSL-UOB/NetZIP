@@ -1,5 +1,5 @@
 # NetZIP
-This is the official repository for our paper: [*NetZIP: A Standardised Bench for DNNs Compression*](https://arxiv.org/abs/2305.10616)
+This is the official repository for our paper: [*Evaluation Metrics for DNNs Compression*](https://arxiv.org/abs/2305.10616)
 
 NetZIP is an open-source benchmarking framework, based mainly on PyTorch, for evaluating the performance of model compression techniques on deep neural networks. It provides a standardized set of benchmarks and evaluation metrics for comparing different compression methods. The prominance of NetZIP is in the range of standardised evaluation metrics it provides to assess different aspects of performance affected by comrpession; these are broken into four main categories: accuracy, speed, size, and energy.
 

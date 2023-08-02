@@ -1,6 +1,7 @@
 from methods.PTQ import PTQ
 from methods.QAT import QAT
 from methods.GUP import GUP
+from methods.BNN import BNN
 
 def compress_model(model, compression_technique, device, train_loader, test_loader="",  learning_rate=1e-3 , num_epochs=10):
     if compression_technique == "PTQ":
@@ -14,6 +15,10 @@ def compress_model(model, compression_technique, device, train_loader, test_load
 
     elif compression_technique == "GUP_L1":
         compressed_model = GUP(model, train_loader, test_loader, device, method = "L1", prune_amount=0.75, num_epochs_per_iteration=num_epochs, learning_rate = learning_rate)
+
+    elif compression_technique == "BNN":
+        compressed_model = BNN(model, train_loader, test_loader, device, learning_rate=learning_rate , num_epochs=num_epochs)
+
 
     else:
         raise Exception("ERROR: An unknown compression method was selected.")
