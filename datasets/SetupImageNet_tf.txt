@@ -1,0 +1,13 @@
+Setting up Imagenet:
+
+1) Set up account on Imagnet website: https://image-net.org/index.php
+
+2) Navigate to the Download page and select the ILSVRC 2012
+
+3) Download  Training images (Task 1 & 2) and Validation images (all tasks).
+
+4) If this file "/root/tensorflow_datasets/downloads/manual" does not exist. Create it.
+
+5) This manual directory should contain two files: ILSVRC2012_img_train.tar and
+ILSVRC2012_img_val.tar. Move the downloaded files in step three to   "/root/tensorflow_datasets/downloads/manual".
+
